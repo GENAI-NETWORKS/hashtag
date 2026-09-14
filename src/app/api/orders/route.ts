@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     }
 
     let subtotal = 0;
-    const orderItemsToCreate = [];
+    const orderItemsToCreate: any[] = [];
 
     // Verify items and calculate subtotal securely
     for (const clientItem of items) {

@@ -10,7 +10,7 @@ import {
   Upload, ArrowRight, Sparkles, ChevronLeft, ChevronRight,
   Star, Clock, BadgeCheck, Shirt, BookOpen, Coffee,
   ImageIcon, CreditCard, Package, Gift, Zap, ShoppingCart,
-  Check, Plus, Phone, Tag
+  Check, Plus, Phone, Tag, Heart
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';

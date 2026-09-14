@@ -90,9 +90,9 @@ export default function ProductDetailPage() {
       }
       // @ts-ignore demo mode
       addItem(
-        { id: product.id, name: product.name, basePrice: product.price, images: [product.image], slug: product.slug, categoryId: 1 },
-        hasSizes ? selectedSize : undefined,
-        hasColors ? selectedColor : undefined,
+        { id: product.id, name: product.name, basePrice: product.price, images: [product.image], slug: product.slug, categoryId: 1 } as any,
+        (hasSizes ? { size: selectedSize, color: hasColors ? selectedColor : undefined } : undefined) as any,
+        undefined,
         quantity
       );
       
