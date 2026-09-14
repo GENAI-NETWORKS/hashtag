@@ -17,27 +17,24 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
-  const [needsInteraction, setNeedsInteraction] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Attempt auto play immediately with audio
+    // Attempt auto play immediately
     const playPromise = videoRef.current?.play();
     if (playPromise !== undefined) {
       playPromise.catch(error => {
-        // Auto-play was prevented by the browser's audio policy.
-        // Show a UI element to let the user manually start playback.
-        setNeedsInteraction(true);
+        // If unmuted autoplay fails, attempt muted autoplay so the user at least sees the animation
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {
+            // If even muted autoplay fails, skip the splash screen entirely
+            onComplete();
+          });
+        }
       });
     }
-  }, []);
-
-  const handleStart = () => {
-    setNeedsInteraction(false);
-    if (videoRef.current) {
-      videoRef.current.play().catch(e => console.error(e));
-    }
-  };
+  }, [onComplete]);
 
   return (
     <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center lg:hidden">
@@ -46,15 +43,10 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
         src="/Hlogo_animate.mp4"
         className="w-full h-full object-contain"
         playsInline
+        autoPlay
         onEnded={onComplete}
+        onError={onComplete}
       />
-      {needsInteraction && (
-        <div className="absolute inset-0 flex items-center justify-center flex-col gap-4 bg-black/80 backdrop-blur-sm">
-          <button onClick={handleStart} className="px-8 py-3 rounded-full bg-gradient-to-r from-[#00AEEF] to-[#EC008C] text-white font-black text-lg shadow-xl animate-bounce">
-            Tap to Open
-          </button>
-        </div>
-      )}
     </div>
   );
 }
