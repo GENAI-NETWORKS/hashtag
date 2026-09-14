@@ -17,9 +17,31 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Fallback timer: if video doesn't end naturally in 15s, open site anyway
+    const fallback = setTimeout(onComplete, 15000);
+
+    const handleEnded = () => {
+      clearTimeout(fallback);
+      onComplete();
+    };
+
+    video.addEventListener('ended', handleEnded);
+    return () => {
+      clearTimeout(fallback);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, [onComplete]);
+
   return (
     <div className="fixed inset-0 z-[99999] bg-black lg:hidden">
       <video
+        ref={videoRef}
         src="/logoanimation.mp4"
         className="w-full h-full object-contain"
         poster="/HP_Logo.png"
@@ -27,8 +49,6 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
         autoPlay
         muted
         preload="auto"
-        onEnded={onComplete}
-        onError={() => onComplete()}
       />
     </div>
   );
@@ -262,17 +282,10 @@ function FAQSection() {
 export default function HomePage() {
   const bestsellers = PRODUCTS.filter(p => p.bestseller);
   const featured = PRODUCTS.filter(p => !p.bestseller);
+  // Always show splash on every fresh page load (no sessionStorage skip)
   const [showSplash, setShowSplash] = useState(true);
 
-  useEffect(() => {
-    // Only show splash once per session
-    if (sessionStorage.getItem('splashSeen')) {
-      setShowSplash(false);
-    }
-  }, []);
-
   const handleSplashComplete = () => {
-    sessionStorage.setItem('splashSeen', 'true');
     setShowSplash(false);
   };
 
