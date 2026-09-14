@@ -18,6 +18,7 @@ import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -31,7 +32,14 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
       onComplete();
     };
 
+    const handlePlay = () => setIsPlaying(true);
+    const handleWaiting = () => setIsPlaying(false);
+    const handlePlaying = () => setIsPlaying(true);
+
     video.addEventListener('ended', handleEnded);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('waiting', handleWaiting);
+    video.addEventListener('playing', handlePlaying);
 
     video.muted = true;
     video.defaultMuted = true;
@@ -46,11 +54,14 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
     return () => {
       clearTimeout(fallback);
       video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('playing', handlePlaying);
     };
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-white lg:hidden flex items-center justify-center">
+    <div className={`fixed inset-0 z-[99999] bg-white lg:hidden flex items-center justify-center transition-opacity duration-300 ${isPlaying ? 'opacity-100' : 'opacity-99'}`}>
       <video
         ref={videoRef}
         src="/logoanimation.mp4"
