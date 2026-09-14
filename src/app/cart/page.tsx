@@ -158,7 +158,7 @@ export default function CartPage() {
         <p className="text-[#888] text-sm mb-8 max-w-xs">
           Add some amazing custom prints to your cart and they&apos;ll show up here.
         </p>
-        <Link href="/products" className="btn btn-primary px-5 sm:btn-lg sm:px-8 mx-auto w-max">
+        <Link href="/products" className="btn btn-primary px-6 mx-auto w-fit font-bold">
           Browse Products <ArrowRight size={16} />
         </Link>
       </div>

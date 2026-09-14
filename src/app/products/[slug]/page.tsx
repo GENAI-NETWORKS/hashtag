@@ -233,11 +233,11 @@ export default function ProductDetailPage() {
 
             {/* Desktop Add to Cart */}
             <div className="hidden lg:flex gap-3 pt-2">
-              <button onClick={handleAddToCart} className="btn btn-lg w-auto font-bold px-8"
+              <button onClick={handleAddToCart} className="btn btn-primary px-6 w-fit font-bold shadow-md shadow-[#00AEEF]/20"
                 style={{ background: added ? '#16a34a' : 'linear-gradient(135deg,#00AEEF,#0090c5)', color: 'white' }}>
-                {added ? <><Check size={20} /> Added to Cart!</> : <><ShoppingCart size={20} /> Add to Cart</>}
+                {added ? <><Check size={18} /> Added to Cart!</> : <><ShoppingCart size={18} /> Add to Cart</>}
               </button>
-              <Link href="/cart" className="btn btn-outline btn-lg w-auto">View Cart</Link>
+              <Link href="/cart" className="btn btn-outline px-6 w-fit font-bold">View Cart</Link>
             </div>
 
             {/* Trust Chips */}
