@@ -17,36 +17,51 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
+  const [started, setStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    // Attempt auto play immediately
-    const playPromise = videoRef.current?.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(error => {
-        // If unmuted autoplay fails, attempt muted autoplay so the user at least sees the animation
-        if (videoRef.current) {
-          videoRef.current.muted = true;
-          videoRef.current.play().catch(() => {
-            // If even muted autoplay fails, skip the splash screen entirely
-            onComplete();
-          });
-        }
+  const handleStart = () => {
+    setStarted(true);
+    if (videoRef.current) {
+      videoRef.current.muted = false; // Ensure unmuted
+      videoRef.current.play().catch(e => {
+        console.error("Play failed:", e);
+        onComplete();
       });
     }
-  }, [onComplete]);
+  };
 
   return (
     <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center lg:hidden">
+      {/* 
+        We don't use autoPlay here because iOS/Android strict policies block unmuted autoplay.
+        We force the user to tap first, which unlocks the audio context.
+      */}
       <video
         ref={videoRef}
-        src="/Hlogo_animate.mp4"
+        src="/logoanimation.mp4"
         className="w-full h-full object-contain"
         playsInline
-        autoPlay
         onEnded={onComplete}
-        onError={onComplete}
+        onError={(e) => {
+          console.error("Video error:", e);
+          onComplete(); // Skip if video is corrupt
+        }}
+        style={{ display: started ? 'block' : 'none' }}
       />
+      {!started && (
+        <div className="absolute inset-0 flex items-center justify-center flex-col gap-6 bg-black">
+          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center animate-pulse shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+            <Image src="/favicon.ico" alt="Logo" width={48} height={48} />
+          </div>
+          <button 
+            onClick={handleStart} 
+            className="px-8 py-4 rounded-full bg-gradient-to-r from-[#00AEEF] to-[#EC008C] text-white font-black text-xl shadow-[0_0_20px_rgba(236,0,140,0.5)] animate-bounce"
+          >
+            Tap to Open Hashtag
+          </button>
+        </div>
+      )}
     </div>
   );
 }
