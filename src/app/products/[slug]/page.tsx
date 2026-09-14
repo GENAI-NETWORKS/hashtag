@@ -122,11 +122,11 @@ export default function ProductDetailPage() {
       </div>
 
       <div className="container-app pb-32 lg:pb-12">
-        <div className="lg:grid lg:grid-cols-2 lg:gap-12">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-12">
 
           {/* ── Image Gallery ──────────────────────── */}
-          <div className="mb-6 lg:mb-0">
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#f8f9fa]">
+          <div className="mb-6 lg:mb-0 lg:col-span-5">
+            <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#f8f9fa] max-w-md mx-auto lg:max-w-none">
               <Image
                 src={images[activeImageIndex]}
                 alt={`${product.name} - Custom print by Hashtag Salem`}
@@ -158,7 +158,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* ── Product Info ───────────────────────── */}
-          <div className="space-y-5 relative z-40">
+          <div className="space-y-5 relative z-40 lg:col-span-7">
             <div>
               <Link href={`/products?category=${product.categorySlug}`}
                 className="text-xs text-[#888] font-medium uppercase tracking-wide mb-1 hover:text-[#00AEEF] flex items-center gap-1">
@@ -233,11 +233,11 @@ export default function ProductDetailPage() {
 
             {/* Desktop Add to Cart */}
             <div className="hidden lg:flex gap-3 pt-2">
-              <button onClick={handleAddToCart} className="btn btn-primary px-6 w-fit font-bold shadow-md shadow-[#00AEEF]/20"
+              <button onClick={handleAddToCart} className="btn btn-primary h-10 text-sm px-5 w-fit font-bold shadow-md shadow-[#00AEEF]/20"
                 style={{ background: added ? '#16a34a' : 'linear-gradient(135deg,#00AEEF,#0090c5)', color: 'white' }}>
-                {added ? <><Check size={18} /> Added to Cart!</> : <><ShoppingCart size={18} /> Add to Cart</>}
+                {added ? <><Check size={16} /> Added to Cart!</> : <><ShoppingCart size={16} /> Add to Cart</>}
               </button>
-              <Link href="/cart" className="btn btn-outline px-6 w-fit font-bold">View Cart</Link>
+              <Link href="/cart" className="btn btn-outline h-10 text-sm px-5 w-fit font-bold">View Cart</Link>
             </div>
 
             {/* Trust Chips */}
