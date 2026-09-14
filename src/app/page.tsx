@@ -23,48 +23,49 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
     // Hard fallback: 15s max waiting time
     const fallback = setTimeout(onComplete, 15000);
 
+    const video = containerRef.current?.querySelector('video');
+    if (!video) return;
+
     const handleEnded = () => {
       clearTimeout(fallback);
       onComplete();
     };
 
-    const video = containerRef.current?.querySelector('video');
-    if (video) {
-      video.addEventListener('ended', handleEnded);
-      
-      // Force play in case the raw HTML autoPlay fails
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((e) => console.error("Autoplay prevented:", e));
-      }
+    video.addEventListener('ended', handleEnded);
+
+    // Some mobile browsers need a gentle push even with raw HTML
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((e) => console.error("Autoplay prevented:", e));
     }
 
     return () => {
       clearTimeout(fallback);
-      if (video) {
-        video.removeEventListener('ended', handleEnded);
-      }
+      if (video) video.removeEventListener('ended', handleEnded);
     };
   }, [onComplete]);
 
   return (
-    <div 
-      ref={containerRef}
-      className="fixed inset-0 z-[99999] bg-white lg:hidden flex items-center justify-center"
-      dangerouslySetInnerHTML={{
-        __html: `
+    <div className="fixed inset-0 z-[99999] bg-black lg:hidden flex items-center justify-center">
+      {/* 
+        Using dangerouslySetInnerHTML is the ultimate workaround for iOS/Android 
+        ignoring React's synthetic video attributes. This forces raw HTML parsing.
+      */}
+      <div 
+        ref={containerRef}
+        className="w-full h-full"
+        dangerouslySetInnerHTML={{ __html: `
           <video
             src="/logoanimation.mp4"
             class="w-full h-full object-contain"
-            poster="/HP_Logo.png"
             playsinline
             autoplay
             muted
             preload="auto"
           ></video>
-        `
-      }}
-    />
+        `}} 
+      />
+    </div>
   );
 }
 
