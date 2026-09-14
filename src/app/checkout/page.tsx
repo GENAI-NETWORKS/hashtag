@@ -17,7 +17,12 @@ const SUCCESS_QUOTES = [
   "From pixels to reality. We're on it! ✨",
   "Good vibes and great prints are on the way! 🚀",
   "Sit back and relax, your custom swag is being prepared! 👕",
-  "Magic is happening in the print shop right now! 🪄"
+  "Magic is happening in the print shop right now! 🪄",
+  "You clicked 'Order', we clicked 'Go Mode'! ⚡",
+  "Your custom prints are baking in the oven! 🍪",
+  "We're firing up the printers just for you! 🔥",
+  "Brace yourself for some awesome custom prints! 🎉",
+  "Your order is locked, loaded, and ready for action! 🎯"
 ];
 
 const STEPS = [
@@ -148,55 +153,60 @@ export default function CheckoutPage() {
     const randomQuote = SUCCESS_QUOTES[placedOrderId % SUCCESS_QUOTES.length]; // Deterministic based on order ID for consistency during re-renders
 
     return (
-      <div className="container-app py-10 md:py-16 max-w-lg mx-auto text-center animate-fadeInUp">
-        <div className="relative w-32 h-32 mx-auto mb-8">
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#00AEEF] to-[#EC008C] rounded-[2rem] rotate-45 opacity-20 animate-pulse" />
-          <div className="absolute inset-0 bg-gradient-to-bl from-[#FFD700] to-[#16a34a] rounded-[2rem] rotate-12 opacity-20" />
-          <div className="relative w-full h-full bg-white rounded-3xl shadow-xl flex items-center justify-center border-4 border-white z-10 animate-bounce" style={{ animationDuration: '2s' }}>
-            <CheckCircle2 size={56} className="text-[#16a34a]" />
+      <div className="container-app py-12 md:py-20 max-w-2xl mx-auto flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-700">
+        
+        {/* Animated Checkmark and Glow */}
+        <div className="relative mb-8 w-40 h-40 flex flex-col items-center justify-center">
+          <div className="absolute inset-0 bg-[#16a34a]/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '3s' }} />
+          <div className="absolute inset-0 bg-[#00AEEF]/20 rounded-full blur-2xl animate-pulse delay-75" style={{ animationDuration: '4s' }} />
+          
+          <div className="relative z-10 w-24 h-24 bg-gradient-to-tr from-[#16a34a] to-[#22c55e] rounded-full shadow-2xl shadow-green-500/30 flex items-center justify-center animate-bounce" style={{ animationDuration: '2s' }}>
+            <CheckCircle2 size={56} className="text-white drop-shadow-md" />
           </div>
-          {/* Confetti specs (CSS) */}
-          <div className="absolute -top-4 -left-4 text-2xl animate-spin" style={{ animationDuration: '4s' }}>✨</div>
-          <div className="absolute -bottom-2 -right-4 text-2xl animate-bounce" style={{ animationDelay: '0.5s' }}>🎉</div>
-          <div className="absolute top-10 -right-8 text-xl animate-pulse">🚀</div>
+          
+          {/* Confetti Elements */}
+          <div className="absolute top-0 right-2 text-4xl animate-ping opacity-80" style={{ animationDuration: '3s' }}>🎉</div>
+          <div className="absolute bottom-2 left-0 text-3xl animate-pulse opacity-90">✨</div>
+          <div className="absolute top-8 left-4 text-3xl animate-bounce" style={{ animationDelay: '0.5s' }}>🎈</div>
         </div>
 
-        <h1 className="text-3xl font-black text-[#111] mb-3 bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(135deg, #111, #444)' }}>
-          Order Confirmed!
+        <h1 className="text-4xl md:text-5xl font-black text-[#111] mb-5 tracking-tight leading-tight">
+          Woohoo! <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00AEEF] to-[#EC008C]">Order Placed!</span>
         </h1>
         
-        <div className="inline-block px-4 py-2 rounded-full bg-[#f8f9fa] border border-[#e5e7eb] mb-6 shadow-sm">
-          <p className="text-sm font-bold text-[#EC008C] italic">
-            &ldquo;{randomQuote}&rdquo;
+        <div className="relative px-6 py-5 rounded-2xl bg-gradient-to-br from-[#f8f9fa] to-white border border-[#e5e7eb] shadow-sm mb-8 w-full max-w-md mx-auto">
+          <div className="absolute -left-2 -top-3 text-4xl opacity-20 text-[#EC008C]">❝</div>
+          <p className="text-lg font-black text-[#444] italic z-10 relative">
+            {randomQuote}
           </p>
+          <div className="absolute -right-1 -bottom-5 text-4xl opacity-20 text-[#00AEEF]">❞</div>
         </div>
 
-        <p className="text-[#666] text-sm mb-8 leading-relaxed max-w-sm mx-auto">
-          Your order <strong className="text-[#111] px-1 bg-[#e0f7ff] rounded">#{placedOrderId}</strong> has been placed successfully. 
-          Our print masters are reviewing your design right now.
-        </p>
-
-        <div className="card p-5 mb-8 text-left bg-gradient-to-r from-[#f8f9fa] to-white border-l-4 border-l-[#00AEEF]">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-8 rounded-full bg-[#e0f7ff] flex items-center justify-center">
-              <MapPin size={16} className="text-[#00AEEF]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#888] font-bold uppercase tracking-wide">Delivery Expected By</p>
-              <p className="font-black text-[#111] text-lg">
-                {new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {
-                  weekday: 'short', day: '2-digit', month: 'long'
-                })}
-              </p>
-            </div>
+        <div className="bg-[#f8f9fa] w-full rounded-2xl p-6 mb-8 border border-[#e5e7eb] text-left grid grid-cols-2 gap-4">
+          <div className="border-r border-[#e5e7eb]">
+            <p className="text-[10px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+              <CheckCircle2 size={12} className="text-[#00AEEF]" /> Order ID
+            </p>
+            <p className="text-xl sm:text-2xl font-black text-[#111]">#{placedOrderId}</p>
+          </div>
+          <div className="pl-2">
+             <p className="text-[10px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+               <MapPin size={12} className="text-[#EC008C]" /> Delivery By
+             </p>
+             <p className="text-lg sm:text-xl font-black text-[#16a34a]">
+               {new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {
+                 weekday: 'short', day: '2-digit', month: 'short'
+               })}
+             </p>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary btn-lg flex-1 shadow-lg shadow-[#00AEEF]/20" style={{ background: 'linear-gradient(135deg,#00AEEF,#0090c5)' }}>
-            Track My Order <ChevronRight size={18} />
+        <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
+          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary btn-lg flex-1 shadow-xl shadow-[#00AEEF]/20 text-base sm:text-lg group">
+            Track My Order <ChevronRight className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <Link href="/products" className="btn btn-outline btn-lg flex-1 border-2">
+          <Link href="/products" className="btn btn-outline btn-lg flex-1 border-2 text-base sm:text-lg hover:bg-black hover:text-white transition-colors">
             Continue Shopping
           </Link>
         </div>
