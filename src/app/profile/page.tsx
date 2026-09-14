@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
@@ -18,9 +18,17 @@ export default function ProfilePage() {
   const clearCart = useCartStore((s) => s.clearCart);
   const router = useRouter();
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    if (!user) router.push('/auth/login');
-  }, [user, router]);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !user) {
+      router.push('/auth/login');
+    }
+  }, [user, router, mounted]);
 
   const { data: orders } = useQuery({
     queryKey: ['orders'],

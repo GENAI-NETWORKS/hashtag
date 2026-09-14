@@ -8,7 +8,7 @@ import { formatPrice } from '@/lib/utils';
 import { OrderCardSkeleton } from '@/components/ui/Skeleton';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const STATUS_CONFIG: Record<OrderStatus, { label: string; icon: typeof Package; color: string; bg: string }> = {
   PENDING: { label: 'Order Placed', icon: Clock, color: '#d97706', bg: '#fef3c7' },
@@ -102,10 +102,17 @@ function OrderCard({ order }: { order: Order }) {
 export default function OrdersPage() {
   const user = useAuthStore((s) => s.user);
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!user) router.push('/auth/login');
-  }, [user, router]);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !user) {
+      router.push('/auth/login');
+    }
+  }, [user, router, mounted]);
 
   const { data: orders, isLoading } = useQuery({
     queryKey: ['orders'],
@@ -113,7 +120,7 @@ export default function OrdersPage() {
     enabled: !!user,
   });
 
-  if (!user) return null;
+  if (!mounted || !user) return null;
 
   return (
     <div className="container-app py-4">
