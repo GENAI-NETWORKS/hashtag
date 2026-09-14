@@ -18,7 +18,6 @@ import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -32,14 +31,7 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
       onComplete();
     };
 
-    const handlePlay = () => setIsPlaying(true);
-    const handleWaiting = () => setIsPlaying(false);
-    const handlePlaying = () => setIsPlaying(true);
-
     video.addEventListener('ended', handleEnded);
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('waiting', handleWaiting);
-    video.addEventListener('playing', handlePlaying);
 
     video.muted = true;
     video.defaultMuted = true;
@@ -54,24 +46,15 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
     return () => {
       clearTimeout(fallback);
       video.removeEventListener('ended', handleEnded);
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('waiting', handleWaiting);
-      video.removeEventListener('playing', handlePlaying);
     };
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black lg:hidden flex items-center justify-center">
-      {!isPlaying && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 pointer-events-none">
-          <div className="w-10 h-10 border-4 border-white/20 border-t-[#00AEEF] rounded-full animate-spin mb-4" />
-          <p className="text-white text-sm font-medium animate-pulse">Loading animation...</p>
-        </div>
-      )}
+    <div className="fixed inset-0 z-[99999] bg-[#efefef] lg:hidden flex items-center justify-center">
       <video
         ref={videoRef}
         src="/logoanimation.mp4"
-        className="w-full h-full object-contain"
+        className="w-full h-full object-contain mix-blend-multiply"
         poster="/HP_Logo.png"
         playsInline
         autoPlay
