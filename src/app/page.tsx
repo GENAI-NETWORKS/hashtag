@@ -18,12 +18,13 @@ import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Fallback timer: if video doesn't end naturally in 15s, open site anyway
+    // Hard fallback: 15s max waiting time
     const fallback = setTimeout(onComplete, 15000);
 
     const handleEnded = () => {
@@ -31,12 +32,20 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
       onComplete();
     };
 
-    video.addEventListener('ended', handleEnded);
+    const handlePlay = () => setIsPlaying(true);
+    const handleWaiting = () => setIsPlaying(false);
+    const handlePlaying = () => setIsPlaying(true);
 
-    // React's autoPlay attribute is sometimes ignored on mobile devices.
-    // We explicitly set it to muted and call play() to ensure it starts.
+    video.addEventListener('ended', handleEnded);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('waiting', handleWaiting);
+    video.addEventListener('playing', handlePlaying);
+
     video.muted = true;
     video.defaultMuted = true;
+    
+    // Force browser to load the video metadata and frames
+    video.load();
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch((e) => console.error("Autoplay prevented:", e));
@@ -45,11 +54,20 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
     return () => {
       clearTimeout(fallback);
       video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('playing', handlePlaying);
     };
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black lg:hidden">
+    <div className="fixed inset-0 z-[99999] bg-black lg:hidden flex items-center justify-center">
+      {!isPlaying && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 pointer-events-none">
+          <div className="w-10 h-10 border-4 border-white/20 border-t-[#00AEEF] rounded-full animate-spin mb-4" />
+          <p className="text-white text-sm font-medium animate-pulse">Loading animation...</p>
+        </div>
+      )}
       <video
         ref={videoRef}
         src="/logoanimation.mp4"
