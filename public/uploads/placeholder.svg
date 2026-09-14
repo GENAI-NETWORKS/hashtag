@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#f8f9fa"/>
+  <rect x="80" y="60" width="240" height="280" rx="12" fill="#e0f7ff" stroke="#00AEEF" stroke-width="2"/>
+  <rect x="120" y="100" width="160" height="200" rx="8" fill="#00AEEF" opacity="0.15"/>
+  <circle cx="200" cy="160" r="50" fill="#00AEEF" opacity="0.3"/>
+  <circle cx="200" cy="160" r="30" fill="#EC008C" opacity="0.4"/>
+  <rect x="140" y="230" width="120" height="12" rx="6" fill="#111" opacity="0.15"/>
+  <rect x="160" y="252" width="80" height="8" rx="4" fill="#111" opacity="0.1"/>
+  <text x="200" y="330" font-family="Arial" font-size="13" fill="#888" text-anchor="middle">Custom Print</text>
+</svg>

@@ -88,6 +88,8 @@ async function main() {
   const mugCat = await prisma.category.findUnique({ where: { slug: 'custom-mug-printing' } });
   const photoCat = await prisma.category.findUnique({ where: { slug: 'photo-printing-online' } });
   const bcardCat = await prisma.category.findUnique({ where: { slug: 'business-card-printing' } });
+  const stickerCat = await prisma.category.findUnique({ where: { slug: 'custom-sticker-printing' } });
+  const giftCat = await prisma.category.findUnique({ where: { slug: 'custom-gifts-printing' } });
 
   // Create sample products
   const products = [
@@ -194,6 +196,105 @@ async function main() {
       images: ['/uploads/products/bcard-matte.jpg'],
       tags: ['businesscard', 'matte', 'bulk', 'corporate'],
       isBestseller: true,
+    },
+    // More T-Shirts
+    {
+      categoryId: tshirtCat!.id,
+      name: 'Custom Printed Hoodie',
+      slug: 'custom-printed-hoodie',
+      description: 'Premium 320 GSM cotton fleece hoodie with kangaroo pockets. Stay warm and stylish with custom prints.',
+      basePrice: 899,
+      images: ['/uploads/products/Custom Printed Hoodie.png'],
+      tags: ['hoodie', 'winter', 'custom', 'cotton'],
+    },
+    {
+      categoryId: tshirtCat!.id,
+      name: 'Oversized Drop Shoulder T-Shirt',
+      slug: 'oversized-drop-shoulder-tshirt',
+      description: 'Trendy oversized t-shirt in 220 GSM heavyweight cotton. Perfect for streetwear and casual custom designs.',
+      basePrice: 499,
+      images: ['/uploads/products/Oversized Drop Shoulder T-Shirt.png'],
+      tags: ['oversized', 'streetwear', 'custom', 'heavyweight'],
+    },
+    // More Notebooks
+    {
+      categoryId: notebookCat!.id,
+      name: 'Custom Pocket Notebook A6',
+      slug: 'custom-pocket-notebook-a6',
+      description: 'Handy A6 pocket notebook with custom soft cover. 120 pages of 70 GSM paper. Easy to carry everywhere.',
+      basePrice: 99,
+      images: ['/uploads/products/Custom Pocket Notebook A6.png'],
+      tags: ['notebook', 'pocket', 'a6', 'compact'],
+    },
+    // More Mugs
+    {
+      categoryId: mugCat!.id,
+      name: 'Enamel Campfire Mug',
+      slug: 'enamel-campfire-mug',
+      description: 'Durable enamel mug for outdoors. Custom printing that won\'t fade. Lightweight and shatterproof.',
+      basePrice: 299,
+      images: ['/uploads/products/mug-enamel.jpg'],
+      tags: ['mug', 'enamel', 'outdoor', 'durable'],
+    },
+    {
+      categoryId: mugCat!.id,
+      name: 'Frosted Glass Beer Stein',
+      slug: 'frosted-glass-beer-stein',
+      description: 'Heavy frosted glass beer mug (16oz) with full-color custom print. Perfect for parties and gifts.',
+      basePrice: 499,
+      images: ['/uploads/products/mug-frosted-glass.jpg'],
+      tags: ['mug', 'glass', 'frosted', 'gift'],
+    },
+    // More Photo Prints
+    {
+      categoryId: photoCat!.id,
+      name: 'Premium Acrylic Photo Print',
+      slug: 'premium-acrylic-photo-print',
+      description: 'Stunning HD print mounted on 5mm thick crystal clear acrylic. Modern and sleek frameless look.',
+      basePrice: 899,
+      images: ['/uploads/products/photo-acrylic.jpg'],
+      tags: ['acrylic', 'photo', 'premium', 'homedecor'],
+      isFeatured: true,
+    },
+    // More Business Cards
+    {
+      categoryId: bcardCat!.id,
+      name: 'Transparent Business Cards (100 pcs)',
+      slug: 'transparent-business-cards-100',
+      description: 'Stand out with clear, waterproof PVC business cards. Custom printed with high durability.',
+      basePrice: 799,
+      images: ['/uploads/products/bcard-transparent.jpg'],
+      tags: ['businesscard', 'transparent', 'pvc', 'unique'],
+    },
+    // Stickers
+    {
+      categoryId: stickerCat!.id,
+      name: 'Custom Die-Cut Vinyl Stickers',
+      slug: 'custom-die-cut-vinyl-stickers',
+      description: 'Durable, waterproof, and weatherproof die-cut stickers. Cut to the exact shape of your design.',
+      basePrice: 99,
+      images: ['/uploads/products/stickers-diecut.jpg'],
+      tags: ['sticker', 'diecut', 'vinyl', 'waterproof'],
+      isFeatured: true,
+    },
+    // Gifts & More
+    {
+      categoryId: giftCat!.id,
+      name: 'Personalized Mouse Pad',
+      slug: 'personalized-mouse-pad',
+      description: 'Custom printed mouse pad with anti-slip rubber base and smooth fabric surface.',
+      basePrice: 199,
+      images: ['/uploads/products/gift-mousepad.jpg'],
+      tags: ['gift', 'mousepad', 'custom', 'desk'],
+    },
+    {
+      categoryId: giftCat!.id,
+      name: 'Custom Printed Keychain',
+      slug: 'custom-printed-keychain',
+      description: 'High-quality MDF wood or acrylic keychains printed with your photos, logos, or text.',
+      basePrice: 149,
+      images: ['/uploads/products/gift-keychain.jpg'],
+      tags: ['gift', 'keychain', 'custom', 'accessory'],
     },
   ];
 
