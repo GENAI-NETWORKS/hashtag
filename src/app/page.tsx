@@ -17,33 +17,15 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
-
-  // If they tap anywhere on the screen while the video plays, it unmutes!
-  const handleTapToUnmute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-      setIsMuted(false);
-    }
-  };
-
   return (
-    <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center lg:hidden" onClick={handleTapToUnmute}>
+    <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center lg:hidden">
       <video
-        ref={videoRef}
         src="/logoanimation.mp4"
         className="w-full h-full object-contain"
         playsInline
         autoPlay
-        muted
         onEnded={onComplete}
       />
-      {isMuted && (
-        <div className="absolute bottom-10 left-0 right-0 flex justify-center pointer-events-none opacity-50">
-          <p className="text-white text-xs font-medium">Tap anywhere for sound</p>
-        </div>
-      )}
     </div>
   );
 }
