@@ -339,14 +339,14 @@ export default function ProductDetailPage() {
           <button
             id="mobile-add-btn"
             onClickCapture={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(); }}
-            className="btn btn-lg w-fit px-4 font-bold"
+            className="btn px-5 w-max font-bold text-sm shadow-md shadow-[#00AEEF]/20"
             style={{
               pointerEvents: 'auto',
               touchAction: 'manipulation',
               background: added ? '#16a34a' : 'linear-gradient(135deg,#00AEEF,#0090c5)',
               color: 'white'
             }}>
-            {added ? <><Check size={18} />Added!</> : <><ShoppingCart size={18} />Add to Cart</>}
+            {added ? <><Check size={16} />Added!</> : <><ShoppingCart size={16} />Add to Cart</>}
           </button>
         </div>
       </div>

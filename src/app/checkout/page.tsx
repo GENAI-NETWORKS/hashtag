@@ -202,11 +202,11 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md mx-auto">
-          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary btn-lg w-fit px-6 shadow-xl shadow-[#00AEEF]/20 text-base sm:text-lg group">
-            Track My Order <ChevronRight className="group-hover:translate-x-1 transition-transform" />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 w-full max-w-md mx-auto">
+          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary px-5 sm:btn-lg sm:px-8 w-max shadow-xl shadow-[#00AEEF]/20 text-sm sm:text-base group">
+            Track My Order <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <Link href="/products" className="btn btn-outline btn-lg w-fit px-6 border-2 text-base sm:text-lg hover:bg-black hover:text-white transition-colors">
+          <Link href="/products" className="btn btn-outline px-5 sm:btn-lg sm:px-8 w-max border-2 text-sm sm:text-base hover:bg-black hover:text-white transition-colors">
             Continue Shopping
           </Link>
         </div>
