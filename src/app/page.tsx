@@ -17,23 +17,41 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   useEffect(() => {
-    // Failsafe: Ensure they never get stuck on a black screen forever if the video 
-    // takes too long to load on their mobile network or is blocked by their phone.
-    const timer = setTimeout(() => {
-      onComplete();
-    }, 8000);
-    return () => clearTimeout(timer);
+    const video = videoRef.current;
+    if (!video) return;
+
+    // The browser's autoplay policy REQUIRES muted for autoplay.
+    // After a short 300ms (a user gesture window), we unmute to restore audio.
+    video.muted = true;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          // Video started! Now try to unmute for audio.
+          setTimeout(() => {
+            if (video) video.muted = false;
+          }, 300);
+        })
+        .catch(() => {
+          // Complete failure — skip to site
+          onComplete();
+        });
+    }
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center lg:hidden">
+    <div className="fixed inset-0 z-[99999] bg-black lg:hidden">
       <video
+        ref={videoRef}
         src="/logoanimation.mp4"
         className="w-full h-full object-contain"
         playsInline
-        autoPlay
+        preload="auto"
         onEnded={onComplete}
+        onError={() => onComplete()}
       />
     </div>
   );
