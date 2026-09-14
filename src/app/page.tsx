@@ -48,7 +48,7 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black lg:hidden">
+    <div className="fixed inset-0 z-[99999] bg-[#efefef] lg:hidden">
       <video
         ref={videoRef}
         src="/logoanimation.mp4"
