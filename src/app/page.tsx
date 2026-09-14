@@ -17,13 +17,9 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
     // Hard fallback: 15s max waiting time
     const fallback = setTimeout(onComplete, 15000);
 
@@ -32,47 +28,43 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
       onComplete();
     };
 
-    const handlePlay = () => setIsPlaying(true);
-    const handleWaiting = () => setIsPlaying(false);
-    const handlePlaying = () => setIsPlaying(true);
-
-    video.addEventListener('ended', handleEnded);
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('waiting', handleWaiting);
-    video.addEventListener('playing', handlePlaying);
-
-    video.muted = true;
-    video.defaultMuted = true;
-    
-    // Force browser to load the video metadata and frames
-    video.load();
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch((e) => console.error("Autoplay prevented:", e));
+    const video = containerRef.current?.querySelector('video');
+    if (video) {
+      video.addEventListener('ended', handleEnded);
+      
+      // Force play in case the raw HTML autoPlay fails
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((e) => console.error("Autoplay prevented:", e));
+      }
     }
 
     return () => {
       clearTimeout(fallback);
-      video.removeEventListener('ended', handleEnded);
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('waiting', handleWaiting);
-      video.removeEventListener('playing', handlePlaying);
+      if (video) {
+        video.removeEventListener('ended', handleEnded);
+      }
     };
   }, [onComplete]);
 
   return (
-    <div className={`fixed inset-0 z-[99999] bg-white lg:hidden flex items-center justify-center transition-opacity duration-300 ${isPlaying ? 'opacity-100' : 'opacity-99'}`}>
-      <video
-        ref={videoRef}
-        src="/logoanimation.mp4"
-        className="w-full h-full object-contain"
-        poster="/HP_Logo.png"
-        playsInline
-        autoPlay
-        muted
-        preload="auto"
-      />
-    </div>
+    <div 
+      ref={containerRef}
+      className="fixed inset-0 z-[99999] bg-white lg:hidden flex items-center justify-center"
+      dangerouslySetInnerHTML={{
+        __html: `
+          <video
+            src="/logoanimation.mp4"
+            class="w-full h-full object-contain"
+            poster="/HP_Logo.png"
+            playsinline
+            autoplay
+            muted
+            preload="auto"
+          ></video>
+        `
+      }}
+    />
   );
 }
 
