@@ -339,7 +339,7 @@ export default function ProductDetailPage() {
           <button
             id="mobile-add-btn"
             onClickCapture={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(); }}
-            className="btn btn-lg w-auto px-6 font-bold"
+            className="btn btn-lg w-fit px-4 font-bold"
             style={{
               pointerEvents: 'auto',
               touchAction: 'manipulation',
