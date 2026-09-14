@@ -102,10 +102,10 @@ export default function CheckoutPage() {
       router.push('/auth/login?mode=register&callbackUrl=/checkout');
     } else if (!user.onboardingCompleted) {
       router.push('/onboarding?callbackUrl=/checkout');
-    } else if (items.length === 0) {
+    } else if (items.length === 0 && step !== 3) {
       router.push('/cart');
     }
-  }, [user, items, router, mounted]);
+  }, [user, items, router, mounted, step]);
 
   const handlePlaceOrder = async () => {
     setLoading(true);
