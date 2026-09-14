@@ -19,28 +19,12 @@ import toast from 'react-hot-toast';
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // The browser's autoplay policy REQUIRES muted for autoplay.
-    // After a short 300ms (a user gesture window), we unmute to restore audio.
-    video.muted = true;
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          // Video started! Now try to unmute for audio.
-          setTimeout(() => {
-            if (video) video.muted = false;
-          }, 300);
-        })
-        .catch(() => {
-          // Complete failure — skip to site
-          onComplete();
-        });
+  const handleCanPlay = () => {
+    // Video is ready — unmute it for audio
+    if (videoRef.current) {
+      videoRef.current.muted = false;
     }
-  }, [onComplete]);
+  };
 
   return (
     <div className="fixed inset-0 z-[99999] bg-black lg:hidden">
@@ -48,8 +32,12 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
         ref={videoRef}
         src="/logoanimation.mp4"
         className="w-full h-full object-contain"
+        poster="/HP_Logo.png"
         playsInline
+        autoPlay
+        muted
         preload="auto"
+        onCanPlay={handleCanPlay}
         onEnded={onComplete}
         onError={() => onComplete()}
       />
