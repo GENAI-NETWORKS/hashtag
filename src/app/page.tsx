@@ -18,35 +18,32 @@ import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
 
-  useEffect(() => {
+  // If they tap anywhere on the screen while the video plays, it unmutes!
+  const handleTapToUnmute = () => {
     if (videoRef.current) {
-      // Try to play with audio first
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(e => {
-          // If the browser blocks audio autoplay, instantly mute it and play it anyway
-          // so the user at least sees the loading video before the site opens!
-          if (videoRef.current) {
-            videoRef.current.muted = true;
-            videoRef.current.play().catch(() => onComplete());
-          }
-        });
-      }
+      videoRef.current.muted = false;
+      setIsMuted(false);
     }
-  }, [onComplete]);
+  };
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center lg:hidden">
+    <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center lg:hidden" onClick={handleTapToUnmute}>
       <video
         ref={videoRef}
         src="/logoanimation.mp4"
         className="w-full h-full object-contain"
         playsInline
         autoPlay
+        muted
         onEnded={onComplete}
-        onError={() => onComplete()}
       />
+      {isMuted && (
+        <div className="absolute bottom-10 left-0 right-0 flex justify-center pointer-events-none opacity-50">
+          <p className="text-white text-xs font-medium">Tap anywhere for sound</p>
+        </div>
+      )}
     </div>
   );
 }
