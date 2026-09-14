@@ -17,19 +17,9 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleCanPlay = () => {
-    // Video is ready — unmute it for audio
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-    }
-  };
-
   return (
     <div className="fixed inset-0 z-[99999] bg-black lg:hidden">
       <video
-        ref={videoRef}
         src="/logoanimation.mp4"
         className="w-full h-full object-contain"
         poster="/HP_Logo.png"
@@ -37,7 +27,6 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
         autoPlay
         muted
         preload="auto"
-        onCanPlay={handleCanPlay}
         onEnded={onComplete}
         onError={() => onComplete()}
       />
