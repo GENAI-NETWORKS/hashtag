@@ -17,38 +17,14 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [downloading, setDownloading] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // 1. Download the unoptimized MP4 into memory first
-    // This entirely bypasses the mobile browser's inability to stream non-fast-start MP4s!
-    fetch('/logoanimation.mp4')
-      .then(res => res.blob())
-      .then(blob => {
-        const url = URL.createObjectURL(blob);
-        setVideoUrl(url);
-        setDownloading(false);
-      })
-      .catch(err => {
-        console.error("Failed to download video blob", err);
-        onComplete();
-      });
-
-    return () => {
-      if (videoUrl) URL.revokeObjectURL(videoUrl);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!videoUrl) return;
-
-    // Hard fallback: 15s max waiting time AFTER video starts
-    const fallback = setTimeout(onComplete, 15000);
-
-    const video = containerRef.current?.querySelector('video');
+    const video = videoRef.current;
     if (!video) return;
+
+    // Hard fallback: 15s max waiting time
+    const fallback = setTimeout(onComplete, 15000);
 
     const handleEnded = () => {
       clearTimeout(fallback);
@@ -57,6 +33,9 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
 
     video.addEventListener('ended', handleEnded);
 
+    // Some mobile browsers need a gentle push
+    video.muted = true;
+    video.defaultMuted = true;
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch((e) => console.error("Autoplay prevented:", e));
@@ -64,31 +43,21 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
 
     return () => {
       clearTimeout(fallback);
-      if (video) video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('ended', handleEnded);
     };
-  }, [videoUrl, onComplete]);
+  }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black lg:hidden flex items-center justify-center">
-      {downloading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 pointer-events-none">
-          <div className="w-10 h-10 border-4 border-white/20 border-t-[#00AEEF] rounded-full animate-spin mb-4" />
-          <p className="text-white text-sm font-medium animate-pulse">Loading animation...</p>
-        </div>
-      )}
-      <div 
-        ref={containerRef}
-        className="w-full h-full"
-        dangerouslySetInnerHTML={{ __html: videoUrl ? `
-          <video
-            src="${videoUrl}"
-            poster="/HP_Logo.png"
-            class="w-full h-full object-contain"
-            playsinline
-            autoplay
-            muted
-          ></video>
-        ` : `<img src="/HP_Logo.png" class="w-full h-full object-contain" />`}} 
+    <div className="fixed inset-0 z-[99999] bg-black lg:hidden">
+      <video
+        ref={videoRef}
+        src="/logoanimation.mp4"
+        poster="/HP_Logo.png"
+        className="w-full h-full object-contain"
+        playsInline
+        autoPlay
+        muted
+        preload="auto"
       />
     </div>
   );
