@@ -1,3 +1,4 @@
+﻿export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -31,7 +32,7 @@ export async function GET(req: NextRequest) {
     if (subtotal < Number(coupon.minOrder)) {
       return NextResponse.json({
         success: false,
-        error: `Minimum order amount of ₹${Number(coupon.minOrder)} required for this coupon`,
+        error: `Minimum order amount of â‚¹${Number(coupon.minOrder)} required for this coupon`,
       }, { status: 400 });
     }
 
