@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
@@ -15,6 +15,49 @@ import {
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
+
+function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
+  const [needsInteraction, setNeedsInteraction] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Attempt auto play immediately with audio
+    const playPromise = videoRef.current?.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(error => {
+        // Auto-play was prevented by the browser's audio policy.
+        // Show a UI element to let the user manually start playback.
+        setNeedsInteraction(true);
+      });
+    }
+  }, []);
+
+  const handleStart = () => {
+    setNeedsInteraction(false);
+    if (videoRef.current) {
+      videoRef.current.play().catch(e => console.error(e));
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center lg:hidden">
+      <video
+        ref={videoRef}
+        src="/Hlogo_animate.mp4"
+        className="w-full h-full object-contain"
+        playsInline
+        onEnded={onComplete}
+      />
+      {needsInteraction && (
+        <div className="absolute inset-0 flex items-center justify-center flex-col gap-4 bg-black/80 backdrop-blur-sm">
+          <button onClick={handleStart} className="px-8 py-3 rounded-full bg-gradient-to-r from-[#00AEEF] to-[#EC008C] text-white font-black text-lg shadow-xl animate-bounce">
+            Tap to Open
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ─── DEMO DATA (works without DB) ─────────────────────────────
 
@@ -244,6 +287,19 @@ function FAQSection() {
 export default function HomePage() {
   const bestsellers = PRODUCTS.filter(p => p.bestseller);
   const featured = PRODUCTS.filter(p => !p.bestseller);
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    // Only show splash once per session
+    if (sessionStorage.getItem('splashSeen')) {
+      setShowSplash(false);
+    }
+  }, []);
+
+  const handleSplashComplete = () => {
+    sessionStorage.setItem('splashSeen', 'true');
+    setShowSplash(false);
+  };
 
   return (
     <>
@@ -254,6 +310,8 @@ export default function HomePage() {
         address: { '@type': 'PostalAddress', addressLocality: 'Salem', addressRegion: 'Tamil Nadu', postalCode: '636001', addressCountry: 'IN' },
         priceRange: '₹₹', openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '09:00', closes: '20:00' },
       }) }} />
+
+      {showSplash && <MobileSplashScreen onComplete={handleSplashComplete} />}
 
       <div className="container-app py-4 space-y-8">
 
