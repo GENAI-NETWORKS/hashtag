@@ -32,6 +32,16 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
     };
 
     video.addEventListener('ended', handleEnded);
+
+    // React's autoPlay attribute is sometimes ignored on mobile devices.
+    // We explicitly set it to muted and call play() to ensure it starts.
+    video.muted = true;
+    video.defaultMuted = true;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((e) => console.error("Autoplay prevented:", e));
+    }
+
     return () => {
       clearTimeout(fallback);
       video.removeEventListener('ended', handleEnded);
