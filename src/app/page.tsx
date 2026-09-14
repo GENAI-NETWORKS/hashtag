@@ -50,11 +50,11 @@ function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#efefef] lg:hidden flex items-center justify-center">
+    <div className="fixed inset-0 z-[99999] bg-white lg:hidden flex items-center justify-center">
       <video
         ref={videoRef}
         src="/logoanimation.mp4"
-        className="w-full h-full object-contain mix-blend-multiply"
+        className="w-full h-full object-contain"
         poster="/HP_Logo.png"
         playsInline
         autoPlay
