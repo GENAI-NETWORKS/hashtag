@@ -1,45 +1,58 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import {
-  Package, Clock, PackageCheck, Printer, Truck,
-  CheckCircle2, XCircle, ChevronLeft, ChevronRight,
-  Search, RefreshCcw
-} from 'lucide-react';
-import { Order, OrderStatus } from '@/types';
+import { Package, Truck, CheckCircle2, Clock, XCircle, ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
-import { Skeleton } from '@/components/ui/Skeleton';
 import toast from 'react-hot-toast';
+import { Skeleton } from '@/components/ui/Skeleton';
 
-const STATUS_OPTIONS: Array<{ value: OrderStatus | ''; label: string; icon: typeof Package; color: string }> = [
-  { value: '', label: 'All Orders', icon: Package, color: '#888' },
-  { value: 'PENDING', label: 'Pending', icon: Clock, color: '#d97706' },
-  { value: 'DESIGN_CONFIRMED', label: 'Design Confirmed', icon: PackageCheck, color: '#2563eb' },
-  { value: 'PRINTING', label: 'Printing', icon: Printer, color: '#7c3aed' },
-  { value: 'SHIPPED', label: 'Shipped', icon: Truck, color: '#0090c5' },
-  { value: 'DELIVERED', label: 'Delivered', icon: CheckCircle2, color: '#16a34a' },
-  { value: 'CANCELLED', label: 'Cancelled', icon: XCircle, color: '#dc2626' },
+// Define the OrderStatus enum to match our DB
+type OrderStatus = 'PENDING' | 'DESIGN_CONFIRMED' | 'PRINTING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+
+// Minimal Order type for the admin list
+interface Order {
+  id: number;
+  total: number;
+  status: string;
+  createdAt: string;
+  address?: any;
+  items?: any[];
+}
+
+const STATUS_OPTIONS: { label: string; value: string; color: string; icon: any }[] = [
+  { label: 'All Orders', value: '', color: '#111111', icon: Package },
+  { label: 'Pending', value: 'PENDING', color: '#f59e0b', icon: Clock },
+  { label: 'Confirmed', value: 'DESIGN_CONFIRMED', color: '#3b82f6', icon: CheckCircle2 },
+  { label: 'Printing', value: 'PRINTING', color: '#8b5cf6', icon: Package },
+  { label: 'Shipped', value: 'SHIPPED', color: '#ec008c', icon: Truck },
+  { label: 'Delivered', value: 'DELIVERED', color: '#10b981', icon: CheckCircle2 },
+  { label: 'Cancelled', value: 'CANCELLED', color: '#ef4444', icon: XCircle },
 ];
 
-const NEXT_STATUSES: Partial<Record<OrderStatus, OrderStatus>> = {
+const NEXT_STATUSES: Record<OrderStatus, OrderStatus | null> = {
   PENDING: 'DESIGN_CONFIRMED',
   DESIGN_CONFIRMED: 'PRINTING',
   PRINTING: 'SHIPPED',
   SHIPPED: 'DELIVERED',
+  DELIVERED: null,
+  CANCELLED: null,
 };
 
 async function fetchAdminOrders(status: string, page: number) {
-  const params = new URLSearchParams({ page: page.toString(), limit: '15' });
+  const params = new URLSearchParams();
   if (status) params.set('status', status);
-  const res = await fetch(`/api/admin/orders?${params}`);
-  return (await res.json());
+  if (page) params.set('page', page.toString());
+
+  const res = await fetch(`/api/admin/orders?${params.toString()}`);
+  if (!res.ok) throw new Error('Failed to fetch orders');
+  return res.json();
 }
 
-async function updateOrderStatus(orderId: number, status: OrderStatus, note?: string) {
-  const res = await fetch(`/api/admin/orders/${orderId}/status`, {
+async function updateOrderStatus(id: number, status: OrderStatus, note?: string) {
+  const res = await fetch(`/api/admin/orders/${id}/status`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status, note }),
@@ -77,7 +90,7 @@ function OrderRow({ order, onStatusUpdate }: { order: Order; onStatusUpdate: (id
       {(order as any).user && (
         <div className="text-xs text-[#888] space-y-0.5">
           <p className="font-semibold text-[#444]">{(order as any).user.name}</p>
-          <p>{(order as any).user.email} Â· {(order as any).user.phone || 'No phone'}</p>
+          <p>{(order as any).user.email} | {(order as any).user.phone || 'No phone'}</p>
           {order.address && (
             <p>{order.address.city}, {(order.address as any).pincode}</p>
           )}
@@ -88,7 +101,7 @@ function OrderRow({ order, onStatusUpdate }: { order: Order; onStatusUpdate: (id
       <div className="text-xs text-[#888]">
         {order.items?.slice(0, 2).map((item) => (
           <span key={item.id} className="inline-block mr-2">
-            {item.product?.name?.split(' ').slice(0, 3).join(' ')} Ã-{item.quantity}
+            {item.product?.name?.split(' ').slice(0, 3).join(' ')} x{item.quantity}
           </span>
         ))}
         {(order.items?.length || 0) > 2 && (
