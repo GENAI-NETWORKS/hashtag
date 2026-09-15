@@ -253,6 +253,7 @@ export function MobileHomeUI() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [timeLeft, setTimeLeft] = useState(22 * 60 + 14); // 22 mins 14 secs
   const router = useRouter();
 
   useEffect(() => {
@@ -262,6 +263,19 @@ export function MobileHomeUI() {
     }
     setIsChecking(false);
   }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}m ${s < 10 ? '0' : ''}${s}s`;
+  };
 
   const handleOnboardingComplete = () => {
     localStorage.setItem('hasSeenOnboarding', 'true');
@@ -506,9 +520,13 @@ export function MobileHomeUI() {
           </div>
           
           {/* Horizontal scroll like Blinkit */}
-          <div className="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar relative z-10">
+          <div className="flex overflow-x-auto gap-4 pb-4 pt-4 snap-x hide-scrollbar relative z-10">
             {bestsellers.map((p, i) => (
-              <div key={p.id} className="w-[150px] sm:w-[170px] flex-shrink-0 snap-start bg-white rounded-[16px] shadow-[0_4px_12px_rgba(139,28,16,0.08)] border border-[#FFD700]/40 p-1.5 transition-transform hover:scale-105">
+              <div key={p.id} className="relative w-[150px] sm:w-[170px] flex-shrink-0 snap-start bg-white rounded-[16px] shadow-[0_4px_12px_rgba(139,28,16,0.08)] border border-[#FFD700]/40 p-1.5 pt-4 transition-transform hover:scale-105">
+                 {/* Live Timer Badge */}
+                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B1C10] text-white text-[10px] sm:text-[11px] font-bold px-2 py-1 rounded-full flex items-center justify-center gap-1 w-max border border-[#FFD700] shadow-sm z-20 whitespace-nowrap">
+                   <Clock size={12} className="text-[#FFD700] animate-pulse" /> Offer ends in {formatTime(timeLeft)}
+                 </div>
                  <DemoProductCard product={p} priority={i < 2} />
               </div>
             ))}
