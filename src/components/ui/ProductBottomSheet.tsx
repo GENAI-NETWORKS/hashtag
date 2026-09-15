@@ -45,8 +45,8 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
   // Sheet expansion state
   const [isFullScreen, setIsFullScreen]   = useState(false);
   // Selection state
-  const [selectedSize,  setSelectedSize]  = useState('M');
-  const [selectedColor, setSelectedColor] = useState('White');
+  const [selectedSize,  setSelectedSize]  = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
   const [qty,           setQty]           = useState(1);
   const [addedToCart,   setAddedToCart]   = useState(false);
 
@@ -61,8 +61,8 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
   useEffect(() => {
     if (isOpen && product) {
       setIsFullScreen(false);
-      setSelectedSize('M');
-      setSelectedColor('White');
+      setSelectedSize('');
+      setSelectedColor('');
       setQty(1);
       setAddedToCart(false);
       if (scrollRef.current) scrollRef.current.scrollTop = 0;
@@ -291,53 +291,56 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
                 </div>
                 <p className="text-[11px] text-[#888] font-medium mb-5">₹{product.price}/piece  •  Inclusive of all taxes</p>
 
-                {/* ── Size Selector ── */}
-                <div className="mb-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-[14px] font-black text-[#111]">Select Size</h3>
-                    <span className="text-[12px] text-[#0284c7] font-semibold">Size Guide</span>
+                {/* ── Variant Selectors ── */}
+                <div id="variant-selectors">
+                  {/* ── Size Selector ── */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-[14px] font-black text-[#111]">Select Size</h3>
+                      <span className="text-[12px] text-[#0284c7] font-semibold">Size Guide</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {SIZES.map(size => (
+                        <button
+                          key={size}
+                          onClick={() => setSelectedSize(size)}
+                          className={`px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all duration-150 active:scale-95 ${
+                            selectedSize === size
+                              ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-md'
+                              : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {SIZES.map(size => (
-                      <button
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
-                        className={`px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all duration-150 active:scale-95 ${
-                          selectedSize === size
-                            ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-md'
-                            : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    ))}
-                  </div>
-                </div>
 
-                {/* ── Color Selector ── */}
-                <div className="mb-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-[14px] font-black text-[#111]">Select Colour</h3>
-                    <span className="text-[12px] text-[#666] font-semibold">{selectedColor}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                    {COLORS.map(c => (
-                      <button
-                        key={c.label}
-                        onClick={() => setSelectedColor(c.label)}
-                        title={c.label}
-                        className={`relative w-9 h-9 rounded-full transition-all duration-150 active:scale-90 ${
-                          selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
-                        }`}
-                        style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
-                      >
-                        {selectedColor === c.label && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <Check size={14} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
-                          </div>
-                        )}
-                      </button>
-                    ))}
+                  {/* ── Color Selector ── */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-[14px] font-black text-[#111]">Select Colour</h3>
+                      <span className="text-[12px] text-[#666] font-semibold">{selectedColor}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      {COLORS.map(c => (
+                        <button
+                          key={c.label}
+                          onClick={() => setSelectedColor(c.label)}
+                          title={c.label}
+                          className={`relative w-9 h-9 rounded-full transition-all duration-150 active:scale-90 ${
+                            selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
+                          }`}
+                          style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
+                        >
+                          {selectedColor === c.label && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Check size={14} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
+                            </div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 

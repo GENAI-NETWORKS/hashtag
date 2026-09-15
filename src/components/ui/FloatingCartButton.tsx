@@ -19,8 +19,8 @@ export function FloatingCartButton() {
   const thumbSrc = lastItem?.product?.images?.[0] || null;
 
   return (
-    <div className="fixed bottom-[72px] lg:bottom-6 left-0 right-0 z-[55] px-4">
-      <div className="max-w-[600px] mx-auto">
+    <div className="fixed bottom-[80px] lg:bottom-6 left-0 right-0 z-[100000] px-4 pointer-events-none">
+      <div className="max-w-[600px] mx-auto pointer-events-auto">
         <Link
           href="/cart"
           className="flex items-center justify-between bg-[#0f8a3c] rounded-[16px] px-4 py-3 shadow-[0_8px_24px_rgba(15,138,60,0.35)] active:scale-[0.98] transition-transform"
