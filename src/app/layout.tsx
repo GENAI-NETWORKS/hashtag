@@ -63,8 +63,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" href="/HP_Logo.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Preload the splash video so it's ready instantly on mobile */}
-        <link rel="preload" href="/logoanimation.mp4" as="video" type="video/mp4" />
       </head>
       <body className={`${inter.variable} antialiased flex flex-col min-h-dvh`}>
         <Providers>
