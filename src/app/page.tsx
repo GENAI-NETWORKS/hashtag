@@ -14,9 +14,10 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
+import toast from 'react-hot-toast';
+import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Splash Screen Video Removed as per request
 
 // Splash Screen Video Removed as per request
 
