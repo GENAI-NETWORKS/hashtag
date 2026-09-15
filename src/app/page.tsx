@@ -14,55 +14,7 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
-import toast from 'react-hot-toast';
-import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
-
-function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // Hard fallback: 15s max waiting time
-    const fallback = setTimeout(onComplete, 15000);
-
-    const handleEnded = () => {
-      clearTimeout(fallback);
-      onComplete();
-    };
-
-    video.addEventListener('ended', handleEnded);
-
-    // Some mobile browsers need a gentle push
-    video.muted = true;
-    video.defaultMuted = true;
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch((e) => console.error("Autoplay prevented:", e));
-    }
-
-    return () => {
-      clearTimeout(fallback);
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, [onComplete]);
-
-  return (
-    <div className="fixed inset-0 z-[99999] bg-[#efefef] lg:hidden">
-      <video
-        ref={videoRef}
-        src="/logoanimation.mp4"
-        poster="/HP_Logo.png"
-        className="w-full h-full object-contain"
-        playsInline
-        autoPlay
-        muted
-        preload="auto"
-      />
-    </div>
-  );
-}
+// Splash Screen Video Removed as per request
 
 // ─── DEMO DATA (works without DB) ─────────────────────────────
 
@@ -292,24 +244,25 @@ function FAQSection() {
 export default function HomePage() {
   const bestsellers = PRODUCTS.filter(p => p.bestseller);
   const featured = PRODUCTS.filter(p => !p.bestseller);
-  const [showSplash, setShowSplash] = useState(true);
+  
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
     if (!hasSeenOnboarding) {
       setShowOnboarding(true);
     }
+    setIsChecking(false);
   }, []);
-
-  const handleSplashComplete = () => {
-    setShowSplash(false);
-  };
 
   const handleOnboardingComplete = () => {
     localStorage.setItem('hasSeenOnboarding', 'true');
     setShowOnboarding(false);
   };
+
+  // Prevent hydration mismatch or flashing by waiting for check
+  if (isChecking) return null;
 
   return (
     <>
@@ -321,8 +274,7 @@ export default function HomePage() {
         priceRange: '₹₹', openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '09:00', closes: '20:00' },
       }) }} />
 
-      {showSplash && <MobileSplashScreen onComplete={handleSplashComplete} />}
-      {!showSplash && showOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}
+      {showOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}
 
       <div className="container-app py-4 space-y-8">
 
