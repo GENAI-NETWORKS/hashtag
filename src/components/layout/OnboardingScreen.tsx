@@ -97,11 +97,11 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
           <button
             type="submit"
             disabled={phone.length < 10}
-            className={\`h-14 w-full rounded-xl font-bold text-lg transition-all \${
+            className={`h-14 w-full rounded-xl font-bold text-lg transition-all ${
               phone.length >= 10 
                 ? 'bg-[#00AEEF] text-white shadow-md active:scale-[0.98]' 
                 : 'bg-[#9ca3af] text-white cursor-not-allowed'
-            }\`}
+            }`}
           >
             Continue
           </button>
