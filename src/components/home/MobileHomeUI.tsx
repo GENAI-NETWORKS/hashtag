@@ -533,9 +533,6 @@ export function MobileHomeUI() {
           </div>
         </section>
         
-        {/* CMYK divider */}
-        <div className="cmyk-divider" />
-
         {/* Regular Products Grid */}
         <section>
           <div className="flex items-center justify-between mb-5">

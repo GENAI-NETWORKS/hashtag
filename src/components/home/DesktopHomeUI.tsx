@@ -307,9 +307,6 @@ export function DesktopHomeUI() {
           </div>
         </section>
 
-        {/* CMYK divider */}
-        <div className="cmyk-divider" />
-
         {/* Bestsellers */}
         <section aria-labelledby="bestseller-heading">
           <div className="flex items-center justify-between mb-4">
