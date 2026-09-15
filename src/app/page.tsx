@@ -10,7 +10,7 @@ import {
   Upload, ArrowRight, Sparkles, ChevronLeft, ChevronRight,
   Star, Clock, BadgeCheck, Shirt, BookOpen, Coffee,
   ImageIcon, CreditCard, Package, Gift, Zap, ShoppingCart,
-  Check, Plus, Phone, Tag, Heart, Search, Mic, MapPin, User, ChevronDown, Wallet, ShoppingBag
+  Check, Plus, Phone, Tag, Heart, Search, Mic, MapPin, User, ChevronDown, Wallet, ShoppingBag, Bike, X
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
@@ -296,33 +296,32 @@ export default function HomePage() {
       {showOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}
 
       {/* BLINKIT STYLE TOP SECTION (Diwali Theme) */}
-      <div className="bg-gradient-to-b from-[#6b1d16] to-[#8b2318] px-4 pt-4 pb-8 rounded-b-[32px] relative overflow-hidden text-white shadow-md">
+      <div className="bg-gradient-to-b from-[#91250b] to-[#7a1b06] px-4 pt-4 pb-8 rounded-b-[32px] relative overflow-hidden text-white shadow-md">
         {/* Subtle decorative background for top header */}
         <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 0%, #FFD700 0%, transparent 50%)' }} />
         
-        {/* Header Row */}
-        <div className="flex items-start justify-between relative z-10 mb-5">
-          <div className="flex flex-col">
-            <span className="text-[12px] font-extrabold opacity-90 tracking-wide mb-0.5">Hashtag in</span>
+        {/* Header Row - Aligned EXACTLY like Blinkit */}
+        <div className="flex flex-col relative z-10 mb-4">
+          <span className="text-[12px] font-extrabold opacity-90 tracking-wide mb-1">Hashtag in</span>
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <h1 className="text-4xl font-black leading-none drop-shadow-md">24 hours</h1>
-              <div className="bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-full text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm">
+              <h1 className="text-[40px] font-black leading-none drop-shadow-md">24 hours</h1>
+              <div className="bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm mt-1">
                 <MapPin size={11} /> 1.7 km away
               </div>
             </div>
-            <div className="flex items-center gap-1 mt-1 text-[13px] font-bold opacity-90">
-              HOME - Salem, TN <ChevronDown size={14} className="opacity-80" />
+            <div className="flex items-center gap-3">
+              <Link href="/cart" className="bg-black/40 p-2.5 rounded-full border border-white/10 relative shadow-inner touch-target hover:scale-105 transition-transform">
+                 <Wallet size={22} className="text-[#FFD700]" />
+                 <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#333] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#555] whitespace-nowrap">₹0</div>
+              </Link>
+              <Link href="/profile" className="bg-[#591410] p-2.5 rounded-full border border-white/10 shadow-inner touch-target hover:scale-105 transition-transform">
+                 <User size={22} />
+              </Link>
             </div>
           </div>
-          
-          <div className="flex items-center gap-3">
-            <Link href="/cart" className="bg-black/40 p-2.5 rounded-full border border-white/10 relative shadow-inner touch-target hover:scale-105 transition-transform">
-               <Wallet size={22} className="text-[#FFD700]" />
-               <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#333] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#555] whitespace-nowrap">₹0</div>
-            </Link>
-            <Link href="/profile" className="bg-[#591410] p-2.5 rounded-full border border-white/10 shadow-inner touch-target hover:scale-105 transition-transform">
-               <User size={22} />
-            </Link>
+          <div className="flex items-center gap-1 mt-2 text-[13px] font-bold opacity-90">
+            HOME - Salem, TN <ChevronDown size={14} className="opacity-80" />
           </div>
         </div>
 
@@ -377,7 +376,7 @@ export default function HomePage() {
 
       {/* DIWALI HERO GRID */}
       <div className="px-4 -mt-4 relative z-10">
-        <div className="bg-gradient-to-b from-[#7c170d] to-[#4a0a03] rounded-[24px] p-4 shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-[#a1291b] overflow-hidden relative">
+        <div className="bg-gradient-to-b from-[#631505] to-[#3d0901] rounded-[24px] p-4 shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-[#a1291b] overflow-hidden relative">
            
            {/* Decorative Marigolds/Diyas (CSS Shapes) */}
            <div className="absolute top-4 left-4 w-6 h-24 flex flex-col gap-1.5 opacity-90 pointer-events-none">
@@ -392,69 +391,69 @@ export default function HomePage() {
            </div>
 
            <div className="text-center mb-5 relative z-10 mt-2">
-             <div className="flex items-center justify-center gap-2 mb-0.5">
-                <div className="h-[2px] w-10 bg-gradient-to-r from-transparent to-[#FFD700]" />
-                <span className="text-[#FFD700] text-[11px] tracking-[0.25em] uppercase font-black drop-shadow-sm">Celebrate</span>
-                <div className="h-[2px] w-10 bg-gradient-to-l from-transparent to-[#FFD700]" />
+             <div className="flex items-center justify-center gap-2 mb-1">
+                <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#FFD700]" />
+                <span className="text-[#FFD700] text-[10px] tracking-[0.25em] uppercase font-bold drop-shadow-sm">Celebrate</span>
+                <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#FFD700]" />
              </div>
-             <h2 className="text-[32px] sm:text-[36px] font-serif font-black text-[#FFE5B4] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Diwali Offers</h2>
+             <h2 className="text-[28px] sm:text-[32px] font-serif font-black text-[#FFE5B4] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Diwali Offers</h2>
            </div>
 
            {/* 1 Tall + 4 Square Grid */}
            <div className="grid grid-cols-12 gap-3 relative z-10 pb-2">
               
               {/* Tall Left Card */}
-              <Link href="/products?category=custom-gifts-printing" className="col-span-5 bg-[#FFE1A8] rounded-[16px] p-3 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[240px] sm:min-h-[280px]">
-                <div className="relative z-10">
-                  <h3 className="text-[#8B1C10] font-black text-[22px] sm:text-[26px] leading-[1.05] mb-1">Festive<br/>Essentials</h3>
-                  <span className="text-[#8B1C10] text-[11px] font-bold bg-white/50 px-2 py-0.5 rounded text-center block mt-1.5 w-max border border-[#8B1C10]/20">Up to 40% OFF</span>
+              <Link href="/products?category=custom-gifts-printing" className="col-span-5 bg-[#FFE1A8] rounded-[16px] p-3 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[220px] sm:min-h-[260px]">
+                <div className="relative z-10 mb-2">
+                  <h3 className="text-[#8B1C10] font-black text-[20px] sm:text-[24px] leading-[1.05] mb-1.5">Festive<br/>Essentials</h3>
+                  <span className="text-[#8B1C10] text-[10px] font-bold bg-white/50 px-2 py-0.5 rounded text-center block w-max border border-[#8B1C10]/20">Up to 40% OFF</span>
                 </div>
-                <div className="absolute bottom-[-5%] right-[-15%] w-[140%] h-[65%]">
-                  <Image src="/uploads/products/Corporate Gifting Set.png" alt="Gifts" fill className="object-contain group-hover:scale-105 transition-transform origin-bottom-right drop-shadow-xl" />
+                <div className="relative flex-1 w-full mt-2">
+                  <Image src="/uploads/products/Corporate Gifting Set.png" alt="Gifts" fill className="object-contain object-bottom group-hover:scale-105 transition-transform drop-shadow-xl" />
                 </div>
               </Link>
 
               {/* Right 2x2 Grid */}
               <div className="col-span-7 grid grid-cols-2 gap-3">
                 {/* Card 1 */}
-                <Link href="/products?category=custom-gifts-printing" className="bg-[#FFE1A8] rounded-[14px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[115px] sm:min-h-[135px]">
-                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Corporate<br/>Gifts</h3>
-                  <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[90%] h-[75%]">
+                <Link href="/products?category=custom-gifts-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
+                  <h3 className="text-[#8B1C10] font-black text-[12px] sm:text-[14px] leading-tight text-center relative z-10">Corporate<br/>Gifts</h3>
+                  <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/A5 Spiral Custom Notebook.png" alt="Notebooks" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md" />
                   </div>
                 </Link>
                 
                 {/* Card 2 */}
-                <Link href="/products?category=custom-tshirt-printing" className="bg-[#FFE1A8] rounded-[14px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[115px] sm:min-h-[135px]">
-                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Custom<br/>Apparel</h3>
-                  <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[100%] h-[80%]">
-                    <Image src="/uploads/products/tshirt.jpg" alt="Apparel" fill className="object-cover object-bottom group-hover:scale-110 transition-transform mix-blend-multiply opacity-90" />
+                <Link href="/products?category=custom-tshirt-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
+                  <h3 className="text-[#8B1C10] font-black text-[12px] sm:text-[14px] leading-tight text-center relative z-10">Custom<br/>Apparel</h3>
+                  <div className="relative flex-1 w-full mt-1.5">
+                    <Image src="/uploads/products/tshirt.jpg" alt="Apparel" fill className="object-cover object-bottom group-hover:scale-110 transition-transform mix-blend-multiply opacity-90 rounded-md" />
                   </div>
                 </Link>
 
                 {/* Card 3 */}
-                <Link href="/products?category=photo-printing-online" className="bg-[#FFE1A8] rounded-[14px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[115px] sm:min-h-[135px]">
-                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Decor &<br/>Canvas</h3>
-                  <div className="absolute bottom-[-5%] left-1/2 -translate-x-1/2 w-[100%] h-[75%]">
-                    <Image src="/uploads/products/Premium Canvas Photo Print.png" alt="Canvas" fill className="object-cover object-bottom group-hover:scale-110 transition-transform mix-blend-multiply opacity-90" />
+                <Link href="/products?category=photo-printing-online" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
+                  <h3 className="text-[#8B1C10] font-black text-[12px] sm:text-[14px] leading-tight text-center relative z-10">Decor &<br/>Canvas</h3>
+                  <div className="relative flex-1 w-full mt-1.5">
+                    <Image src="/uploads/products/Premium Canvas Photo Print.png" alt="Canvas" fill className="object-cover object-bottom group-hover:scale-110 transition-transform mix-blend-multiply opacity-90 rounded-md" />
                   </div>
                 </Link>
 
                 {/* Card 4 */}
-                <Link href="/products?category=bulk-printing" className="bg-[#FFE1A8] rounded-[14px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[115px] sm:min-h-[135px]">
-                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Bulk<br/>Orders</h3>
-                  <div className="absolute bottom-[-5%] left-1/2 -translate-x-1/2 w-[90%] h-[75%]">
-                    <Image src="/uploads/products/Standard Business Cards (100 pcs).png" alt="Bulk" fill className="object-contain object-bottom group-hover:scale-110 transition-transform mix-blend-multiply drop-shadow-md" />
+                <Link href="/products?category=bulk-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
+                  <h3 className="text-[#8B1C10] font-black text-[12px] sm:text-[14px] leading-tight text-center relative z-10">Bulk<br/>Orders</h3>
+                  <div className="relative flex-1 w-full mt-1.5">
+                    <Image src="/uploads/products/Standard Business Cards (100 pcs).png" alt="Bulk" fill className="object-contain object-bottom group-hover:scale-110 transition-transform mix-blend-multiply drop-shadow-md rounded-md" />
                   </div>
                 </Link>
               </div>
            </div>
 
            {/* Scalloped edge decorative */}
-           <div className="absolute bottom-0 left-0 right-0 h-4 w-full"
+           <div className="absolute bottom-0 left-0 right-0 h-4 w-full z-20"
                 style={{
-                  backgroundSize: '20px 20px',
-                  backgroundImage: 'radial-gradient(circle at 10px 0, transparent 10px, #f4f6f9 11px)',
+                  backgroundSize: '24px 24px',
+                  backgroundImage: 'radial-gradient(circle at 12px 0, transparent 12px, #f4f6f9 13px)',
                   backgroundRepeat: 'repeat-x'
                 }}
            />
@@ -501,16 +500,28 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Floating Free Delivery Banner */}
+      {/* Floating Free Delivery Banner - Exact Replica */}
       <div className="fixed bottom-[64px] lg:bottom-6 left-4 right-4 z-40 max-w-[400px] mx-auto">
-         <div className="bg-white rounded-[16px] shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100 p-3.5 flex items-center justify-between">
+         <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.15)] border border-gray-100 p-2.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-               <div className="bg-[#e0f2fe] p-2 rounded-xl text-[#0284c7]">
-                 <Package size={26} strokeWidth={2.5} />
+               <div className="text-[#0284c7]">
+                 <Bike size={32} strokeWidth={1.5} />
                </div>
                <div>
-                  <h4 className="text-[#0284c7] font-black text-[15px] leading-tight">Get FREE delivery</h4>
-                  <p className="text-[13px] font-medium text-gray-500 mt-0.5">on your order above ₹999 <ChevronRight size={14} className="inline opacity-60 -mt-0.5" /></p>
+                  <h4 className="text-[#0284c7] font-bold text-[14px] leading-tight">Get FREE delivery</h4>
+                  <p className="text-[12px] font-medium text-gray-500 mt-0.5">on your order above ₹999 <ChevronRight size={12} className="inline opacity-60 -mt-0.5" /></p>
+               </div>
+            </div>
+            <div className="flex items-center gap-3 pr-1">
+               <button className="w-6 h-6 flex items-center justify-center bg-gray-50 rounded-full text-gray-400 border border-gray-100 hover:bg-gray-100 transition-colors">
+                 <X size={14} />
+               </button>
+               <div className="flex flex-col items-center gap-0.5 border-l border-gray-200 pl-3">
+                 <span className="text-[10px] font-bold text-gray-500 leading-none">1/2</span>
+                 <div className="flex gap-1 mt-0.5">
+                   <div className="w-1 h-1 bg-[#111] rounded-full" />
+                   <div className="w-1 h-1 bg-gray-300 rounded-full" />
+                 </div>
                </div>
             </div>
          </div>
