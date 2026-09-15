@@ -297,8 +297,8 @@ export function MobileHomeUI() {
 
       {/* BLINKIT STYLE TOP SECTION (Diwali Theme) */}
       <div className="bg-gradient-to-b from-[#91250b] to-[#7a1b06] px-4 pt-4 pb-8 rounded-b-[32px] relative overflow-hidden text-white shadow-md">
-        {/* Subtle decorative background for top header */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 0%, #FFD700 0%, transparent 50%)' }} />
+        {/* Authentic Indian Mandala/Rangoli Pattern */}
+        <div className="absolute inset-0 opacity-[0.06] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0C30 16.568 16.568 30 0 30C16.568 30 30 43.432 30 60C30 43.432 43.432 30 60 30C43.432 30 30 16.568 30 0Z' fill='%23FFD700' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`, backgroundSize: '40px 40px' }} />
         
         {/* Header Row - Aligned EXACTLY like Blinkit */}
         <div className="flex flex-col relative z-10 mb-4">
@@ -352,8 +352,8 @@ export function MobileHomeUI() {
 
            <Link href="/products?category=custom-gifts-printing" className="flex flex-col items-center gap-1.5 relative group">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#EC008C] text-white text-[10px] font-black px-2 py-0.5 rounded-full border border-white whitespace-nowrap z-10 shadow-sm animate-pulse">New</div>
-              <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform">
-                <Sparkles size={28} className="text-[#FFD700] drop-shadow-md" />
+              <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform text-[26px]">
+                🪔
               </div>
               <span className="text-[12px] font-bold text-[#FFD700]">Diwali Offers</span>
            </Link>
@@ -376,7 +376,8 @@ export function MobileHomeUI() {
 
       {/* DIWALI HERO GRID */}
       <div className="px-4 -mt-4 relative z-10">
-        <div className="bg-gradient-to-b from-[#631505] to-[#3d0901] rounded-[24px] p-4 shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-[#a1291b] overflow-hidden relative">
+        {/* Jharokha (Archway) Style Container */}
+        <div className="bg-gradient-to-b from-[#631505] to-[#3d0901] rounded-b-[24px] rounded-t-[50px] sm:rounded-t-[70px] border-t-[6px] border-x-[3px] border-b border-[#FFD700]/90 p-4 shadow-[0_8px_30px_rgba(0,0,0,0.2)] overflow-hidden relative">
            
            {/* Decorative Marigold Garlands (CSS Shapes) */}
            <div className="absolute top-0 left-4 w-8 flex flex-col items-center gap-[3px] opacity-90 pointer-events-none">
@@ -491,15 +492,15 @@ export function MobileHomeUI() {
 
       <div className="container-app py-8 space-y-8 pb-32">
         {/* Festive Picks - Diwali Themed Section */}
-        <section aria-labelledby="festive-heading" className="-mx-4 px-4 py-8 mb-8 relative overflow-hidden bg-gradient-to-b from-[#FFF5E1] to-[#FFE8B5]/40 border-y border-[#FFD700]/30 shadow-inner">
-          {/* Faint decorative pattern */}
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#8B1C10 2px, transparent 2px)', backgroundSize: '24px 24px' }} />
+        <section aria-labelledby="festive-heading" className="-mx-4 px-4 py-8 mb-8 relative overflow-hidden bg-gradient-to-b from-[#FFF5E1] to-[#FFE8B5]/40 border-y-2 border-[#FFD700]/50 shadow-inner">
+          {/* Rangoli decorative pattern */}
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L24 16L40 20L24 24L20 40L16 24L0 20L16 16L20 0Z' fill='%238B1C10' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`, backgroundSize: '32px 32px' }} />
           
           <div className="flex flex-col items-center justify-center mb-6 relative z-10">
              <div className="flex items-center gap-3">
-               <Sparkles size={22} className="text-[#FF8C00] animate-pulse" />
+               <span className="text-[22px] animate-pulse">🪔</span>
                <h2 id="festive-heading" className="text-[26px] sm:text-[30px] font-serif font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B1C10] to-[#b32415] tracking-wide drop-shadow-sm">Festive Picks</h2>
-               <Sparkles size={22} className="text-[#FF8C00] animate-pulse" />
+               <span className="text-[22px] animate-pulse">🪔</span>
              </div>
              <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-[#FF8C00]/50 to-transparent mt-2" />
           </div>
