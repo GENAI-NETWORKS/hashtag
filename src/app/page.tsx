@@ -305,7 +305,7 @@ export default function HomePage() {
           <span className="text-[12px] font-extrabold opacity-90 tracking-wide mb-1">Hashtag in</span>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <h1 className="text-[40px] font-black leading-none drop-shadow-md">24 hours</h1>
+              <h1 className="text-[32px] font-black leading-none drop-shadow-md">24 hours</h1>
               <div className="bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm mt-1">
                 <MapPin size={11} /> 1.7 km away
               </div>
