@@ -10,7 +10,7 @@ import {
   Upload, ArrowRight, Sparkles, ChevronLeft, ChevronRight,
   Star, Clock, BadgeCheck, Shirt, BookOpen, Coffee,
   ImageIcon, CreditCard, Package, Gift, Zap, ShoppingCart,
-  Check, Plus, Phone, Tag, Heart
+  Check, Plus, Phone, Tag, Heart, Search, Mic, MapPin, User, ChevronDown, Wallet, ShoppingBag
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
@@ -252,6 +252,8 @@ export default function HomePage() {
   
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
@@ -266,7 +268,13 @@ export default function HomePage() {
     setShowOnboarding(false);
   };
 
-  // Prevent hydration mismatch or flashing by waiting for check
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
   if (isChecking) return null;
 
   return (
@@ -279,127 +287,233 @@ export default function HomePage() {
         priceRange: '₹₹', openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '09:00', closes: '20:00' },
       }) }} />
 
+      <style dangerouslySetInnerHTML={{ __html: `
+        header.sticky-header { display: none !important; }
+        main#main-content { padding-top: 0 !important; }
+        body { background-color: #f4f6f9; }
+      `}} />
+
       {showOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}
 
-      <div className="container-app py-4 space-y-8">
-
-        {/* Hero - Hidden on mobile, shown on tablet/desktop */}
-        <section aria-label="Promotions"><BlinkitHero /></section>
-
-        {/* Categories - Grid layout matching Blinkit mobile */}
-        <section aria-labelledby="cat-heading">
-          <div className="flex items-center justify-between mb-4">
-            <h2 id="cat-heading" className="text-lg md:text-xl font-black text-[#111]">Shop by Category</h2>
+      {/* BLINKIT STYLE TOP SECTION (Diwali Theme) */}
+      <div className="bg-gradient-to-b from-[#6b1d16] to-[#8b2318] px-4 pt-4 pb-8 rounded-b-[32px] relative overflow-hidden text-white shadow-md">
+        {/* Subtle decorative background for top header */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 0%, #FFD700 0%, transparent 50%)' }} />
+        
+        {/* Header Row */}
+        <div className="flex items-start justify-between relative z-10 mb-5">
+          <div className="flex flex-col">
+            <span className="text-[12px] font-extrabold opacity-90 tracking-wide mb-0.5">Hashtag in</span>
+            <div className="flex items-center gap-2">
+              <h1 className="text-4xl font-black leading-none drop-shadow-md">24 hours</h1>
+              <div className="bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-full text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm">
+                <MapPin size={11} /> 1.7 km away
+              </div>
+            </div>
+            <div className="flex items-center gap-1 mt-1 text-[13px] font-bold opacity-90">
+              HOME - Salem, TN <ChevronDown size={14} className="opacity-80" />
+            </div>
           </div>
-          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 justify-items-center">
-            {CATEGORIES.map((cat) => {
-              return (
-                <Link key={cat.id} href={`/products?category=${cat.slug}`}
-                  className="flex flex-col items-center gap-2 group w-full max-w-[96px]"
-                  aria-label={cat.name}>
-                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg shadow-sm bg-[#f8f9fa] border border-gray-100 flex-shrink-0">
-                    <Image src={cat.image} alt={cat.name} fill className="object-cover" sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px" />
+          
+          <div className="flex items-center gap-3">
+            <Link href="/cart" className="bg-black/40 p-2.5 rounded-full border border-white/10 relative shadow-inner touch-target hover:scale-105 transition-transform">
+               <Wallet size={22} className="text-[#FFD700]" />
+               <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#333] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#555] whitespace-nowrap">₹0</div>
+            </Link>
+            <Link href="/profile" className="bg-[#591410] p-2.5 rounded-full border border-white/10 shadow-inner touch-target hover:scale-105 transition-transform">
+               <User size={22} />
+            </Link>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="relative z-10 mb-6">
+          <div className="bg-white h-[52px] rounded-xl flex items-center px-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+            <Search size={22} className="text-[#888]" />
+            <input 
+              type="text" 
+              placeholder="Search for t-shirts, mugs, gifts..."
+              className="flex-1 bg-transparent border-none outline-none px-3 text-[#111] font-medium placeholder:text-[#888] placeholder:font-normal text-[15px]"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className="w-[1px] h-6 bg-gray-200 mx-2" />
+            <Mic size={22} className="text-[#888]" />
+          </div>
+        </form>
+
+        {/* Quick Categories */}
+        <div className="flex items-start justify-between relative z-10 px-2 sm:px-6">
+           <Link href="/products" className="flex flex-col items-center gap-1.5 group">
+              <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform">
+                <ShoppingBag size={28} className="text-white drop-shadow-md" />
+              </div>
+              <span className="text-[12px] font-bold border-b-[3px] border-white pb-0.5">All</span>
+           </Link>
+
+           <Link href="/products?category=custom-gifts-printing" className="flex flex-col items-center gap-1.5 relative group">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#EC008C] text-white text-[10px] font-black px-2 py-0.5 rounded-full border border-white whitespace-nowrap z-10 shadow-sm animate-pulse">New</div>
+              <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform">
+                <Sparkles size={28} className="text-[#FFD700] drop-shadow-md" />
+              </div>
+              <span className="text-[12px] font-bold text-[#FFD700]">Diwali Offers</span>
+           </Link>
+
+           <Link href="/products?category=custom-tshirt-printing" className="flex flex-col items-center gap-1.5 group">
+              <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform">
+                <Shirt size={28} className="text-white opacity-90 drop-shadow-md" />
+              </div>
+              <span className="text-[12px] font-semibold opacity-90">T-Shirts</span>
+           </Link>
+
+           <Link href="/products?category=custom-gifts-printing" className="flex flex-col items-center gap-1.5 group">
+              <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform">
+                <Gift size={28} className="text-white opacity-90 drop-shadow-md" />
+              </div>
+              <span className="text-[12px] font-semibold opacity-90">Gifts</span>
+           </Link>
+        </div>
+      </div>
+
+      {/* DIWALI HERO GRID */}
+      <div className="px-4 -mt-4 relative z-10">
+        <div className="bg-gradient-to-b from-[#7c170d] to-[#4a0a03] rounded-[24px] p-4 shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-[#a1291b] overflow-hidden relative">
+           
+           {/* Decorative Marigolds/Diyas (CSS Shapes) */}
+           <div className="absolute top-4 left-4 w-6 h-24 flex flex-col gap-1.5 opacity-90 pointer-events-none">
+              <div className="w-6 h-6 rounded-full bg-[#FF8C00] shadow-[0_0_12px_rgba(255,140,0,0.8)] border-[3px] border-[#FFD700]" />
+              <div className="w-6 h-6 rounded-full bg-[#FFD700] shadow-[0_0_12px_rgba(255,215,0,0.8)]" />
+              <div className="w-6 h-6 rounded-full bg-[#FF8C00] shadow-[0_0_12px_rgba(255,140,0,0.8)]" />
+           </div>
+           <div className="absolute top-4 right-4 w-6 h-24 flex flex-col gap-1.5 opacity-90 pointer-events-none">
+              <div className="w-6 h-6 rounded-full bg-[#FF8C00] shadow-[0_0_12px_rgba(255,140,0,0.8)] border-[3px] border-[#FFD700]" />
+              <div className="w-6 h-6 rounded-full bg-[#FFD700] shadow-[0_0_12px_rgba(255,215,0,0.8)]" />
+              <div className="w-6 h-6 rounded-full bg-[#FF8C00] shadow-[0_0_12px_rgba(255,140,0,0.8)]" />
+           </div>
+
+           <div className="text-center mb-5 relative z-10 mt-2">
+             <div className="flex items-center justify-center gap-2 mb-0.5">
+                <div className="h-[2px] w-10 bg-gradient-to-r from-transparent to-[#FFD700]" />
+                <span className="text-[#FFD700] text-[11px] tracking-[0.25em] uppercase font-black drop-shadow-sm">Celebrate</span>
+                <div className="h-[2px] w-10 bg-gradient-to-l from-transparent to-[#FFD700]" />
+             </div>
+             <h2 className="text-[32px] sm:text-[36px] font-serif font-black text-[#FFE5B4] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Diwali Offers</h2>
+           </div>
+
+           {/* 1 Tall + 4 Square Grid */}
+           <div className="grid grid-cols-12 gap-3 relative z-10 pb-2">
+              
+              {/* Tall Left Card */}
+              <Link href="/products?category=custom-gifts-printing" className="col-span-5 bg-[#FFE1A8] rounded-[16px] p-3 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[240px] sm:min-h-[280px]">
+                <div className="relative z-10">
+                  <h3 className="text-[#8B1C10] font-black text-[22px] sm:text-[26px] leading-[1.05] mb-1">Festive<br/>Essentials</h3>
+                  <span className="text-[#8B1C10] text-[11px] font-bold bg-white/50 px-2 py-0.5 rounded text-center block mt-1.5 w-max border border-[#8B1C10]/20">Up to 40% OFF</span>
+                </div>
+                <div className="absolute bottom-[-5%] right-[-15%] w-[140%] h-[65%]">
+                  <Image src="/uploads/products/Corporate Gifting Set.png" alt="Gifts" fill className="object-contain group-hover:scale-105 transition-transform origin-bottom-right drop-shadow-xl" />
+                </div>
+              </Link>
+
+              {/* Right 2x2 Grid */}
+              <div className="col-span-7 grid grid-cols-2 gap-3">
+                {/* Card 1 */}
+                <Link href="/products?category=custom-gifts-printing" className="bg-[#FFE1A8] rounded-[14px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[115px] sm:min-h-[135px]">
+                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Corporate<br/>Gifts</h3>
+                  <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[90%] h-[75%]">
+                    <Image src="/uploads/products/A5 Spiral Custom Notebook.png" alt="Notebooks" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md" />
                   </div>
-                  <span className="text-[11px] sm:text-xs font-semibold text-center leading-tight text-[#444] group-hover:text-[#111] transition-colors">{cat.name}</span>
                 </Link>
-              );
-            })}
+                
+                {/* Card 2 */}
+                <Link href="/products?category=custom-tshirt-printing" className="bg-[#FFE1A8] rounded-[14px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[115px] sm:min-h-[135px]">
+                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Custom<br/>Apparel</h3>
+                  <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[100%] h-[80%]">
+                    <Image src="/uploads/products/tshirt.jpg" alt="Apparel" fill className="object-cover object-bottom group-hover:scale-110 transition-transform mix-blend-multiply opacity-90" />
+                  </div>
+                </Link>
+
+                {/* Card 3 */}
+                <Link href="/products?category=photo-printing-online" className="bg-[#FFE1A8] rounded-[14px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[115px] sm:min-h-[135px]">
+                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Decor &<br/>Canvas</h3>
+                  <div className="absolute bottom-[-5%] left-1/2 -translate-x-1/2 w-[100%] h-[75%]">
+                    <Image src="/uploads/products/Premium Canvas Photo Print.png" alt="Canvas" fill className="object-cover object-bottom group-hover:scale-110 transition-transform mix-blend-multiply opacity-90" />
+                  </div>
+                </Link>
+
+                {/* Card 4 */}
+                <Link href="/products?category=bulk-printing" className="bg-[#FFE1A8] rounded-[14px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[115px] sm:min-h-[135px]">
+                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Bulk<br/>Orders</h3>
+                  <div className="absolute bottom-[-5%] left-1/2 -translate-x-1/2 w-[90%] h-[75%]">
+                    <Image src="/uploads/products/Standard Business Cards (100 pcs).png" alt="Bulk" fill className="object-contain object-bottom group-hover:scale-110 transition-transform mix-blend-multiply drop-shadow-md" />
+                  </div>
+                </Link>
+              </div>
+           </div>
+
+           {/* Scalloped edge decorative */}
+           <div className="absolute bottom-0 left-0 right-0 h-4 w-full"
+                style={{
+                  backgroundSize: '20px 20px',
+                  backgroundImage: 'radial-gradient(circle at 10px 0, transparent 10px, #f4f6f9 11px)',
+                  backgroundRepeat: 'repeat-x'
+                }}
+           />
+        </div>
+      </div>
+
+      <div className="container-app py-8 space-y-8 pb-32">
+        {/* Festive Picks */}
+        <section aria-labelledby="festive-heading">
+          <div className="flex items-center justify-center mb-6 relative">
+             <h2 id="festive-heading" className="text-2xl font-serif font-black text-[#8B1C10] tracking-wide">Festive Picks</h2>
+          </div>
+          
+          {/* Horizontal scroll like Blinkit */}
+          <div className="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+            {bestsellers.map((p, i) => (
+              <div key={p.id} className="w-[160px] sm:w-[180px] flex-shrink-0 snap-start bg-white rounded-xl shadow-sm border border-gray-100 p-1.5">
+                 <DemoProductCard product={p} priority={i < 2} />
+              </div>
+            ))}
           </div>
         </section>
-
+        
         {/* CMYK divider */}
         <div className="cmyk-divider" />
 
-        {/* Bestsellers */}
-        <section aria-labelledby="bestseller-heading">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 id="bestseller-heading" className="text-lg font-black text-[#111]">Bestsellers</h2>
-              <p className="text-xs text-[#888]">Most ordered in Salem</p>
-            </div>
-            <Link href="/products?bestseller=true" className="text-xs font-semibold text-[#EC008C] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
+        {/* Regular Products Grid */}
+        <section>
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-[19px] font-black text-[#111]">Explore Categories</h2>
+            <Link href="/products" className="text-[13px] font-bold text-[#00AEEF]">View all</Link>
           </div>
-          <div className="product-grid">
-            {bestsellers.map((p, i) => <DemoProductCard key={p.id} product={p} priority={i < 2} />)}
-          </div>
-        </section>
-
-        {/* Design CTA */}
-        <section aria-label="Design your own">
-          <div className="relative rounded-2xl overflow-hidden p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6"
-            style={{ background: 'linear-gradient(135deg,#111 0%,#1e1e1e 100%)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#00AEEF,transparent)' }} />
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#EC008C,transparent)' }} />
-            </div>
-            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-2xl"
-              style={{ background: 'rgba(0,174,239,0.12)', border: '1px solid rgba(0,174,239,0.2)' }}>
-              <Upload size={36} className="text-[#00AEEF]" />
-            </div>
-            <div className="flex-1 text-center sm:text-left">
-              <h3 className="text-xl sm:text-2xl font-black text-white mb-1">Design Your Own</h3>
-              <p className="text-white/60 text-sm leading-relaxed">Upload your artwork, add text, choose your size - get an instant preview before ordering.</p>
-            </div>
-            <Link href="/products/classic-round-neck-custom-tshirt" className="flex-shrink-0 btn btn-lg font-bold"
-              style={{ background: 'linear-gradient(135deg,#00AEEF,#EC008C)', color: 'white' }}>
-              Start Designing <ArrowRight size={18} />
-            </Link>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {featured.slice(0, 8).map((p) => (
+               <div key={p.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-1.5">
+                  <DemoProductCard product={p} />
+               </div>
+            ))}
           </div>
         </section>
+        
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+           <FAQSection />
+        </div>
+      </div>
 
-        {/* More Products */}
-        <section aria-labelledby="more-heading">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 id="more-heading" className="text-lg font-black text-[#111]">More Products</h2>
-              <p className="text-xs text-[#888]">Hand-picked for you</p>
+      {/* Floating Free Delivery Banner */}
+      <div className="fixed bottom-[64px] lg:bottom-6 left-4 right-4 z-40 max-w-[400px] mx-auto">
+         <div className="bg-white rounded-[16px] shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100 p-3.5 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+               <div className="bg-[#e0f2fe] p-2 rounded-xl text-[#0284c7]">
+                 <Package size={26} strokeWidth={2.5} />
+               </div>
+               <div>
+                  <h4 className="text-[#0284c7] font-black text-[15px] leading-tight">Get FREE delivery</h4>
+                  <p className="text-[13px] font-medium text-gray-500 mt-0.5">on your order above ₹999 <ChevronRight size={14} className="inline opacity-60 -mt-0.5" /></p>
+               </div>
             </div>
-            <Link href="/products" className="text-xs font-semibold text-[#00AEEF] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
-          </div>
-          <div className="product-grid">
-            {featured.map((p) => <DemoProductCard key={p.id} product={p} />)}
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <FAQSection />
-
-        {/* Premium About blurb */}
-        <section className="relative rounded-2xl overflow-hidden mt-8" style={{ background: '#f8f9fa' }}>
-          <div className="flex flex-col lg:flex-row items-center">
-            <div className="relative w-full lg:w-1/2 aspect-video lg:aspect-square min-h-[300px]">
-              <Image src="/uploads/products/realistic_polo.jpg" alt="About Hashtag Custom Printing" fill className="object-cover" unoptimized />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, transparent, #f8f9fa)' }} />
-            </div>
-            <div className="w-full lg:w-1/2 p-8 lg:p-12 relative z-10 -mt-12 lg:mt-0 bg-[#f8f9fa] lg:bg-transparent" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 10%, black)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black)' }}>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-4"
-                style={{ background: '#00AEEF15', color: '#00AEEF' }}>
-                <Check size={12} /> Trusted by 500+ Businesses
-              </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#111] leading-tight mb-4">
-                About Hashtag - Custom Printing in Salem
-              </h2>
-              <p className="text-[#444] leading-relaxed mb-4">
-                Hashtag is Salem&apos;s premier custom printing studio, offering premium personalized t-shirts, notebooks, mugs, photo prints, business cards, and stickers.
-              </p>
-              <p className="text-[#444] leading-relaxed mb-6">
-                We serve individuals, corporate teams, schools, and event organizers across Tamil Nadu. Same-day dispatch available in Salem.
-              </p>
-              <div className="flex items-center gap-4">
-                <Link href="/about" className="btn btn-primary font-bold">
-                  Learn more
-                </Link>
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-[#e5e7eb] border-2 border-white flex items-center justify-center text-[10px] text-[#888] font-bold">😊</div>)}
-                  </div>
-                  <span className="text-xs font-semibold text-[#888]">10k+ Happy Customers</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
+         </div>
       </div>
     </>
   );
