@@ -378,25 +378,54 @@ export default function HomePage() {
       <div className="px-4 -mt-4 relative z-10">
         <div className="bg-gradient-to-b from-[#631505] to-[#3d0901] rounded-[24px] p-4 shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-[#a1291b] overflow-hidden relative">
            
-           {/* Decorative Marigolds/Diyas (CSS Shapes) */}
-           <div className="absolute top-4 left-4 w-6 h-24 flex flex-col gap-1.5 opacity-90 pointer-events-none">
-              <div className="w-6 h-6 rounded-full bg-[#FF8C00] shadow-[0_0_12px_rgba(255,140,0,0.8)] border-[3px] border-[#FFD700]" />
-              <div className="w-6 h-6 rounded-full bg-[#FFD700] shadow-[0_0_12px_rgba(255,215,0,0.8)]" />
-              <div className="w-6 h-6 rounded-full bg-[#FF8C00] shadow-[0_0_12px_rgba(255,140,0,0.8)]" />
-           </div>
-           <div className="absolute top-4 right-4 w-6 h-24 flex flex-col gap-1.5 opacity-90 pointer-events-none">
-              <div className="w-6 h-6 rounded-full bg-[#FF8C00] shadow-[0_0_12px_rgba(255,140,0,0.8)] border-[3px] border-[#FFD700]" />
-              <div className="w-6 h-6 rounded-full bg-[#FFD700] shadow-[0_0_12px_rgba(255,215,0,0.8)]" />
-              <div className="w-6 h-6 rounded-full bg-[#FF8C00] shadow-[0_0_12px_rgba(255,140,0,0.8)]" />
+           {/* Decorative Marigold Garlands (CSS Shapes) */}
+           <div className="absolute top-0 left-4 w-8 flex flex-col items-center gap-[3px] opacity-90 pointer-events-none">
+              <div className="w-[1.5px] h-3 bg-green-800/80" />
+              <div className="w-[22px] h-[22px] rounded-full bg-gradient-to-br from-[#FFA500] to-[#FF6B00] shadow-[0_2px_4px_rgba(0,0,0,0.4)] border border-[#FF8C00] flex items-center justify-center overflow-hidden">
+                 <div className="w-full h-full rounded-full border-[3px] border-dashed border-[#FFD700]/60 scale-110 rotate-12" />
+              </div>
+              <div className="w-[1.5px] h-1.5 bg-green-800/80" />
+              <div className="w-[22px] h-[22px] rounded-full bg-gradient-to-br from-[#FFD700] to-[#FFA500] shadow-[0_2px_4px_rgba(0,0,0,0.4)] border border-[#FFB300] flex items-center justify-center overflow-hidden">
+                 <div className="w-full h-full rounded-full border-[3px] border-dashed border-[#FF8C00]/60 scale-110 -rotate-12" />
+              </div>
+              <div className="w-[1.5px] h-1.5 bg-green-800/80" />
+              <div className="w-[22px] h-[22px] rounded-full bg-gradient-to-br from-[#FFA500] to-[#FF6B00] shadow-[0_2px_4px_rgba(0,0,0,0.4)] border border-[#FF8C00] flex items-center justify-center overflow-hidden">
+                 <div className="w-full h-full rounded-full border-[3px] border-dashed border-[#FFD700]/60 scale-110 rotate-45" />
+              </div>
+              {/* Mango Leaf */}
+              <div className="w-3 h-5 bg-gradient-to-b from-green-600 to-green-800 rounded-t-full rounded-br-full -rotate-12 mt-1 shadow-sm border border-green-900/50" />
            </div>
 
-           <div className="text-center mb-5 relative z-10 mt-2">
-             <div className="flex items-center justify-center gap-2 mb-1">
-                <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#FFD700]" />
-                <span className="text-[#FFD700] text-[10px] tracking-[0.25em] uppercase font-bold drop-shadow-sm">Celebrate</span>
-                <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#FFD700]" />
+           <div className="absolute top-0 right-4 w-8 flex flex-col items-center gap-[3px] opacity-90 pointer-events-none">
+              <div className="w-[1.5px] h-3 bg-green-800/80" />
+              <div className="w-[22px] h-[22px] rounded-full bg-gradient-to-br from-[#FFA500] to-[#FF6B00] shadow-[0_2px_4px_rgba(0,0,0,0.4)] border border-[#FF8C00] flex items-center justify-center overflow-hidden">
+                 <div className="w-full h-full rounded-full border-[3px] border-dashed border-[#FFD700]/60 scale-110 rotate-45" />
+              </div>
+              <div className="w-[1.5px] h-1.5 bg-green-800/80" />
+              <div className="w-[22px] h-[22px] rounded-full bg-gradient-to-br from-[#FFD700] to-[#FFA500] shadow-[0_2px_4px_rgba(0,0,0,0.4)] border border-[#FFB300] flex items-center justify-center overflow-hidden">
+                 <div className="w-full h-full rounded-full border-[3px] border-dashed border-[#FF8C00]/60 scale-110 -rotate-12" />
+              </div>
+              <div className="w-[1.5px] h-1.5 bg-green-800/80" />
+              <div className="w-[22px] h-[22px] rounded-full bg-gradient-to-br from-[#FFA500] to-[#FF6B00] shadow-[0_2px_4px_rgba(0,0,0,0.4)] border border-[#FF8C00] flex items-center justify-center overflow-hidden">
+                 <div className="w-full h-full rounded-full border-[3px] border-dashed border-[#FFD700]/60 scale-110 rotate-12" />
+              </div>
+              {/* Mango Leaf */}
+              <div className="w-3 h-5 bg-gradient-to-b from-green-600 to-green-800 rounded-t-full rounded-bl-full rotate-12 mt-1 shadow-sm border border-green-900/50" />
+           </div>
+
+           <div className="text-center mb-6 relative z-10 mt-3 flex flex-col items-center">
+             <div className="flex items-center justify-center gap-3 mb-1">
+                <div className="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#FFD700] to-[#FFD700]" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFB300] text-[10px] tracking-[0.3em] uppercase font-bold drop-shadow-sm">Celebrate</span>
+                <div className="h-[1px] w-12 bg-gradient-to-l from-transparent via-[#FFD700] to-[#FFD700]" />
              </div>
-             <h2 className="text-[28px] sm:text-[32px] font-serif font-black text-[#FFE5B4] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Diwali Offers</h2>
+             <h2 className="text-[34px] sm:text-[38px] font-serif font-black leading-none relative inline-block">
+                {/* Subtle glow behind */}
+                <span className="absolute inset-0 blur-lg bg-gradient-to-r from-[#FFD700]/20 to-[#FF8C00]/20 z-0 rounded-full scale-150" />
+                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-b from-[#FFF3B0] via-[#FFE5B4] to-[#FFB300] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  Diwali Offers
+                </span>
+             </h2>
            </div>
 
            {/* 1 Tall + 4 Square Grid */}
