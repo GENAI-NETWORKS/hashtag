@@ -15,13 +15,15 @@ import {
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { ProductBottomSheet } from '@/components/ui/ProductBottomSheet';
+import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
 import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
 
 // Splash Screen Video Removed as per request
 
 // Splash Screen Video Removed as per request
 
-// ΓöÇΓöÇΓöÇ DEMO DATA (works without DB) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ─── DEMO DATA (works without DB) ──────────────────────────────────────────
 
 const CATEGORIES = [
   { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', icon: Shirt, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/categories/cat_tshirts.jpg' },
@@ -35,7 +37,7 @@ const CATEGORIES = [
 ];
 
 const PRODUCTS = [
-  { id:1, name:'Classic Round Neck Custom T-Shirt', slug:'classic-round-neck-custom-tshirt', price:299, category:'T-Shirts', categorySlug:'custom-tshirt-printing', image:'/uploads/products/tshirt.jpg', rating:4.8, reviews:124, bestseller:true, description:'180 GSM combed cotton. Custom front/back print. Sizes XSΓÇô3XL.' },
+  { id:1, name:'Classic Round Neck Custom T-Shirt', slug:'classic-round-neck-custom-tshirt', price:299, category:'T-Shirts', categorySlug:'custom-tshirt-printing', image:'/uploads/products/tshirt.jpg', rating:4.8, reviews:124, bestseller:true, description:'180 GSM combed cotton. Custom front/back print. Sizes XS–3XL.' },
   { id:2, name:'Polo Neck Custom T-Shirt', slug:'polo-neck-custom-tshirt', price:499, category:'T-Shirts', categorySlug:'custom-tshirt-printing', image:'/uploads/products/Polo Neck Custom T-Shirt.png', rating:4.6, reviews:45, bestseller:false, description:'220 GSM pique cotton polo. Embroidered or printed logo. Perfect for corporate teams.' },
   { id:3, name:'A5 Spiral Custom Notebook', slug:'a5-spiral-custom-notebook', price:199, category:'Notebooks', categorySlug:'custom-notebook-printing', image:'/uploads/products/A5 Spiral Custom Notebook.png', rating:4.7, reviews:89, bestseller:false, description:'200 pages, ruled. Custom cover print. Durable spiral binding.' },
   { id:4, name:'Custom Hardcover Notebook', slug:'custom-hardcover-notebook', price:349, category:'Notebooks', categorySlug:'custom-notebook-printing', image:'/uploads/products/Custom Hardcover Notebook.png', rating:4.5, reviews:33, bestseller:false, description:'A5 hardcover with 150 ruled pages. Custom logo on cover.' },
@@ -57,29 +59,37 @@ const PRODUCTS = [
 
 import { useWishlistStore } from '@/store/wishlistStore';
 
-// ΓöÇΓöÇΓöÇ Product Card ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
-function DemoProductCard({ product, priority = false }: { product: typeof PRODUCTS[0]; priority?: boolean }) {
+// ─── Product Card ──────────────────────────────────────────────
+function DemoProductCard({ product, priority = false, onSelectProduct }: { product: typeof PRODUCTS[0]; priority?: boolean; onSelectProduct?: (p: typeof PRODUCTS[0]) => void }) {
   const router = useRouter();
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isWishlisted = useWishlistStore((s) => s.hasItem(product.id));
 
-  const handleAdd = (e: React.MouseEvent) => {
+  const handleAction = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    router.push(`/products/${product.slug}`);
+    if (onSelectProduct) {
+      onSelectProduct(product);
+    } else {
+      router.push(`/products/${product.slug}`);
+    }
   };
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     toggleWishlist(product.id);
-    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', { icon: isWishlisted ? '≡ƒÆö' : 'Γ¥ñ∩╕Å' });
+    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', { icon: isWishlisted ? '💔' : '❤️' });
   };
 
+  const Wrapper = onSelectProduct ? 'div' : Link;
+  const wrapperProps = onSelectProduct 
+    ? { onClick: handleAction, className: "card overflow-hidden flex flex-col group relative cursor-pointer", role: "button" }
+    : { href: `/products/${product.slug}`, className: "card overflow-hidden flex flex-col group relative" };
+
   return (
-    <Link
-      href={`/products/${product.slug}`}
-      className="card overflow-hidden flex flex-col group relative"
+    <Wrapper
+      {...wrapperProps as any}
       aria-label={product.name}
     >
       <div className="relative overflow-hidden bg-[#f8f9fa] aspect-square">
@@ -118,7 +128,7 @@ function DemoProductCard({ product, priority = false }: { product: typeof PRODUC
             <span className="text-[9px] sm:text-[10px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
           </div>
           <button
-            onClick={handleAdd}
+            onClick={handleAction}
             className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
             aria-label="View details"
           >
@@ -126,11 +136,11 @@ function DemoProductCard({ product, priority = false }: { product: typeof PRODUC
           </button>
         </div>
       </div>
-    </Link>
+    </Wrapper>
   );
 }
 
-// ΓöÇΓöÇΓöÇ Blinkit Style Hero ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ─── Blinkit Style Hero ────────────────────────────────────────────────────
 function BlinkitHero() {
   return (
     <div className="hidden md:flex flex-col gap-4">
@@ -205,7 +215,7 @@ function BlinkitHero() {
   );
 }
 
-// ΓöÇΓöÇΓöÇ Value Props ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ─── Value Props ───────────────────────────────────────────────────────────
 const VALUE_PROPS = [
   { icon: Clock, label: 'Same-day dispatch', sub: 'Order before 12 PM', color: '#00AEEF' },
   { icon: Star, label: 'Premium quality', sub: '5-star rated prints', color: '#FFD700' },
@@ -213,9 +223,9 @@ const VALUE_PROPS = [
   { icon: Phone, label: 'WhatsApp support', sub: 'Salem-based team', color: '#16a34a' },
 ];
 
-// ΓöÇΓöÇΓöÇ FAQ ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ─── FAQ ───────────────────────────────────────────────────────────────────
 const FAQS = [
-  { q: 'How long does custom t-shirt printing take in Salem?', a: 'Hashtag offers same-day dispatch for orders placed before 12 PM in Salem. Delivery within Salem takes 1 business day, and pan-India delivery takes 2ΓÇô3 business days.' },
+  { q: 'How long does custom t-shirt printing take in Salem?', a: 'Hashtag offers same-day dispatch for orders placed before 12 PM in Salem. Delivery within Salem takes 1 business day, and pan-India delivery takes 2–3 business days.' },
   { q: 'What is the minimum order quantity?', a: 'No minimum order - we accept single-piece orders. Bulk orders of 10+ pieces qualify for discounts up to 40% off.' },
   { q: 'Can I upload my own design?', a: 'Yes. Upload your artwork in JPG, PNG, or PDF format. Add text, choose print placement, and preview before ordering.' },
   { q: 'Does Hashtag provide bulk corporate printing?', a: 'Yes. We specialise in branded polo t-shirts, notebooks, mugs, and event merchandise for companies, schools, and NGOs in Salem and across Tamil Nadu.' },
@@ -253,6 +263,15 @@ export function DesktopHomeUI() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
 
+  // Bottom Sheet State
+  const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+
+  const handleSelectProduct = (product: typeof PRODUCTS[0]) => {
+    setSelectedProduct(product);
+    setIsBottomSheetOpen(true);
+  };
+
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
     if (!hasSeenOnboarding) {
@@ -276,7 +295,7 @@ export function DesktopHomeUI() {
         name: 'Hashtag Custom Prints', url: 'https://hashtagprints.in',
         description: "Salem's leading custom printing service - t-shirts, notebooks, mugs, photo prints.",
         address: { '@type': 'PostalAddress', addressLocality: 'Salem', addressRegion: 'Tamil Nadu', postalCode: '636001', addressCountry: 'IN' },
-        priceRange: 'Γé╣Γé╣', openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '09:00', closes: '20:00' },
+        priceRange: '₹₹', openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '09:00', closes: '20:00' },
       }) }} />
 
       {showOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}
@@ -317,7 +336,7 @@ export function DesktopHomeUI() {
             <Link href="/products?bestseller=true" className="text-xs font-semibold text-[#EC008C] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
           </div>
           <div className="product-grid">
-            {bestsellers.map((p, i) => <DemoProductCard key={p.id} product={p} priority={i < 2} />)}
+            {bestsellers.map((p, i) => <DemoProductCard key={p.id} product={p} priority={i < 2} onSelectProduct={handleSelectProduct} />)}
           </div>
         </section>
 
@@ -354,12 +373,32 @@ export function DesktopHomeUI() {
             <Link href="/products" className="text-xs font-semibold text-[#00AEEF] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
           </div>
           <div className="product-grid">
-            {featured.map((p) => <DemoProductCard key={p.id} product={p} />)}
+            {featured.map((p) => <DemoProductCard key={p.id} product={p} onSelectProduct={handleSelectProduct} />)}
           </div>
         </section>
 
         {/* FAQ */}
         <FAQSection />
+
+        {/* Features Banner */}
+        <section className="bg-white border-y border-gray-100 py-8 mt-12">
+          <div className="container-app">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+              {VALUE_PROPS.map((prop, i) => (
+                <div key={i} className="flex flex-col items-center text-center group">
+                  <div 
+                    className="w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-transform duration-300 group-hover:-translate-y-2"
+                    style={{ backgroundColor: `${prop.color}15`, color: prop.color }}
+                  >
+                    <prop.icon size={28} />
+                  </div>
+                  <h3 className="font-bold text-[#111] mb-1">{prop.label}</h3>
+                  <p className="text-sm text-[#666]">{prop.sub}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* Premium About blurb */}
         <section className="relative rounded-2xl overflow-hidden mt-8" style={{ background: '#f8f9fa' }}>
@@ -396,8 +435,15 @@ export function DesktopHomeUI() {
             </div>
           </div>
         </section>
-
       </div>
+
+      <FloatingCartButton />
+      
+      <ProductBottomSheet 
+        product={selectedProduct} 
+        isOpen={isBottomSheetOpen} 
+        onClose={() => setIsBottomSheetOpen(false)} 
+      />
     </>
   );
 }

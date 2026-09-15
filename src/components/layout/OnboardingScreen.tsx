@@ -32,17 +32,63 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div className="fixed inset-0 z-[99998] bg-white lg:hidden flex flex-col h-full overflow-hidden">
+      <style>{`
+        @keyframes scrollLeft {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes scrollRight {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+        .animate-scroll-left {
+          animation: scrollLeft 45s linear infinite;
+          width: max-content;
+        }
+        .animate-scroll-right {
+          animation: scrollRight 45s linear infinite;
+          width: max-content;
+        }
+      `}</style>
+
       {/* Background Grid with Fade */}
-      <div className="absolute top-0 left-0 right-0 h-[60%] overflow-hidden pointer-events-none">
-        <div className="grid grid-cols-4 gap-2 p-2 opacity-80" style={{ transform: 'scale(1.1) translateY(-5%)' }}>
-          {bgImages.map((img, i) => (
-            <div key={i} className="aspect-square rounded-2xl overflow-hidden relative flex items-center justify-center p-2" style={{ backgroundColor: img.bg }}>
-              <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
-            </div>
-          ))}
+      <div className="absolute top-0 left-0 right-0 h-[65%] overflow-hidden pointer-events-none">
+        <div className="flex flex-col gap-3 p-3 opacity-90" style={{ transform: 'rotate(-6deg) scale(1.15) translateY(-5%)' }}>
+          {/* Row 1 */}
+          <div className="flex gap-3 animate-scroll-left">
+            {[...bgImages, ...bgImages].map((img, i) => (
+              <div key={i} className="w-[100px] h-[100px] flex-shrink-0 rounded-2xl overflow-hidden relative flex items-center justify-center p-2 shadow-sm" style={{ backgroundColor: img.bg }}>
+                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
+              </div>
+            ))}
+          </div>
+          {/* Row 2 */}
+          <div className="flex gap-3 animate-scroll-right" style={{ animationDuration: '50s' }}>
+            {[...bgImages, ...bgImages].reverse().map((img, i) => (
+              <div key={i} className="w-[100px] h-[100px] flex-shrink-0 rounded-2xl overflow-hidden relative flex items-center justify-center p-2 shadow-sm" style={{ backgroundColor: img.bg }}>
+                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
+              </div>
+            ))}
+          </div>
+          {/* Row 3 */}
+          <div className="flex gap-3 animate-scroll-left" style={{ animationDuration: '40s' }}>
+            {[...bgImages.slice(4), ...bgImages.slice(0, 4), ...bgImages.slice(4), ...bgImages.slice(0, 4)].map((img, i) => (
+              <div key={i} className="w-[100px] h-[100px] flex-shrink-0 rounded-2xl overflow-hidden relative flex items-center justify-center p-2 shadow-sm" style={{ backgroundColor: img.bg }}>
+                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
+              </div>
+            ))}
+          </div>
+          {/* Row 4 */}
+          <div className="flex gap-3 animate-scroll-right" style={{ animationDuration: '48s' }}>
+            {[...bgImages.slice(2), ...bgImages.slice(0, 2), ...bgImages.slice(2), ...bgImages.slice(0, 2)].map((img, i) => (
+              <div key={i} className="w-[100px] h-[100px] flex-shrink-0 rounded-2xl overflow-hidden relative flex items-center justify-center p-2 shadow-sm" style={{ backgroundColor: img.bg }}>
+                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
+              </div>
+            ))}
+          </div>
         </div>
-        {/* Bottom Fade Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 to-white" />
+        {/* Bottom Fade Gradient (slightly reduced opacity for more visibility) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white" />
       </div>
 
       {/* Skip Button */}

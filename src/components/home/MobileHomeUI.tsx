@@ -16,12 +16,40 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
-
-// Splash Screen Video Removed as per request
-
-// Splash Screen Video Removed as per request
+import { ProductBottomSheet } from '@/components/ui/ProductBottomSheet';
+import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
 
 // ─── DEMO DATA (works without DB) ─────────────────────────────
+
+const CATEGORY_GROUPS = [
+  {
+    title: 'Custom Apparel',
+    items: [
+      { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', bg: '#e8f5fb', image: '/uploads/products/tshirt.jpg' },
+      { id: 2, name: 'Polo Shirts', slug: 'custom-tshirt-printing', bg: '#fdf0fb', image: '/uploads/products/Polo Neck Custom T-Shirt.png' },
+      { id: 6, name: 'Stickers', slug: 'custom-sticker-printing', bg: '#fff4e5', image: '/uploads/products/Custom Die-Cut Vinyl Stickers.png' },
+      { id: 8, name: 'Custom Gifts', slug: 'custom-gifts-printing', bg: '#f0fff4', image: '/uploads/products/Corporate Gifting Set.png' },
+    ]
+  },
+  {
+    title: 'Stationery & Office',
+    items: [
+      { id: 3, name: 'Notebooks', slug: 'custom-notebook-printing', bg: '#fffff0', image: '/uploads/products/A5 Spiral Custom Notebook.png' },
+      { id: 4, name: 'Business Cards', slug: 'business-card-printing', bg: '#f0fff4', image: '/uploads/products/Standard Business Cards (100 pcs).png' },
+      { id: 9, name: 'Bulk Orders', slug: 'bulk-printing', bg: '#e0f7ff', image: '/uploads/products/Bulk T-Shirt Printing (50 pcs).png' },
+      { id: 10, name: 'Canvas Prints', slug: 'photo-printing-online', bg: '#f5f3ff', image: '/uploads/products/Premium Canvas Photo Print.png' },
+    ]
+  },
+  {
+    title: 'Photo Products',
+    items: [
+      { id: 5, name: 'Photo Mugs', slug: 'custom-mug-printing', bg: '#e0f7ff', image: '/uploads/products/Custom Photo Magic Mug.png' },
+      { id: 11, name: 'Canvas Prints', slug: 'photo-printing-online', bg: '#f5f3ff', image: '/uploads/products/Premium Canvas Photo Print.png' },
+      { id: 12, name: 'Acrylic Prints', slug: 'photo-printing-online', bg: '#fff0f5', image: '/uploads/products/Premium Acrylic Photo Print.png' },
+      { id: 13, name: 'Photo Frames', slug: 'photo-printing-online', bg: '#fffbeb', image: '/uploads/products/Custom Photo Magic Mug.png' },
+    ]
+  },
+];
 
 const CATEGORIES = [
   { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', icon: Shirt, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/categories/cat_tshirts.jpg' },
@@ -57,75 +85,123 @@ const PRODUCTS = [
 
 import { useWishlistStore } from '@/store/wishlistStore';
 
-// ─── Product Card ──────────────────────────────────────────────
-function DemoProductCard({ product, priority = false }: { product: typeof PRODUCTS[0]; priority?: boolean }) {
-  const router = useRouter();
-  const toggleWishlist = useWishlistStore((s) => s.toggleItem);
-  const isWishlisted = useWishlistStore((s) => s.hasItem(product.id));
+// ─── Product Card (Blinkit style) ───────────────────────────────
+function DemoProductCard({ product, priority = false, onSelectProduct }: {
+  product: typeof PRODUCTS[0];
+  priority?: boolean;
+  onSelectProduct?: (p: typeof PRODUCTS[0]) => void;
+}) {
+  const router         = useRouter();
+  const toggleWishlist = useWishlistStore(s => s.toggleItem);
+  const isWishlisted   = useWishlistStore(s => s.hasItem(product.id));
 
-  const handleAdd = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    router.push(`/products/${product.slug}`);
+  // Clicking anywhere on the card → open sheet (if handler provided)
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (onSelectProduct) {
+      e.preventDefault();
+      onSelectProduct(product);
+    }
+    // else: let the <Link> navigate naturally
   };
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     toggleWishlist(product.id);
-    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', { icon: isWishlisted ? '💔' : '❤️' });
+    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', {
+      icon: isWishlisted ? '💔' : '❤️',
+    });
   };
 
-  return (
-    <Link
-      href={`/products/${product.slug}`}
-      className="card overflow-hidden flex flex-col group relative"
-      aria-label={product.name}
-    >
-      <div className="relative overflow-hidden bg-[#f8f9fa] aspect-square">
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onSelectProduct) {
+      onSelectProduct(product);
+    } else {
+      router.push(`/products/${product.slug}`);
+    }
+  };
+
+  const CardInner = (
+    <>
+      {/* Image area */}
+      <div className="relative overflow-hidden bg-[#f4f6f8] aspect-square rounded-t-xl">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          sizes="(max-width:640px) 50vw,(max-width:1024px) 33vw,25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width:640px) 50vw, 33vw"
+          className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
           loading={priority ? 'eager' : 'lazy'}
           unoptimized
         />
         {product.bestseller && (
-          <span className="absolute top-2 left-2 badge badge-magenta text-[10px] px-2 py-0.5 flex items-center gap-1">
-            <Zap size={9} /> Bestseller
+          <span className="absolute top-2 left-2 bg-[#EC008C] text-white text-[9px] font-black px-2 py-0.5 rounded-full flex items-center gap-0.5">
+            <Zap size={8} /> Best
           </span>
         )}
+        {/* Wishlist heart */}
         <button
           onClick={handleWishlist}
           className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors"
+          aria-label="Wishlist"
         >
-          <Heart size={14} className={isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
+          <Heart size={13} className={isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
         </button>
       </div>
-      <div className="p-3 flex flex-col flex-1">
-        <p className="text-[10px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
-        <h3 className="text-sm font-semibold text-[#111] leading-snug line-clamp-2 flex-1">{product.name}</h3>
-        <div className="flex items-center gap-1 mt-1.5">
-          <Star size={11} className="fill-[#FFD700] text-[#FFD700]" />
-          <span className="text-xs font-semibold text-[#444]">{product.rating}</span>
-          <span className="text-[10px] text-[#888]">({product.reviews})</span>
+
+      {/* Text area */}
+      <div className="px-2.5 pt-2 pb-2.5 flex flex-col flex-1">
+        <p className="text-[9px] text-[#888] font-bold uppercase tracking-wide mb-0.5 truncate">{product.category}</p>
+        <h3 className="text-[12px] font-bold text-[#111] leading-snug line-clamp-2 flex-1 mb-1.5">{product.name}</h3>
+
+        {/* Rating mini */}
+        <div className="flex items-center gap-0.5 mb-2">
+          <Star size={9} className="fill-[#FFB800] text-[#FFB800]" />
+          <span className="text-[10px] font-bold text-[#444]">{product.rating}</span>
+          <span className="text-[9px] text-[#888] ml-0.5">({product.reviews})</span>
         </div>
-        <div className="flex items-center justify-between mt-2.5 gap-1 sm:gap-2">
-          <div className="leading-none flex flex-col sm:flex-row sm:items-baseline">
-            <span className="text-[13px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
-            <span className="text-[9px] sm:text-[10px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
+
+        {/* Price + Add button row */}
+        <div className="flex items-center justify-between gap-1">
+          <div>
+            <span className="text-[13px] font-black text-[#111]">₹{product.price}</span>
+            <p className="text-[9px] text-[#888] leading-none mt-0.5">onwards</p>
           </div>
+          {/* Green + button exactly like Blinkit */}
           <button
-            onClick={handleAdd}
-            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
-            aria-label="View details"
+            onClick={handleQuickAdd}
+            className="w-8 h-8 bg-white border-2 border-[#0f8a3c] rounded-lg flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0] active:scale-90 transition-all shadow-sm"
+            aria-label={`Add ${product.name}`}
           >
-            <span className="whitespace-nowrap px-1">View</span>
+            <Plus size={16} strokeWidth={3} />
           </button>
         </div>
       </div>
+    </>
+  );
+
+  if (onSelectProduct) {
+    return (
+      <div
+        onClick={handleCardClick}
+        role="button"
+        aria-label={product.name}
+        className="card overflow-hidden flex flex-col group relative cursor-pointer rounded-xl bg-white"
+      >
+        {CardInner}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={`/products/${product.slug}`}
+      aria-label={product.name}
+      className="card overflow-hidden flex flex-col group relative rounded-xl bg-white"
+    >
+      {CardInner}
     </Link>
   );
 }
@@ -254,7 +330,17 @@ export function MobileHomeUI() {
   const [isChecking, setIsChecking] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [timeLeft, setTimeLeft] = useState(22 * 60 + 14); // 22 mins 14 secs
+  
+  // Bottom Sheet State
+  const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  
   const router = useRouter();
+
+  const handleSelectProduct = (product: typeof PRODUCTS[0]) => {
+    setSelectedProduct(product);
+    setIsBottomSheetOpen(true);
+  };
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
@@ -527,26 +613,46 @@ export function MobileHomeUI() {
                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B1C10] text-white text-[10px] sm:text-[11px] font-bold px-2 py-1 rounded-full flex items-center justify-center gap-1 w-max border border-[#FFD700] shadow-sm z-20 whitespace-nowrap">
                    <Clock size={12} className="text-[#FFD700] animate-pulse" /> Offer ends in {formatTime(timeLeft)}
                  </div>
-                 <DemoProductCard product={p} priority={i < 2} />
+                 <DemoProductCard product={p} priority={i < 2} onSelectProduct={handleSelectProduct} />
               </div>
             ))}
           </div>
         </section>
         
-        {/* Regular Products Grid */}
-        <section>
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-[19px] font-black text-[#111]">Explore Categories</h2>
-            <Link href="/products" className="text-[13px] font-bold text-[#00AEEF]">View all</Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {featured.slice(0, 8).map((p) => (
-               <div key={p.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-1.5">
-                  <DemoProductCard product={p} />
-               </div>
-            ))}
-          </div>
-        </section>
+        {/* Explore Categories - Blinkit Grouped Style */}
+        <div aria-label="Explore Categories" className="-mx-4 px-0">
+          {CATEGORY_GROUPS.map((group) => (
+            <div key={group.title} className="mb-1 bg-white px-4 pt-5 pb-6 border-b border-gray-100">
+              <h2 className="text-[19px] font-black text-[#111] mb-4">{group.title}</h2>
+              <div className="grid grid-cols-4 gap-x-3 gap-y-5">
+                {group.items.map((cat) => {
+                  const product = PRODUCTS.find(p => p.image === cat.image) || PRODUCTS[0];
+                  return (
+                    <button 
+                      key={cat.id} 
+                      onClick={(e) => { e.preventDefault(); handleSelectProduct(product); }}
+                      className="flex flex-col items-center gap-2 group"
+                    >
+                      <div
+                        className="w-full aspect-square rounded-[14px] overflow-hidden relative transition-transform group-hover:scale-105"
+                        style={{ backgroundColor: cat.bg || '#f3f9fb' }}
+                      >
+                        <Image
+                          src={cat.image}
+                          alt={cat.name}
+                          fill
+                          className="object-cover mix-blend-multiply"
+                          unoptimized
+                        />
+                      </div>
+                      <span className="text-[11px] sm:text-[12px] font-bold text-center leading-snug text-[#222] line-clamp-2">{cat.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
         
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
            <FAQSection />
@@ -554,8 +660,8 @@ export function MobileHomeUI() {
       </div>
 
       {/* Floating Free Delivery Banner - Full Width */}
-      <div className="fixed bottom-[64px] lg:bottom-0 left-0 right-0 z-40 w-full">
-         <div className="bg-white shadow-[0_-4px_16px_rgba(0,0,0,0.1)] border-t border-gray-200 p-2.5 px-4 flex items-center justify-between max-w-[600px] mx-auto">
+      <div className="fixed bottom-[64px] lg:bottom-0 left-0 right-0 z-40 w-full pointer-events-none">
+         <div className="bg-white pointer-events-auto shadow-[0_-4px_16px_rgba(0,0,0,0.1)] border-t border-gray-200 p-2.5 px-4 flex items-center justify-between max-w-[600px] mx-auto">
             <div className="flex items-center gap-3">
                <div className="text-[#0284c7]">
                  <Bike size={32} strokeWidth={1.5} />
@@ -579,6 +685,14 @@ export function MobileHomeUI() {
             </div>
          </div>
       </div>
+
+      <FloatingCartButton />
+      
+      <ProductBottomSheet 
+        product={selectedProduct} 
+        isOpen={isBottomSheetOpen} 
+        onClose={() => setIsBottomSheetOpen(false)} 
+      />
     </>
   );
 }

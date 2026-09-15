@@ -21,6 +21,7 @@
     "cookie": "^2.0.1",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^13.3.0",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.45.0",
     "multer": "^2.3.0",
