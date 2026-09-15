@@ -529,9 +529,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Floating Free Delivery Banner - Exact Replica */}
-      <div className="fixed bottom-[64px] lg:bottom-6 left-4 right-4 z-40 max-w-[400px] mx-auto">
-         <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.15)] border border-gray-100 p-2.5 flex items-center justify-between">
+      {/* Floating Free Delivery Banner - Full Width */}
+      <div className="fixed bottom-[64px] lg:bottom-0 left-0 right-0 z-40 w-full">
+         <div className="bg-white shadow-[0_-4px_16px_rgba(0,0,0,0.1)] border-t border-gray-200 p-2.5 px-4 flex items-center justify-between max-w-[600px] mx-auto">
             <div className="flex items-center gap-3">
                <div className="text-[#0284c7]">
                  <Bike size={32} strokeWidth={1.5} />
