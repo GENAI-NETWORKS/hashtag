@@ -14,6 +14,10 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Splash Screen Video Removed as per request
 
 // ─── DEMO DATA (works without DB) ─────────────────────────────
