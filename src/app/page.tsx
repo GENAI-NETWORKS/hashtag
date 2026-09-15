@@ -15,6 +15,7 @@ import {
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
 
 function MobileSplashScreen({ onComplete }: { onComplete: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -291,11 +292,23 @@ function FAQSection() {
 export default function HomePage() {
   const bestsellers = PRODUCTS.filter(p => p.bestseller);
   const featured = PRODUCTS.filter(p => !p.bestseller);
-  // Always show splash on every fresh page load (no sessionStorage skip)
   const [showSplash, setShowSplash] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    if (!hasSeenOnboarding) {
+      setShowOnboarding(true);
+    }
+  }, []);
 
   const handleSplashComplete = () => {
     setShowSplash(false);
+  };
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem('hasSeenOnboarding', 'true');
+    setShowOnboarding(false);
   };
 
   return (
@@ -309,6 +322,7 @@ export default function HomePage() {
       }) }} />
 
       {showSplash && <MobileSplashScreen onComplete={handleSplashComplete} />}
+      {!showSplash && showOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}
 
       <div className="container-app py-4 space-y-8">
 
