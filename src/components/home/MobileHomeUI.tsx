@@ -490,16 +490,24 @@ export function MobileHomeUI() {
       </div>
 
       <div className="container-app py-8 space-y-8 pb-32">
-        {/* Festive Picks */}
-        <section aria-labelledby="festive-heading">
-          <div className="flex items-center justify-center mb-6 relative">
-             <h2 id="festive-heading" className="text-2xl font-serif font-black text-[#8B1C10] tracking-wide">Festive Picks</h2>
+        {/* Festive Picks - Diwali Themed Section */}
+        <section aria-labelledby="festive-heading" className="-mx-4 px-4 py-8 mb-8 relative overflow-hidden bg-gradient-to-b from-[#FFF5E1] to-[#FFE8B5]/40 border-y border-[#FFD700]/30 shadow-inner">
+          {/* Faint decorative pattern */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#8B1C10 2px, transparent 2px)', backgroundSize: '24px 24px' }} />
+          
+          <div className="flex flex-col items-center justify-center mb-6 relative z-10">
+             <div className="flex items-center gap-3">
+               <Sparkles size={22} className="text-[#FF8C00] animate-pulse" />
+               <h2 id="festive-heading" className="text-[26px] sm:text-[30px] font-serif font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B1C10] to-[#b32415] tracking-wide drop-shadow-sm">Festive Picks</h2>
+               <Sparkles size={22} className="text-[#FF8C00] animate-pulse" />
+             </div>
+             <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-[#FF8C00]/50 to-transparent mt-2" />
           </div>
           
           {/* Horizontal scroll like Blinkit */}
-          <div className="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar relative z-10">
             {bestsellers.map((p, i) => (
-              <div key={p.id} className="w-[160px] sm:w-[180px] flex-shrink-0 snap-start bg-white rounded-xl shadow-sm border border-gray-100 p-1.5">
+              <div key={p.id} className="w-[150px] sm:w-[170px] flex-shrink-0 snap-start bg-white rounded-[16px] shadow-[0_4px_12px_rgba(139,28,16,0.08)] border border-[#FFD700]/40 p-1.5 transition-transform hover:scale-105">
                  <DemoProductCard product={p} priority={i < 2} />
               </div>
             ))}
