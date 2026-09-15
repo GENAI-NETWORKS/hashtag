@@ -303,10 +303,10 @@ export default function HomePage() {
         {/* Header Row - Aligned EXACTLY like Blinkit */}
         <div className="flex flex-col relative z-10 mb-4">
           <span className="text-[12px] font-extrabold opacity-90 tracking-wide mb-1">Hashtag in</span>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <h1 className="text-[32px] font-black leading-none drop-shadow-md">24 hours</h1>
-              <div className="bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm mt-1">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap sm:flex-nowrap">
+              <h1 className="text-[clamp(24px,6.5vw,36px)] font-black leading-none drop-shadow-md whitespace-nowrap">24 hours</h1>
+              <div className="bg-white/20 backdrop-blur-sm px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm mt-1 whitespace-nowrap">
                 <MapPin size={11} /> 1.7 km away
               </div>
             </div>
