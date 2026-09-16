@@ -65,8 +65,8 @@ export function FloatingCartButton() {
           {/* Left: thumbnail + text */}
           <div className="flex items-center gap-2.5">
             {thumbSrc ? (
-              <div className="w-9 h-9 rounded-full bg-white/20 overflow-hidden relative flex-shrink-0 shadow-inner">
-                <Image src={thumbSrc} alt="Cart item" fill className="object-contain p-1 mix-blend-multiply" unoptimized />
+              <div className="w-9 h-9 rounded-full bg-white overflow-hidden relative flex-shrink-0 shadow-inner">
+                <Image src={thumbSrc} alt="Cart item" fill className="object-cover" unoptimized />
               </div>
             ) : (
               <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 shadow-inner">
