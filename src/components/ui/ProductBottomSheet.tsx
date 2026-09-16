@@ -120,12 +120,44 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
-  // Expand to full-screen when user scrolls down inside the sheet
+  const touchStartY = useRef(0);
+  const touchCurrentY = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchCurrentY.current = e.touches[0].clientY;
+    
+    // Check if scrolling down to expand to full screen
+    if (!isFullScreen && scrollRef.current && scrollRef.current.scrollTop > 10) {
+      setIsFullScreen(true);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (!scrollRef.current) return;
+    
+    // If we are at the top of the content, and the user dragged down by more than 60px
+    if (isFullScreen && scrollRef.current.scrollTop <= 0) {
+      const deltaY = touchCurrentY.current - touchStartY.current;
+      if (deltaY > 60) {
+        onClose();
+      }
+    }
+  };
+
   const handleContentScroll = useCallback(() => {
     if (!isFullScreen && scrollRef.current && scrollRef.current.scrollTop > 10) {
       setIsFullScreen(true);
     }
-  }, [isFullScreen]);
+    
+    // Handle iOS overscroll pulling down
+    if (isFullScreen && scrollRef.current && scrollRef.current.scrollTop < -40) {
+      onClose();
+    }
+  }, [isFullScreen, onClose]);
 
   if (!product) return null;
 
@@ -267,7 +299,9 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             <div
               ref={scrollRef}
               onScroll={handleContentScroll}
-              onTouchMove={handleContentScroll}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
               className="flex-1 overflow-x-hidden overflow-y-auto overscroll-contain relative"
               style={{ WebkitOverflowScrolling: 'touch', paddingBottom: 100 }}
             >
