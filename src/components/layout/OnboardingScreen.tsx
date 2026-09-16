@@ -31,7 +31,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[99998] bg-white lg:hidden flex flex-col h-full overflow-hidden">
+    <div className="fixed inset-0 z-[100001] bg-white lg:hidden flex flex-col h-full overflow-hidden">
       <style>{`
         @keyframes scrollLeft {
           0% { transform: translateX(0); }
