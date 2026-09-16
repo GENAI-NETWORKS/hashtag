@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -63,6 +63,8 @@ const PRICE_RANGES = [
 
 export function ProductCard({ product, onSelect }: { product: any, onSelect?: (product: any) => void }) {
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isWishlisted = useWishlistStore((s) => s.hasItem(product.id));
 
@@ -104,7 +106,7 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
           onClick={handleWishlist}
           className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors"
         >
-          <Heart size={14} className={isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
+          <Heart size={14} className={isMounted && isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
         </button>
       </div>
       <div className="p-3 flex flex-col flex-1">

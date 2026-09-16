@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -28,6 +28,11 @@ export default function ProductDetailPage() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [added, setAdded] = useState(false);
   const [activeTab, setActiveTab] = useState<'description' | 'specs' | 'reviews'>('description');
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Find product from demo data
   const product = ALL_PRODUCTS.find(p => p.slug === slug);
@@ -140,7 +145,7 @@ export default function ProductDetailPage() {
                 onClick={handleWishlist}
                 className="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-all hover:scale-105"
               >
-                <Heart size={20} className={isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
+                <Heart size={20} className={isMounted && isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
               </button>
             </div>
             {/* Thumbnails - more images would come from DB */}

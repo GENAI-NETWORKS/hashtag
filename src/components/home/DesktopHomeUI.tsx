@@ -62,6 +62,8 @@ import { useWishlistStore } from '@/store/wishlistStore';
 // ─── Product Card ──────────────────────────────────────────────
 function DemoProductCard({ product, priority = false, onSelectProduct }: { product: typeof PRODUCTS[0]; priority?: boolean; onSelectProduct?: (p: typeof PRODUCTS[0]) => void }) {
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isWishlisted = useWishlistStore((s) => s.hasItem(product.id));
 
@@ -108,9 +110,9 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: { produ
         )}
         <button
           onClick={handleWishlist}
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors"
+          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white hover:scale-110 transition-all z-10"
         >
-          <Heart size={14} className={isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
+          <Heart size={16} className={isMounted && isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
         </button>
       </div>
       <div className="p-3 flex flex-col flex-1">
