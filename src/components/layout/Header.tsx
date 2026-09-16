@@ -57,7 +57,7 @@ export function Header() {
               alt="Hashtag Custom Prints Logo"
               width={140}
               height={48}
-              className="h-8 sm:h-12 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
+              className="h-12 sm:h-14 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
               priority
             />
           </Link>
