@@ -66,8 +66,9 @@ export function FloatingCartButton() {
   // We can just use the bottom position for everything to avoid conflict between bottom and translate.
   const bottomClass = isScrolledDown ? 'bottom-4' : `${baseBottom} lg:bottom-6`;
   
-  // If the product bottom sheet is open, we need to translate the cart up so it doesn't overlap the "Add to Cart" sticky footer
-  const sheetOffsetClass = isProductSheetOpen ? 'max-[1023px]:-translate-y-[80px]' : 'translate-y-0';
+  // If the product bottom sheet is open, we need to translate the cart up so it doesn't overlap the "Add to Cart" sticky footer.
+  // 64px translation gives a perfect tight gap above the 67px tall footer (which is at bottom-0).
+  const sheetOffsetClass = isProductSheetOpen ? 'max-[1023px]:-translate-y-[64px]' : 'translate-y-0';
 
   return (
     <div className={`fixed ${bottomClass} left-0 right-0 z-[100000] px-4 pointer-events-none flex justify-center transition-all duration-300 ${sheetOffsetClass}`}>
