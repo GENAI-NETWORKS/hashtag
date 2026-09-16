@@ -110,14 +110,19 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     }
   }, [product?.id]);
 
-  // Lock body scroll when sheet is open
+  // Lock body scroll when sheet is open and emit events for floating components
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      window.dispatchEvent(new Event('productSheetOpened'));
     } else {
       document.body.style.overflow = '';
+      window.dispatchEvent(new Event('productSheetClosed'));
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => { 
+      document.body.style.overflow = ''; 
+      window.dispatchEvent(new Event('productSheetClosed'));
+    };
   }, [isOpen]);
 
   const touchStartY = useRef(0);

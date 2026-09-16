@@ -29,11 +29,22 @@ export function FloatingCartButton() {
   }, [lastScrollY]);
 
   const [isBannerClosed, setIsBannerClosed] = useState(false);
+  const [isProductSheetOpen, setIsProductSheetOpen] = useState(false);
 
   useEffect(() => {
     const handleBannerClosed = () => setIsBannerClosed(true);
+    const handleSheetOpened = () => setIsProductSheetOpen(true);
+    const handleSheetClosed = () => setIsProductSheetOpen(false);
+    
     window.addEventListener('bannerClosed', handleBannerClosed);
-    return () => window.removeEventListener('bannerClosed', handleBannerClosed);
+    window.addEventListener('productSheetOpened', handleSheetOpened);
+    window.addEventListener('productSheetClosed', handleSheetClosed);
+    
+    return () => {
+      window.removeEventListener('bannerClosed', handleBannerClosed);
+      window.removeEventListener('productSheetOpened', handleSheetOpened);
+      window.removeEventListener('productSheetClosed', handleSheetClosed);
+    };
   }, []);
 
   if (items.length === 0) return null;
@@ -54,9 +65,12 @@ export function FloatingCartButton() {
   // Actually, using bottom is smoother if we just switch the class, or use a custom translate.
   // We can just use the bottom position for everything to avoid conflict between bottom and translate.
   const bottomClass = isScrolledDown ? 'bottom-4' : `${baseBottom} lg:bottom-6`;
+  
+  // If the product bottom sheet is open, we need to translate the cart up so it doesn't overlap the "Add to Cart" sticky footer
+  const sheetOffsetClass = isProductSheetOpen ? 'max-[1023px]:-translate-y-[80px]' : 'translate-y-0';
 
   return (
-    <div className={`fixed ${bottomClass} left-0 right-0 z-[100000] px-4 pointer-events-none flex justify-center transition-all duration-300`}>
+    <div className={`fixed ${bottomClass} left-0 right-0 z-[100000] px-4 pointer-events-none flex justify-center transition-all duration-300 ${sheetOffsetClass}`}>
       <div className="w-fit pointer-events-auto">
         <Link
           href="/cart"
