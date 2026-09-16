@@ -3,32 +3,52 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LayoutGrid, ShoppingCart, Package, User } from 'lucide-react';
+import { Store, LayoutGrid, ShoppingBag, ClipboardList, UserCircle2 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Home', icon: Home },
+  { href: '/', label: 'Home', icon: Store },
   { href: '/products', label: 'Categories', icon: LayoutGrid },
-  { href: '/cart', label: 'Cart', icon: ShoppingCart, badge: true },
-  { href: '/orders', label: 'Orders', icon: Package },
-  { href: '/profile', label: 'Profile', icon: User },
+  { href: '/cart', label: 'Cart', icon: ShoppingBag, badge: true },
+  { href: '/orders', label: 'Orders', icon: ClipboardList },
+  { href: '/profile', label: 'Profile', icon: UserCircle2 },
 ];
 
 export function BottomNav() {
   const pathname = usePathname();
   const itemCount = useCartStore((s) => s.getItemCount());
   const [isMounted, setIsMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // If scroll down and we're not at the very top, hide
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsVisible(false);
+      } 
+      // If scroll up, show
+      else if (currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   // Hide on admin pages
   if (pathname?.startsWith('/admin')) return null;
 
   return (
     <nav
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#e5e7eb]"
+      className={`lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#e5e7eb] transition-transform duration-300 ${isVisible ? 'translate-y-0' : 'translate-y-full'}`}
       style={{
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         boxShadow: '0 -4px 20px rgba(0,0,0,0.08)',

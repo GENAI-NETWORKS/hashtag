@@ -1,13 +1,40 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export function FloatingCartButton() {
   const { items } = useCartStore();
+  const pathname = usePathname();
+  
+  const [isScrolledDown, setIsScrolledDown] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsScrolledDown(true);
+      } else if (currentScrollY < lastScrollY) {
+        setIsScrolledDown(false);
+      }
+      setLastScrollY(currentScrollY);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  const [isBannerClosed, setIsBannerClosed] = useState(false);
+
+  useEffect(() => {
+    const handleBannerClosed = () => setIsBannerClosed(true);
+    window.addEventListener('bannerClosed', handleBannerClosed);
+    return () => window.removeEventListener('bannerClosed', handleBannerClosed);
+  }, []);
 
   if (items.length === 0) return null;
 
@@ -18,34 +45,44 @@ export function FloatingCartButton() {
   const lastItem = items[items.length - 1];
   const thumbSrc = lastItem?.product?.images?.[0] || null;
 
+  const isHome = pathname === '/';
+  const baseBottom = (isHome && !isBannerClosed) ? 'bottom-[136px]' : 'bottom-[80px]';
+  
+  // Slide to bottom edge when scrolled down, instead of completely hiding
+  const hideClass = isScrolledDown ? 'translate-y-[calc(100%+16px)]' : 'translate-y-0';
+  
+  // Actually, using bottom is smoother if we just switch the class, or use a custom translate.
+  // We can just use the bottom position for everything to avoid conflict between bottom and translate.
+  const bottomClass = isScrolledDown ? 'bottom-4' : `${baseBottom} lg:bottom-6`;
+
   return (
-    <div className="fixed bottom-[80px] lg:bottom-6 left-0 right-0 z-[100000] px-4 pointer-events-none">
-      <div className="max-w-[340px] mx-auto pointer-events-auto">
+    <div className={`fixed ${bottomClass} left-0 right-0 z-[100000] px-4 pointer-events-none flex justify-center transition-all duration-300`}>
+      <div className="w-fit pointer-events-auto">
         <Link
           href="/cart"
-          className="flex items-center justify-between bg-[#0f8a3c] rounded-[16px] px-4 py-3 shadow-[0_8px_24px_rgba(15,138,60,0.35)] active:scale-[0.98] transition-transform"
+          className="flex items-center gap-4 sm:gap-6 bg-gradient-to-r from-[#0a7032] to-[#16a34a] rounded-full px-3 py-2 sm:px-4 sm:py-2.5 shadow-[0_8px_30px_rgba(22,163,74,0.4)] active:scale-[0.98] hover:scale-[1.02] transition-all duration-300 ring-2 ring-white/20"
         >
           {/* Left: thumbnail + text */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {thumbSrc ? (
-              <div className="w-11 h-11 rounded-xl bg-white/20 overflow-hidden relative flex-shrink-0">
-                <Image src={thumbSrc} alt="Cart item" fill className="object-contain p-1" unoptimized />
+              <div className="w-9 h-9 rounded-full bg-white/20 overflow-hidden relative flex-shrink-0 shadow-inner">
+                <Image src={thumbSrc} alt="Cart item" fill className="object-contain p-1 mix-blend-multiply" unoptimized />
               </div>
             ) : (
-              <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-xl">🛒</span>
+              <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 shadow-inner">
+                <span className="text-sm">🛒</span>
               </div>
             )}
-            <div>
-              <p className="text-white font-black text-[15px] leading-tight">View cart</p>
-              <p className="text-white/80 text-[12px] font-semibold">{totalItems} item{totalItems > 1 ? 's' : ''}</p>
+            <div className="flex flex-col justify-center">
+              <p className="text-white font-black text-[13px] sm:text-[14px] leading-tight tracking-wide">View cart</p>
+              <p className="text-white/90 text-[10px] sm:text-[11px] font-bold">{totalItems} item{totalItems > 1 ? 's' : ''}</p>
             </div>
           </div>
 
           {/* Right: total + arrow */}
-          <div className="flex items-center gap-2">
-            <p className="text-white font-black text-[15px]">₹{totalPrice}</p>
-            <ChevronRight size={20} className="text-white/80" />
+          <div className="flex items-center gap-1 bg-black/20 rounded-full pl-3 pr-2 py-1 border border-white/10">
+            <p className="text-white font-black text-[13px] sm:text-[14px]">₹{totalPrice}</p>
+            <ChevronRight size={16} className="text-white/90 ml-0.5" />
           </div>
         </Link>
       </div>

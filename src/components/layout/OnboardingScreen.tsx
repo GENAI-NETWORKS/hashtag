@@ -58,7 +58,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
           <div className="flex gap-3 animate-scroll-left">
             {[...bgImages, ...bgImages].map((img, i) => (
               <div key={i} className="w-[100px] h-[100px] flex-shrink-0 rounded-2xl overflow-hidden relative flex items-center justify-center p-2 shadow-sm" style={{ backgroundColor: img.bg }}>
-                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
+                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized priority={true} />
               </div>
             ))}
           </div>
@@ -66,7 +66,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
           <div className="flex gap-3 animate-scroll-right" style={{ animationDuration: '50s' }}>
             {[...bgImages, ...bgImages].reverse().map((img, i) => (
               <div key={i} className="w-[100px] h-[100px] flex-shrink-0 rounded-2xl overflow-hidden relative flex items-center justify-center p-2 shadow-sm" style={{ backgroundColor: img.bg }}>
-                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
+                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized priority={true} />
               </div>
             ))}
           </div>
@@ -74,7 +74,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
           <div className="flex gap-3 animate-scroll-left" style={{ animationDuration: '40s' }}>
             {[...bgImages.slice(4), ...bgImages.slice(0, 4), ...bgImages.slice(4), ...bgImages.slice(0, 4)].map((img, i) => (
               <div key={i} className="w-[100px] h-[100px] flex-shrink-0 rounded-2xl overflow-hidden relative flex items-center justify-center p-2 shadow-sm" style={{ backgroundColor: img.bg }}>
-                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
+                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized priority={true} />
               </div>
             ))}
           </div>
@@ -82,7 +82,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
           <div className="flex gap-3 animate-scroll-right" style={{ animationDuration: '48s' }}>
             {[...bgImages.slice(2), ...bgImages.slice(0, 2), ...bgImages.slice(2), ...bgImages.slice(0, 2)].map((img, i) => (
               <div key={i} className="w-[100px] h-[100px] flex-shrink-0 rounded-2xl overflow-hidden relative flex items-center justify-center p-2 shadow-sm" style={{ backgroundColor: img.bg }}>
-                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized />
+                <Image src={img.src} alt="" fill className="object-contain p-2 mix-blend-multiply" unoptimized priority={true} />
               </div>
             ))}
           </div>

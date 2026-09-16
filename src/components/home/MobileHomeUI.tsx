@@ -52,14 +52,14 @@ const CATEGORY_GROUPS = [
 ];
 
 const CATEGORIES = [
-  { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', icon: Shirt, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/categories/cat_tshirts.jpg' },
-  { id: 2, name: 'Notebooks', slug: 'custom-notebook-printing', icon: BookOpen, color: '#FFD700', bg: '#fffdf0', image: '/uploads/categories/cat_notebooks.jpg' },
-  { id: 3, name: 'Photo Mugs', slug: 'custom-mug-printing', icon: Coffee, color: '#00AEEF', bg: '#e0f7ff', image: '/uploads/categories/cat_mugs.jpg' },
-  { id: 4, name: 'Canvas Prints', slug: 'photo-printing-online', icon: ImageIcon, color: '#7c3aed', bg: '#f5f3ff', image: '/uploads/categories/cat_canvas.jpg' },
-  { id: 5, name: 'Business Cards', slug: 'business-card-printing', icon: CreditCard, color: '#16a34a', bg: '#f0fff4', image: '/uploads/categories/cat_bizcards.jpg' },
-  { id: 6, name: 'Stickers', slug: 'custom-sticker-printing', icon: Tag, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/categories/cat_stickers.jpg' },
-  { id: 7, name: 'Bulk Orders', slug: 'bulk-printing', icon: Package, color: '#0090c5', bg: '#e0f7ff', image: '/uploads/categories/cat_bulk.jpg' },
-  { id: 8, name: 'Custom Gifts', slug: 'custom-gifts-printing', icon: Gift, color: '#d97706', bg: '#fffbeb', image: '/uploads/categories/cat_gifts.jpg' },
+  { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', icon: Shirt, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/products/tshirt.jpg' },
+  { id: 2, name: 'Notebooks', slug: 'custom-notebook-printing', icon: BookOpen, color: '#FFD700', bg: '#fffdf0', image: '/uploads/products/A5 Spiral Custom Notebook.png' },
+  { id: 3, name: 'Photo Mugs', slug: 'custom-mug-printing', icon: Coffee, color: '#00AEEF', bg: '#e0f7ff', image: '/uploads/products/Custom Photo Magic Mug.png' },
+  { id: 4, name: 'Canvas Prints', slug: 'photo-printing-online', icon: ImageIcon, color: '#7c3aed', bg: '#f5f3ff', image: '/uploads/products/Premium Canvas Photo Print.png' },
+  { id: 5, name: 'Business Cards', slug: 'business-card-printing', icon: CreditCard, color: '#16a34a', bg: '#f0fff4', image: '/uploads/products/Standard Business Cards (100 pcs).png' },
+  { id: 6, name: 'Stickers', slug: 'custom-sticker-printing', icon: Tag, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/products/Custom Die-Cut Vinyl Stickers.png' },
+  { id: 7, name: 'Bulk Orders', slug: 'bulk-printing', icon: Package, color: '#0090c5', bg: '#e0f7ff', image: '/uploads/products/Bulk T-Shirt Printing (50 pcs).png' },
+  { id: 8, name: 'Custom Gifts', slug: 'custom-gifts-printing', icon: Gift, color: '#d97706', bg: '#fffbeb', image: '/uploads/products/Corporate Gifting Set.png' },
 ];
 
 const PRODUCTS = [
@@ -108,9 +108,6 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: {
     e.preventDefault();
     e.stopPropagation();
     toggleWishlist(product.id);
-    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', {
-      icon: isWishlisted ? '💔' : '❤️',
-    });
   };
 
   const handleQuickAdd = (e: React.MouseEvent) => {
@@ -356,6 +353,34 @@ export function MobileHomeUI() {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  // Floating Banner State
+  const [isBannerVisible, setIsBannerVisible] = useState(true);
+  const [bannerIndex, setBannerIndex] = useState(0);
+  const [isBannerHiddenByScroll, setIsBannerHiddenByScroll] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsBannerHiddenByScroll(true);
+      } else if (currentScrollY < lastScrollY) {
+        setIsBannerHiddenByScroll(false);
+      }
+      setLastScrollY(currentScrollY);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  useEffect(() => {
+    if (!isBannerVisible) return;
+    const timer = setInterval(() => {
+      setBannerIndex(prev => (prev === 0 ? 1 : 0));
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [isBannerVisible]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -660,38 +685,48 @@ export function MobileHomeUI() {
       </div>
 
       {/* Floating Free Delivery Banner - Full Width */}
-      <div className="fixed bottom-[64px] lg:bottom-0 left-0 right-0 z-40 w-full pointer-events-none">
-         <div className="bg-white pointer-events-auto shadow-[0_-4px_16px_rgba(0,0,0,0.1)] border-t border-gray-200 p-2.5 px-4 flex items-center justify-between max-w-[600px] mx-auto">
-            <div className="flex items-center gap-3">
-               <div className="text-[#0284c7]">
-                 <Bike size={32} strokeWidth={1.5} />
-               </div>
-               <div>
-                  <h4 className="text-[#0284c7] font-bold text-[14px] leading-tight">Get FREE delivery</h4>
-                  <p className="text-[12px] font-medium text-gray-500 mt-0.5">on your order above ₹999 <ChevronRight size={12} className="inline opacity-60 -mt-0.5" /></p>
-               </div>
-            </div>
-            <div className="flex items-center gap-3 pr-1">
-               <button className="w-6 h-6 flex items-center justify-center bg-gray-50 rounded-full text-gray-400 border border-gray-100 hover:bg-gray-100 transition-colors">
-                 <X size={14} />
-               </button>
-               <div className="flex flex-col items-center gap-0.5 border-l border-gray-200 pl-3">
-                 <span className="text-[10px] font-bold text-gray-500 leading-none">1/2</span>
-                 <div className="flex gap-1 mt-0.5">
-                   <div className="w-1 h-1 bg-[#111] rounded-full" />
-                   <div className="w-1 h-1 bg-gray-300 rounded-full" />
+      {/* Floating Banner - Full Width */}
+      {isBannerVisible && (
+        <div className={`fixed bottom-[64px] lg:bottom-0 left-0 right-0 z-40 w-full pointer-events-none transition-transform duration-300 ${isBannerHiddenByScroll ? 'translate-y-[150px]' : 'translate-y-0'}`}>
+           <div className="bg-white pointer-events-auto shadow-[0_-4px_16px_rgba(0,0,0,0.1)] border-t border-gray-200 p-2.5 px-4 flex items-center justify-between max-w-[600px] mx-auto">
+              <div className="flex items-center gap-3">
+                 <div className="text-[#0284c7]">
+                   {bannerIndex === 0 ? <Bike size={32} strokeWidth={1.5} /> : <Tag size={32} strokeWidth={1.5} />}
                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+                 <div className="min-w-[200px] transition-opacity duration-300">
+                    <h4 className="text-[#0284c7] font-bold text-[14px] leading-tight">
+                      {bannerIndex === 0 ? 'Get FREE delivery' : 'Extra 10% OFF'}
+                    </h4>
+                    <p className="text-[12px] font-medium text-gray-500 mt-0.5">
+                      {bannerIndex === 0 ? 'on your order above ₹999' : 'on your first order using NEW10'} <ChevronRight size={12} className="inline opacity-60 -mt-0.5" />
+                    </p>
+                 </div>
+              </div>
+              <div className="flex items-center gap-3 pr-1">
+                 <button onClick={() => { setIsBannerVisible(false); window.dispatchEvent(new Event('bannerClosed')); }} className="w-6 h-6 flex items-center justify-center bg-gray-50 rounded-full text-gray-400 border border-gray-100 hover:bg-gray-100 transition-colors">
+                   <X size={14} />
+                 </button>
+                 <div className="flex flex-col items-center gap-0.5 border-l border-gray-200 pl-3">
+                   <span className="text-[10px] font-bold text-gray-500 leading-none">{bannerIndex + 1}/2</span>
+                   <div className="flex gap-1 mt-0.5">
+                     <div className={`w-1 h-1 rounded-full ${bannerIndex === 0 ? 'bg-[#111]' : 'bg-gray-300'}`} />
+                     <div className={`w-1 h-1 rounded-full ${bannerIndex === 1 ? 'bg-[#111]' : 'bg-gray-300'}`} />
+                   </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+      )}
 
       <FloatingCartButton />
-      
       <ProductBottomSheet 
         product={selectedProduct} 
         isOpen={isBottomSheetOpen} 
         onClose={() => setIsBottomSheetOpen(false)} 
+        onSelectProduct={(p) => {
+          setSelectedProduct(p);
+          setIsBottomSheetOpen(true);
+        }}
       />
     </>
   );

@@ -18,7 +18,6 @@ function WishlistCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
     e.preventDefault();
     e.stopPropagation();
     toggleWishlist(product.id);
-    toast('Removed from wishlist', { icon: '💔' });
   };
 
   return (
@@ -51,7 +50,6 @@ function WishlistCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
               e.stopPropagation();
               // @ts-ignore
               addItem({ id: product.id, name: product.name, basePrice: product.price, images: [product.image], slug: product.slug, categoryId: 1 });
-              toast.success('Added to cart!');
             }}
             className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
           >

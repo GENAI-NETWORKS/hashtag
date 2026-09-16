@@ -38,9 +38,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     setAdding(false);
     setAdded(true);
 
-    toast.success(`${product.name.split(' ').slice(0, 3).join(' ')} added to cart`, {
-      id: `cart-${product.id}`,
-    });
+
 
     setTimeout(() => setAdded(false), 2000);
   };

@@ -55,7 +55,6 @@ export default function ProductDetailPage() {
 
   const handleWishlist = () => {
     toggleWishlist(product.id);
-    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', { icon: isWishlisted ? '💔' : '❤️' });
   };
 
   const handleAddToCart = () => {
@@ -97,7 +96,6 @@ export default function ProductDetailPage() {
       );
       
       setAdded(true);
-      toast.success('Added to cart!');
       setTimeout(() => setAdded(false), 2000);
     } catch (err: any) {
       alert("Error adding to cart: " + err.message);

@@ -22,11 +22,6 @@ function CartItemRow({ item }: { item: LocalCartItem }) {
 
   const handleRemove = () => {
     removeItem(item.id);
-    toast('Item removed from cart', {
-      icon: null,
-      style: { background: '#111', color: '#fff' },
-      duration: 2000,
-    });
   };
 
   return (
@@ -172,7 +167,7 @@ export default function CartPage() {
           Your Cart ({items.length} {items.length === 1 ? 'item' : 'items'})
         </h1>
         <button
-          onClick={() => { clearCart(); toast('Cart cleared'); }}
+          onClick={() => { clearCart(); }}
           className="text-xs text-[#888] hover:text-[#EC008C] font-medium transition-colors flex items-center gap-1"
         >
           <Trash2 size={12} /> Clear all

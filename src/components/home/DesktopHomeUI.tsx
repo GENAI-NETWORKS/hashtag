@@ -26,14 +26,14 @@ import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
 // ─── DEMO DATA (works without DB) ──────────────────────────────────────────
 
 const CATEGORIES = [
-  { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', icon: Shirt, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/categories/cat_tshirts.jpg' },
-  { id: 2, name: 'Notebooks', slug: 'custom-notebook-printing', icon: BookOpen, color: '#FFD700', bg: '#fffdf0', image: '/uploads/categories/cat_notebooks.jpg' },
-  { id: 3, name: 'Photo Mugs', slug: 'custom-mug-printing', icon: Coffee, color: '#00AEEF', bg: '#e0f7ff', image: '/uploads/categories/cat_mugs.jpg' },
-  { id: 4, name: 'Canvas Prints', slug: 'photo-printing-online', icon: ImageIcon, color: '#7c3aed', bg: '#f5f3ff', image: '/uploads/categories/cat_canvas.jpg' },
-  { id: 5, name: 'Business Cards', slug: 'business-card-printing', icon: CreditCard, color: '#16a34a', bg: '#f0fff4', image: '/uploads/categories/cat_bizcards.jpg' },
-  { id: 6, name: 'Stickers', slug: 'custom-sticker-printing', icon: Tag, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/categories/cat_stickers.jpg' },
-  { id: 7, name: 'Bulk Orders', slug: 'bulk-printing', icon: Package, color: '#0090c5', bg: '#e0f7ff', image: '/uploads/categories/cat_bulk.jpg' },
-  { id: 8, name: 'Custom Gifts', slug: 'custom-gifts-printing', icon: Gift, color: '#d97706', bg: '#fffbeb', image: '/uploads/categories/cat_gifts.jpg' },
+  { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', icon: Shirt, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/products/tshirt.jpg' },
+  { id: 2, name: 'Notebooks', slug: 'custom-notebook-printing', icon: BookOpen, color: '#FFD700', bg: '#fffdf0', image: '/uploads/products/A5 Spiral Custom Notebook.png' },
+  { id: 3, name: 'Photo Mugs', slug: 'custom-mug-printing', icon: Coffee, color: '#00AEEF', bg: '#e0f7ff', image: '/uploads/products/Custom Photo Magic Mug.png' },
+  { id: 4, name: 'Canvas Prints', slug: 'photo-printing-online', icon: ImageIcon, color: '#7c3aed', bg: '#f5f3ff', image: '/uploads/products/Premium Canvas Photo Print.png' },
+  { id: 5, name: 'Business Cards', slug: 'business-card-printing', icon: CreditCard, color: '#16a34a', bg: '#f0fff4', image: '/uploads/products/Standard Business Cards (100 pcs).png' },
+  { id: 6, name: 'Stickers', slug: 'custom-sticker-printing', icon: Tag, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/products/Custom Die-Cut Vinyl Stickers.png' },
+  { id: 7, name: 'Bulk Orders', slug: 'bulk-printing', icon: Package, color: '#0090c5', bg: '#e0f7ff', image: '/uploads/products/Bulk T-Shirt Printing (50 pcs).png' },
+  { id: 8, name: 'Custom Gifts', slug: 'custom-gifts-printing', icon: Gift, color: '#d97706', bg: '#fffbeb', image: '/uploads/products/Corporate Gifting Set.png' },
 ];
 
 const PRODUCTS = [
@@ -79,7 +79,6 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: { produ
     e.preventDefault();
     e.stopPropagation();
     toggleWishlist(product.id);
-    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', { icon: isWishlisted ? '💔' : '❤️' });
   };
 
   const Wrapper = onSelectProduct ? 'div' : Link;

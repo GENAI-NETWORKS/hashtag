@@ -9,6 +9,7 @@ import {
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import toast from 'react-hot-toast';
+import { ALL_PRODUCTS, ProductCard } from '@/app/products/page';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface DemoProduct {
@@ -27,6 +28,7 @@ interface ProductBottomSheetProps {
   product: DemoProduct | null;
   isOpen: boolean;
   onClose: () => void;
+  onSelectProduct?: (product: any) => void;
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -41,7 +43,7 @@ const COLORS  = [
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSheetProps) {
+export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }: ProductBottomSheetProps) {
   // Sheet expansion state
   const [isFullScreen, setIsFullScreen]   = useState(false);
   // Selection state
@@ -51,8 +53,9 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
   const [addedToCart,   setAddedToCart]   = useState(false);
 
   // Cart store
-  const addItem  = useCartStore(s => s.addItem);
-  const items    = useCartStore(s => s.items);
+  const addItem         = useCartStore(s => s.addItem);
+  const items           = useCartStore(s => s.items);
+  const updateQuantity  = useCartStore(s => s.updateQuantity);
 
   const scrollRef   = useRef<HTMLDivElement>(null);
   const sheetRef    = useRef<HTMLDivElement>(null);
@@ -100,6 +103,15 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
 
   // ── Add to cart ──────────────────────────────────────────────────────────────
   const handleAddToCart = () => {
+    if (!selectedSize || !selectedColor) {
+      setIsFullScreen(true);
+      toast.error('Please select a size and colour', { id: 'variant-toast' });
+      if (scrollRef.current) {
+        scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
     // Build a synthetic Product object that matches the real Product interface
     const syntheticProduct = {
       id:           product.id,
@@ -134,7 +146,6 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
 
     addItem(syntheticProduct, syntheticVariant, undefined, qty);
     setAddedToCart(true);
-    toast.success(`Added to cart — Size: ${selectedSize}, Color: ${selectedColor}`, { icon: '🛒', duration: 2500 });
   };
 
   // ── Drag handler ──────────────────────────────────────────────────────────────
@@ -349,7 +360,14 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
                   <h3 className="text-[14px] font-black text-[#111]">Quantity</h3>
                   <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden">
                     <button
-                      onClick={() => setQty(q => Math.max(1, q - 1))}
+                      onClick={() => {
+                        const newQty = Math.max(1, qty - 1);
+                        setQty(newQty);
+                        if (addedToCart) {
+                          const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
+                          if (cartItem) updateQuantity(cartItem.id, newQty);
+                        }
+                      }}
                       className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
                     >
                       <Minus size={16} />
@@ -417,6 +435,18 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
                 </div>
               </div>
 
+              {/* ── Relevant Products (Only visible in Full Screen) ── */}
+              {isFullScreen && (
+                <div className="bg-white border-t border-gray-100 px-4 pt-4 pb-8">
+                  <h3 className="text-[15px] font-black text-[#111] mb-3">Relevant Products</h3>
+                  <div className="grid grid-cols-2 gap-3 pb-8">
+                    {ALL_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
+                      <ProductCard key={p.id} product={p} onSelect={onSelectProduct} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
             </div>
             {/* end scrollable */}
 
@@ -440,11 +470,21 @@ export function ProductBottomSheet({ product, isOpen, onClose }: ProductBottomSh
                     </div>
                   </div>
                   <div className="flex items-center border-2 border-[#0f8a3c] rounded-xl overflow-hidden">
-                    <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
+                    <button onClick={() => {
+                      const newQty = Math.max(1, qty - 1);
+                      setQty(newQty);
+                      const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
+                      if (cartItem) updateQuantity(cartItem.id, newQty);
+                    }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
                       <Minus size={16} />
                     </button>
                     <span className="w-9 text-center text-[15px] font-black text-[#0f8a3c]">{qty}</span>
-                    <button onClick={() => { setQty(q => q + 1); handleAddToCart(); }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
+                    <button onClick={() => {
+                      const newQty = qty + 1;
+                      setQty(newQty);
+                      const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
+                      if (cartItem) updateQuantity(cartItem.id, newQty);
+                    }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
                       <Plus size={16} />
                     </button>
                   </div>

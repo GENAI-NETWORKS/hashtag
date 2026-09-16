@@ -4,11 +4,13 @@ import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { SlidersHorizontal, ArrowUpDown, X, Star, Zap, ShoppingCart, Check, Plus, ChevronRight, BookOpen, Coffee, ImageIcon, CreditCard, Package, Gift, Shirt, Tag, Heart } from 'lucide-react';
+import { SlidersHorizontal, ArrowUpDown, X, Star, Zap, ShoppingCart, Check, Plus, ChevronRight, ChevronDown, BookOpen, Coffee, ImageIcon, CreditCard, Package, Gift, Shirt, Tag, Heart, LayoutGrid } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { ProductBottomSheet } from '@/components/ui/ProductBottomSheet';
+import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
 
 // ─── Demo product data ─────────────────────────────────────────
 export const ALL_PRODUCTS = [
@@ -34,15 +36,14 @@ export const ALL_PRODUCTS = [
 ];
 
 const CATEGORIES = [
-  { slug:'', name:'All', icon: SlidersHorizontal },
-  { slug:'custom-tshirt-printing', name:'T-Shirts', icon: Shirt },
-  { slug:'custom-notebook-printing', name:'Notebooks', icon: BookOpen },
-  { slug:'custom-mug-printing', name:'Photo Mugs', icon: Coffee },
-  { slug:'photo-printing-online', name:'Canvas', icon: ImageIcon },
-  { slug:'business-card-printing', name:'Cards', icon: CreditCard },
-  { slug:'custom-sticker-printing', name:'Stickers', icon: Tag },
-  { slug:'bulk-printing', name:'Bulk', icon: Package },
-  { slug:'custom-gifts-printing', name:'Gifts', icon: Gift },
+  { slug:'custom-tshirt-printing', name:'T-Shirts', icon: Shirt, image: '/uploads/products/tshirt.jpg' },
+  { slug:'custom-notebook-printing', name:'Notebooks', icon: BookOpen, image: '/uploads/products/A5 Spiral Custom Notebook.png' },
+  { slug:'custom-mug-printing', name:'Photo Mugs', icon: Coffee, image: '/uploads/products/Custom Photo Magic Mug.png' },
+  { slug:'photo-printing-online', name:'Canvas', icon: ImageIcon, image: '/uploads/products/Premium Canvas Photo Print.png' },
+  { slug:'business-card-printing', name:'Cards', icon: CreditCard, image: '/uploads/products/Standard Business Cards (100 pcs).png' },
+  { slug:'custom-sticker-printing', name:'Stickers', icon: Tag, image: '/uploads/products/Custom Die-Cut Vinyl Stickers.png' },
+  { slug:'bulk-printing', name:'Bulk', icon: Package, image: '/uploads/products/Bulk T-Shirt Printing (50 pcs).png' },
+  { slug:'custom-gifts-printing', name:'Gifts', icon: Gift, image: '/uploads/products/Corporate Gifting Set.png' },
 ];
 
 const SORT_OPTIONS = [
@@ -60,7 +61,7 @@ const PRICE_RANGES = [
   { label:'Above ₹1000', min:1000, max:999999 },
 ];
 
-function ProductCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
+export function ProductCard({ product, onSelect }: { product: any, onSelect?: (product: any) => void }) {
   const router = useRouter();
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isWishlisted = useWishlistStore((s) => s.hasItem(product.id));
@@ -68,18 +69,30 @@ function ProductCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    router.push(`/products/${product.slug}`);
+    if (onSelect) {
+      onSelect(product);
+    } else {
+      router.push(`/products/${product.slug}`);
+    }
   };
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     toggleWishlist(product.id);
-    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', { icon: isWishlisted ? '💔' : '❤️' });
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (onSelect) {
+      e.preventDefault();
+      onSelect(product);
+    } else {
+      router.push(`/products/${product.slug}`);
+    }
   };
 
   return (
-    <Link href={`/products/${product.slug}`} className="card overflow-hidden flex flex-col group relative" aria-label={product.name}>
+    <div onClick={handleClick} className="card overflow-hidden flex flex-col group relative cursor-pointer" aria-label={product.name}>
       <div className="relative overflow-hidden bg-[#f8f9fa] aspect-square">
         <Image src={product.image} alt={product.name} fill sizes="(max-width:640px) 50vw,33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" unoptimized />
         {product.bestseller && (
@@ -107,14 +120,17 @@ function ProductCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
             <span className="text-[13px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
             <span className="text-[9px] sm:text-[10px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
           </div>
-          <button onClick={handleAdd}
-            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
-            aria-label="View details">
-            <span className="whitespace-nowrap px-1">View</span>
-          </button>
+          <div className="flex flex-col items-end flex-shrink-0">
+            <button onClick={handleAdd}
+              className="flex items-center justify-center px-4 py-1.5 rounded-md border border-[#0f8a3c] bg-green-50/50 text-[#0f8a3c] text-xs font-black transition-all duration-200 shadow-sm uppercase tracking-wide"
+              aria-label="Add to cart">
+              ADD
+            </button>
+            <span className="text-[9px] text-[#888] mt-1 pr-1 font-medium">options</span>
+          </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -122,6 +138,13 @@ function ProductsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [showSort, setShowSort] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+
+  const handleSelectProduct = (product: any) => {
+    setSelectedProduct(product);
+    setIsBottomSheetOpen(true);
+  };
 
   const category = searchParams.get('category') || '';
   const search = searchParams.get('search') || '';
@@ -155,86 +178,91 @@ function ProductsContent() {
   const hasFilters = !!(category || search || minPrice || maxPrice < 999999);
 
   return (
-    <div className="container-app py-4">
-
-      <div className="mb-4">
-        <h1 className="text-xl font-black text-[#111]">
-          {search ? `Results for "${search}"` : activeCategory?.name || 'All Products'}
-        </h1>
-        <p className="text-sm text-[#888]">{products.length} products</p>
-      </div>
-
-      {/* Category chips */}
-      <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-3 mb-3">
+    <div className="flex-1 flex overflow-hidden bg-white">
+      {/* Left Sidebar (Categories) */}
+      <div className="w-[80px] sm:w-[100px] flex-shrink-0 border-r border-gray-100 overflow-y-auto scrollbar-hide bg-gray-50/50 pb-20">
         {CATEGORIES.map((cat) => {
-          const Icon = cat.icon;
           const isActive = category === cat.slug;
           return (
             <button key={cat.slug} onClick={() => updateParam('category', cat.slug)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold flex-shrink-0 transition-all border"
-              style={{ background: isActive ? '#00AEEF' : 'white', color: isActive ? 'white' : '#444', borderColor: isActive ? '#00AEEF' : '#e5e7eb' }}>
-              <Icon size={13} /> {cat.name}
+              className={`w-full flex flex-col items-center py-4 px-1 gap-2 relative transition-colors ${isActive ? 'bg-white' : 'hover:bg-gray-100'}`}>
+              {isActive && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#0f8a3c] rounded-r-md" />}
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-white border border-gray-200 relative shadow-sm flex-shrink-0 flex items-center justify-center">
+                {cat.image ? (
+                  <Image src={cat.image} alt={cat.name} fill className="object-cover" sizes="48px" />
+                ) : (
+                  <cat.icon size={20} className="text-gray-400" />
+                )}
+              </div>
+              <span className={`text-[10px] leading-tight text-center ${isActive ? 'font-bold text-[#111]' : 'font-semibold text-[#666]'}`}>
+                {cat.name}
+              </span>
             </button>
           );
         })}
       </div>
 
-      {/* Filter bar */}
-      <div className="flex items-center gap-2 mb-4 overflow-x-auto scrollbar-hide pb-1">
-        <button onClick={() => setShowSort(true)}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-full border border-[#e5e7eb] bg-white text-xs font-semibold text-[#444] flex-shrink-0">
-          <ArrowUpDown size={13} /> Sort
-        </button>
-        {PRICE_RANGES.map((range) => {
-          const isActive = minPrice === range.min && (maxPrice === range.max || (range.max === 999999 && maxPrice >= 999999));
-          return (
-            <button key={range.label} onClick={() => {
-              if (isActive) { updateParam('minPrice', ''); updateParam('maxPrice', ''); }
-              else { updateParam('minPrice', range.min.toString()); updateParam('maxPrice', range.max.toString()); }
-            }}
-              className="flex-shrink-0 px-3 py-2 rounded-full border text-xs font-semibold transition-all"
-              style={{ borderColor: isActive ? '#00AEEF' : '#e5e7eb', background: isActive ? '#00AEEF' : 'white', color: isActive ? 'white' : '#444' }}>
-              {range.label}
-            </button>
-          );
-        })}
-        {hasFilters && (
-          <button onClick={() => router.push('/products')}
-            className="flex items-center gap-1 flex-shrink-0 px-3 py-2 rounded-full border border-[#e5e7eb] bg-white text-xs font-semibold text-[#EC008C]">
-            <X size={11} /> Clear
-          </button>
-        )}
-      </div>
+      {/* Right Content Area */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide bg-white relative pb-20">
+        <div className="p-3 sm:p-4">
+          
+          {/* Header */}
+          <div className="mb-3 border-b border-gray-100 pb-2">
+            <h1 className="text-[16px] font-black text-[#111]">
+              {search ? `Results for "${search}"` : activeCategory?.name || 'All'}
+            </h1>
+            <p className="text-[11px] text-[#888]">{products.length} products</p>
+          </div>
 
-      {/* Grid */}
-      {products.length === 0 ? (
-        <div className="text-center py-20">
-          <SlidersHorizontal size={48} className="mx-auto text-[#ccc] mb-4" />
-          <h3 className="text-lg font-bold text-[#111] mb-2">No products found</h3>
-          <p className="text-sm text-[#888] mb-6">Try adjusting your filters.</p>
-          <button onClick={() => router.push('/products')} className="btn btn-primary btn-sm">Clear filters</button>
+          {/* Filters Row */}
+          <div className="flex items-center gap-2 mb-4 sticky top-0 bg-white/95 backdrop-blur-sm py-2 z-10 -mx-3 px-3 sm:-mx-4 sm:px-4 overflow-x-auto scrollbar-hide shadow-[0_4px_6px_-6px_rgba(0,0,0,0.1)]">
+            <button onClick={() => setShowSort(true)} className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[13px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
+              <SlidersHorizontal size={14} className="text-gray-500" /> Filters <ChevronDown size={14} className="text-gray-500" />
+            </button>
+            <button onClick={() => setShowSort(true)} className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[13px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
+              <ArrowUpDown size={14} className="text-gray-500" /> Sort <ChevronDown size={14} className="text-gray-500" />
+            </button>
+            <button className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[13px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
+              Material <ChevronDown size={14} className="text-gray-500" />
+            </button>
+            {hasFilters && (
+              <button onClick={() => router.push('/products')} className="flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full border border-red-200 text-[13px] font-semibold text-red-600 bg-red-50 whitespace-nowrap">
+                <X size={14} /> Clear
+              </button>
+            )}
+          </div>
+
+          {/* Grid */}
+          {products.length === 0 ? (
+            <div className="text-center py-20">
+              <SlidersHorizontal size={48} className="mx-auto text-[#ccc] mb-4" />
+              <h3 className="text-lg font-bold text-[#111] mb-2">No products found</h3>
+              <p className="text-sm text-[#888] mb-6">Try adjusting your filters.</p>
+              <button onClick={() => router.push('/products')} className="px-4 py-2 bg-[#0f8a3c] text-white rounded-lg text-sm font-bold">Clear filters</button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-3 xl:grid-cols-4">
+              {products.map((p, i) => <ProductCard key={p.id} product={p} onSelect={handleSelectProduct} />)}
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="product-grid">
-          {products.map((p, i) => <ProductCard key={p.id} product={p} />)}
-        </div>
-      )}
+      </div>
 
       {/* Sort Drawer */}
       {showSort && (
         <>
-          <div className="drawer-overlay" onClick={() => setShowSort(false)} />
-          <div className="drawer-panel pb-8">
-            <div className="drawer-handle" />
+          <div className="fixed inset-0 bg-black/40 z-[100]" onClick={() => setShowSort(false)} />
+          <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-[101] pb-8 animate-slideInBottom">
+            <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto my-3" />
             <div className="p-5">
               <h3 className="font-black text-[#111] text-base mb-4">Sort By</h3>
               <div className="space-y-1">
                 {SORT_OPTIONS.map((opt) => (
                   <button key={opt.value} onClick={() => { updateParam('sort', opt.value); setShowSort(false); }}
                     className="w-full flex items-center justify-between p-3 rounded-xl text-sm font-medium transition-colors"
-                    style={{ background: sort === opt.value ? '#e0f7ff' : 'transparent', color: sort === opt.value ? '#00AEEF' : '#444' }}>
+                    style={{ background: sort === opt.value ? '#e6f7eb' : 'transparent', color: sort === opt.value ? '#0f8a3c' : '#444' }}>
                     {opt.label}
-                    {sort === opt.value && <span className="w-4 h-4 rounded-full bg-[#00AEEF] flex items-center justify-center"><span className="w-2 h-2 rounded-full bg-white" /></span>}
+                    {sort === opt.value && <span className="w-4 h-4 rounded-full bg-[#0f8a3c] flex items-center justify-center"><span className="w-2 h-2 rounded-full bg-white" /></span>}
                   </button>
                 ))}
               </div>
@@ -242,6 +270,14 @@ function ProductsContent() {
           </div>
         </>
       )}
+
+      <ProductBottomSheet 
+        product={selectedProduct} 
+        isOpen={isBottomSheetOpen} 
+        onClose={() => setIsBottomSheetOpen(false)} 
+        onSelectProduct={handleSelectProduct}
+      />
+      <FloatingCartButton />
     </div>
   );
 }
