@@ -92,17 +92,23 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     onSelectProduct(ALL_PRODUCTS[nextIndex]);
   }, [product, onSelectProduct]);
 
-  // Reset when product changes / sheet opens
+  // Reset full screen ONLY when sheet opens
   useEffect(() => {
-    if (isOpen && product) {
+    if (isOpen) {
       setIsFullScreen(false);
+    }
+  }, [isOpen]);
+
+  // Reset product state when product changes
+  useEffect(() => {
+    if (product) {
       setSelectedSize('');
       setSelectedColor('');
       setQty(1);
       setAddedToCart(false);
       if (scrollRef.current) scrollRef.current.scrollTop = 0;
     }
-  }, [isOpen, product?.id]);
+  }, [product?.id]);
 
   // Lock body scroll when sheet is open
   useEffect(() => {
