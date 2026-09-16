@@ -277,7 +277,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
                     x: { type: "spring", stiffness: 300, damping: 30 },
                     opacity: { duration: 0.2 }
                   }}
-                  drag="x"
+                  drag={isFullScreen ? "x" : false}
                   dragConstraints={{ left: 0, right: 0 }}
                   dragElastic={1}
                   dragDirectionLock
