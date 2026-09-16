@@ -428,7 +428,7 @@ export function MobileHomeUI() {
         {/* Header Row - Logo & Tagline */}
         <div className="flex flex-col relative z-10 mb-5 mt-1 items-start">
           <div className="flex items-center justify-between w-full">
-            <Link href="/" className="flex flex-col items-start gap-1.5">
+            <Link href="/" className="flex flex-row items-center gap-3">
               <div className="bg-white w-[58px] h-[58px] rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] flex items-center justify-center border-2 border-white overflow-hidden flex-shrink-0">
                 <Image
                   src="/HP_Logo.png"
@@ -440,9 +440,14 @@ export function MobileHomeUI() {
                   unoptimized
                 />
               </div>
-              <p className="text-[#FFD700] text-[11px] sm:text-[12px] font-black tracking-widest pl-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] uppercase flex items-center gap-1.5">
-                Your Ideas Printed With Heart <Heart size={10} className="fill-[#FFD700]" />
-              </p>
+              <div className="flex flex-col">
+                <span className="text-white font-black text-[15px] leading-tight drop-shadow-md tracking-wide uppercase">
+                  Your Ideas,
+                </span>
+                <span className="text-white/90 text-[10px] sm:text-[11px] font-bold tracking-widest flex items-center gap-1.5 uppercase mt-0.5">
+                  Printed With Heart <Heart size={10} className="fill-white/90 text-transparent" />
+                </span>
+              </div>
             </Link>
             
             <div className="flex items-center gap-2.5">
