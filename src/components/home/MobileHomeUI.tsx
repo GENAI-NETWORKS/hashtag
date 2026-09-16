@@ -429,7 +429,7 @@ export function MobileHomeUI() {
         <div className="flex flex-col relative z-10 mb-5 mt-1 items-start">
           <div className="flex items-center justify-between w-full">
             <Link href="/" className="flex flex-col items-start gap-1.5">
-              <div className="bg-white px-2 py-1 rounded-xl shadow-lg inline-flex items-center justify-center border border-white/20">
+              <div className="bg-white px-2 py-1 rounded-2xl shadow-lg inline-flex items-center justify-center border border-white/20 overflow-hidden">
                 <Image
                   src="/HP_Logo.png"
                   alt="Hashtag Custom Prints"
