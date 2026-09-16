@@ -264,17 +264,19 @@ export default function CartPage() {
           </div>
 
           {/* Checkout CTA */}
-          <Link
-            href="/checkout"
-            className="btn btn-primary btn-lg w-full"
-            style={{ background: 'linear-gradient(135deg, #111, #1e1e1e)' }}
-          >
-            Proceed to Checkout
-            <ChevronRight size={18} />
-          </Link>
-          <Link href="/products" className="btn btn-ghost btn-sm w-full text-[#888]">
-            Continue Shopping
-          </Link>
+          <div className="flex flex-col items-center gap-2">
+            <Link
+              href="/checkout"
+              className="btn btn-primary btn-lg w-fit px-8"
+              style={{ background: 'linear-gradient(135deg, #111, #1e1e1e)' }}
+            >
+              Proceed to Checkout
+              <ChevronRight size={18} />
+            </Link>
+            <Link href="/products" className="btn btn-ghost btn-sm w-fit text-[#888]">
+              Continue Shopping
+            </Link>
+          </div>
         </div>
       </div>
     </div>
