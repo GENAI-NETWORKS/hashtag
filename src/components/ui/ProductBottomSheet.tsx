@@ -42,6 +42,21 @@ const COLORS  = [
   { label: 'Yellow',  hex: '#FDD835', border: '#e5c100' },
 ];
 
+// ─── Swipe Animation Variants ───────────────────────────────────────────────────
+const swipeVariants = {
+  enter: (direction: number) => {
+    return { x: direction > 0 ? '100%' : '-100%', opacity: 0 };
+  },
+  center: { zIndex: 1, x: 0, opacity: 1 },
+  exit: (direction: number) => {
+    return { zIndex: 0, x: direction < 0 ? '100%' : '-100%', opacity: 0 };
+  }
+};
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset: number, velocity: number) => {
+  return Math.abs(offset) * velocity;
+};
+
 // ─── Component ────────────────────────────────────────────────────────────────
 export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }: ProductBottomSheetProps) {
   // Sheet expansion state
@@ -51,6 +66,9 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
   const [selectedColor, setSelectedColor] = useState('');
   const [qty,           setQty]           = useState(1);
   const [addedToCart,   setAddedToCart]   = useState(false);
+  
+  // Swipe state
+  const [direction, setDirection] = useState(0);
 
   // Cart store
   const addItem         = useCartStore(s => s.addItem);
@@ -59,6 +77,20 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
 
   const scrollRef   = useRef<HTMLDivElement>(null);
   const sheetRef    = useRef<HTMLDivElement>(null);
+
+  const paginate = useCallback((newDirection: number) => {
+    if (!product || !onSelectProduct) return;
+    const currentIndex = ALL_PRODUCTS.findIndex(p => p.id === product.id);
+    if (currentIndex === -1) return;
+    
+    setDirection(newDirection);
+    
+    let nextIndex = currentIndex + newDirection;
+    if (nextIndex >= ALL_PRODUCTS.length) nextIndex = 0;
+    if (nextIndex < 0) nextIndex = ALL_PRODUCTS.length - 1;
+    
+    onSelectProduct(ALL_PRODUCTS[nextIndex]);
+  }, [product, onSelectProduct]);
 
   // Reset when product changes / sheet opens
   useEffect(() => {
@@ -230,9 +262,35 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
               ref={scrollRef}
               onScroll={handleContentScroll}
               onTouchMove={handleContentScroll}
-              className="flex-1 overflow-y-auto overscroll-contain"
+              className="flex-1 overflow-x-hidden overflow-y-auto overscroll-contain relative"
               style={{ WebkitOverflowScrolling: 'touch', paddingBottom: 100 }}
             >
+              <AnimatePresence initial={false} custom={direction} mode="popLayout">
+                <motion.div
+                  key={product.id}
+                  custom={direction}
+                  variants={swipeVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 }
+                  }}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={1}
+                  dragDirectionLock
+                  onDragEnd={(e, { offset, velocity }) => {
+                    const swipe = swipePower(offset.x, velocity.x);
+                    if (swipe < -swipeConfidenceThreshold) {
+                      paginate(1);
+                    } else if (swipe > swipeConfidenceThreshold) {
+                      paginate(-1);
+                    }
+                  }}
+                  className="w-full flex flex-col"
+                >
 
               {/* Hero Image */}
               <div
@@ -446,7 +504,8 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
                   </div>
                 </div>
               )}
-
+                </motion.div>
+              </AnimatePresence>
             </div>
             {/* end scrollable */}
 
