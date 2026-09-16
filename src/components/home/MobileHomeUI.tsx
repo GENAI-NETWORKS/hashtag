@@ -441,11 +441,11 @@ export function MobileHomeUI() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-white font-black text-[15px] leading-tight drop-shadow-md tracking-wide uppercase">
+                <span className="bg-gradient-to-r from-[#00AEEF] via-[#EC008C] to-[#FFD700] bg-clip-text text-transparent font-black text-[15px] leading-tight drop-shadow-md tracking-wide uppercase">
                   Your Ideas,
                 </span>
-                <span className="text-white/90 text-[10px] sm:text-[11px] font-bold tracking-widest flex items-center gap-1.5 uppercase mt-0.5">
-                  Printed With Heart <Heart size={10} className="fill-white/90 text-transparent" />
+                <span className="text-white/95 text-[10px] sm:text-[11px] font-bold tracking-widest flex items-center gap-1.5 uppercase mt-0.5">
+                  Printed With Heart <Heart size={10} className="fill-[#EC008C] text-transparent drop-shadow-sm" />
                 </span>
               </div>
             </Link>
