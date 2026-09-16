@@ -425,28 +425,35 @@ export function MobileHomeUI() {
         {/* Authentic Indian Mandala/Rangoli Pattern */}
         <div className="absolute inset-0 opacity-[0.06] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0C30 16.568 16.568 30 0 30C16.568 30 30 43.432 30 60C30 43.432 43.432 30 60 30C43.432 30 30 16.568 30 0Z' fill='%23FFD700' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`, backgroundSize: '40px 40px' }} />
         
-        {/* Header Row - Aligned EXACTLY like Blinkit */}
-        <div className="flex flex-col relative z-10 mb-4">
-          <span className="text-[12px] font-extrabold opacity-90 tracking-wide mb-1">Hashtag in</span>
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap sm:flex-nowrap">
-              <h1 className="text-[clamp(24px,6.5vw,36px)] font-black leading-none drop-shadow-md whitespace-nowrap">24 hours</h1>
-              <div className="bg-white/20 backdrop-blur-sm px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm mt-1 whitespace-nowrap">
-                <MapPin size={11} /> 1.7 km away
+        {/* Header Row - Logo & Tagline */}
+        <div className="flex flex-col relative z-10 mb-5 mt-1 items-start">
+          <div className="flex items-center justify-between w-full">
+            <Link href="/" className="flex flex-col items-start gap-1.5">
+              <div className="bg-white px-3 py-1.5 rounded-xl shadow-lg inline-flex items-center justify-center border border-white/20">
+                <Image
+                  src="/HP_Logo.png"
+                  alt="Hashtag Custom Prints"
+                  width={130}
+                  height={42}
+                  className="h-9 w-auto object-contain"
+                  priority
+                  unoptimized
+                />
               </div>
-            </div>
-            <div className="flex items-center gap-3">
+              <p className="text-[#FFD700] text-[11px] sm:text-[12px] font-black tracking-widest pl-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] uppercase flex items-center gap-1.5">
+                Your Ideas Printed With Heart <Heart size={10} className="fill-[#FFD700]" />
+              </p>
+            </Link>
+            
+            <div className="flex items-center gap-2.5">
               <Link href="/cart" className="bg-black/40 p-2.5 rounded-full border border-white/10 relative shadow-inner touch-target hover:scale-105 transition-transform">
-                 <Wallet size={22} className="text-[#FFD700]" />
-                 <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#333] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#555] whitespace-nowrap">₹0</div>
+                 <Wallet size={20} className="text-[#FFD700]" />
+                 <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#333] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border border-[#555] whitespace-nowrap">₹0</div>
               </Link>
-              <Link href="/profile" className="bg-[#591410] p-2.5 rounded-full border border-white/10 shadow-inner touch-target hover:scale-105 transition-transform">
-                 <User size={22} />
+              <Link href="/profile" className="bg-black/40 p-2.5 rounded-full border border-white/10 shadow-inner touch-target hover:scale-105 transition-transform text-white">
+                 <User size={20} />
               </Link>
             </div>
-          </div>
-          <div className="flex items-center gap-1 mt-2 text-[13px] font-bold opacity-90">
-            HOME - Salem, TN <ChevronDown size={14} className="opacity-80" />
           </div>
         </div>
 
