@@ -412,11 +412,7 @@ export function MobileHomeUI() {
         priceRange: '₹₹', openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '09:00', closes: '20:00' },
       }) }} />
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        header.sticky-header { display: none !important; }
-        main#main-content { padding-top: 0 !important; }
-        body { background-color: #f4f6f9; }
-      `}} />
+
 
       {showOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}
 
