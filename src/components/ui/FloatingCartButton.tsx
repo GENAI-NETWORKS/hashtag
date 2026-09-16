@@ -30,6 +30,7 @@ export function FloatingCartButton() {
 
   const [isBannerClosed, setIsBannerClosed] = useState(false);
   const [isProductSheetOpen, setIsProductSheetOpen] = useState(false);
+  const [isProductSheetFullScreen, setIsProductSheetFullScreen] = useState(false);
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -38,15 +39,21 @@ export function FloatingCartButton() {
     const handleBannerClosed = () => setIsBannerClosed(true);
     const handleSheetOpened = () => setIsProductSheetOpen(true);
     const handleSheetClosed = () => setIsProductSheetOpen(false);
+    const handleSheetFullScreen = () => setIsProductSheetFullScreen(true);
+    const handleSheetPartial = () => setIsProductSheetFullScreen(false);
     
     window.addEventListener('bannerClosed', handleBannerClosed);
     window.addEventListener('productSheetOpened', handleSheetOpened);
     window.addEventListener('productSheetClosed', handleSheetClosed);
+    window.addEventListener('productSheetFullScreen', handleSheetFullScreen);
+    window.addEventListener('productSheetPartial', handleSheetPartial);
     
     return () => {
       window.removeEventListener('bannerClosed', handleBannerClosed);
       window.removeEventListener('productSheetOpened', handleSheetOpened);
       window.removeEventListener('productSheetClosed', handleSheetClosed);
+      window.removeEventListener('productSheetFullScreen', handleSheetFullScreen);
+      window.removeEventListener('productSheetPartial', handleSheetPartial);
     };
   }, []);
 
@@ -65,13 +72,15 @@ export function FloatingCartButton() {
   // Slide to bottom edge when scrolled down, instead of completely hiding
   const hideClass = isScrolledDown ? 'translate-y-[calc(100%+16px)]' : 'translate-y-0';
   
-  // Actually, using bottom is smoother if we just switch the class, or use a custom translate.
   // We can just use the bottom position for everything to avoid conflict between bottom and translate.
-  const bottomClass = isScrolledDown ? 'bottom-4' : `${baseBottom} lg:bottom-6`;
+  let bottomClass = isScrolledDown ? 'bottom-4' : `${baseBottom} lg:bottom-6`;
+  if (isProductSheetOpen) {
+    bottomClass = 'bottom-4';
+  }
   
   // If the product bottom sheet is open, we need to translate the cart up so it doesn't overlap the "Add to Cart" sticky footer.
   // 64px translation gives a perfect tight gap above the 67px tall footer (which is at bottom-0).
-  const sheetOffsetClass = isProductSheetOpen ? 'max-[1023px]:-translate-y-[64px]' : 'translate-y-0';
+  const sheetOffsetClass = (isProductSheetOpen && isProductSheetFullScreen) ? 'max-[1023px]:-translate-y-[64px]' : 'translate-y-0';
 
   return (
     <div className={`fixed ${bottomClass} left-0 right-0 z-[100000] px-4 pointer-events-none flex justify-center transition-all duration-300 ${sheetOffsetClass}`}>

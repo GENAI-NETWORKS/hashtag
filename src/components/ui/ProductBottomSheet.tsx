@@ -125,6 +125,14 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (isFullScreen) {
+      window.dispatchEvent(new Event('productSheetFullScreen'));
+    } else {
+      window.dispatchEvent(new Event('productSheetPartial'));
+    }
+  }, [isFullScreen]);
+
   const touchStartY = useRef(0);
   const touchCurrentY = useRef(0);
 
