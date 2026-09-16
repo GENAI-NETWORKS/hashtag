@@ -206,13 +206,6 @@ function ProductsContent() {
       <div className="flex-1 overflow-y-auto scrollbar-hide bg-white relative pb-20">
         <div className="p-3 sm:p-4">
           
-          {/* Header */}
-          <div className="mb-3 border-b border-gray-100 pb-2">
-            <h1 className="text-[16px] font-black text-[#111]">
-              {search ? `Results for "${search}"` : activeCategory?.name || 'All'}
-            </h1>
-            <p className="text-[11px] text-[#888]">{products.length} products</p>
-          </div>
 
           {/* Filters Row */}
           <div className="flex items-center gap-2 mb-4 sticky top-0 bg-white/95 backdrop-blur-sm py-2 z-10 -mx-3 px-3 sm:-mx-4 sm:px-4 overflow-x-auto scrollbar-hide shadow-[0_4px_6px_-6px_rgba(0,0,0,0.1)]">
