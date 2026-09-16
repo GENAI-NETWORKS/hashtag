@@ -278,7 +278,9 @@ function ProductsContent() {
 export default function ProductsPage() {
   return (
     <Suspense fallback={<div className="container-app py-4"><div className="product-grid">{[...Array(8)].map((_, i) => <div key={i} className="skeleton aspect-square rounded-2xl" />)}</div></div>}>
-      <ProductsContent />
+      <div className="flex flex-col h-[calc(100dvh-144px)] lg:h-[calc(100dvh-92px)] overflow-hidden w-full">
+        <ProductsContent />
+      </div>
     </Suspense>
   );
 }
