@@ -31,7 +31,10 @@ export function FloatingCartButton() {
   const [isBannerClosed, setIsBannerClosed] = useState(false);
   const [isProductSheetOpen, setIsProductSheetOpen] = useState(false);
 
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
+    setIsMounted(true);
     const handleBannerClosed = () => setIsBannerClosed(true);
     const handleSheetOpened = () => setIsProductSheetOpen(true);
     const handleSheetClosed = () => setIsProductSheetOpen(false);
@@ -47,7 +50,7 @@ export function FloatingCartButton() {
     };
   }, []);
 
-  if (items.length === 0) return null;
+  if (!isMounted || items.length === 0) return null;
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + ((item.product?.basePrice || 0) * item.quantity), 0);
