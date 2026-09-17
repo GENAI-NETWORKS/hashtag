@@ -151,11 +151,11 @@ function ProductDetailCard({
       {/* ── Scrollable body ── */}
       <div
         ref={scrollRef}
-        className={`flex-1 overflow-x-hidden pb-[88px] ${isExpanded ? 'overflow-y-auto' : 'overflow-y-hidden select-none'}`}
+        className="flex-1 overflow-x-hidden overflow-y-auto pb-[130px]"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {/* Hero Image */}
-        <div className="relative w-full bg-[#f8f9fa] flex flex-col" style={{ height: 'clamp(280px, 60vw, 420px)' }}>
+        <div className="relative w-full bg-[#f8f9fa] flex flex-col" style={{ height: isExpanded ? '40vh' : '35vh', minHeight: '220px' }}>
           <div className="relative flex-1 w-full mt-12 mb-8">
             <Image
               src={product.image || '/placeholder.png'}
@@ -176,11 +176,11 @@ function ProductDetailCard({
 
         {/* ── Spec Pills ── */}
         <div className="bg-white border-b border-gray-100 px-4 py-3 flex gap-2 overflow-x-auto hide-scrollbar">
-          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 min-w-[100px]">
+          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 w-fit">
             <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Delivery</p>
             <p className="text-[13px] font-black text-[#111]">Same Day</p>
           </div>
-          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 min-w-[110px]">
+          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 w-fit">
             <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Category</p>
             <p className="text-[13px] font-black text-[#111] line-clamp-1">{product.category || 'Custom'}</p>
           </div>
@@ -248,94 +248,96 @@ function ProductDetailCard({
             <ChevronRight size={18} className="text-[#aaa]" />
           </div>
 
-          {/* ── Variant Selectors (Hidden below fold in Summary View) ── */}
-          <div id={`variant-selectors-${product.id}`} className="mt-4">
-            {/* Size Selector */}
-            <div className="mb-5 border-t border-gray-100 pt-5">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-[14px] font-black text-[#111]">Select Size</h3>
-                <span className="text-[12px] text-[#0284c7] font-semibold cursor-pointer">Size Guide</span>
+          {/* ── Variant & Quantity (Hidden in Summary Mode) ── */}
+          <div className={isExpanded ? 'block' : 'hidden'}>
+            <div id={`variant-selectors-${product.id}`} className="mt-4">
+              {/* Size Selector */}
+              <div className="mb-5 border-t border-gray-100 pt-5">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-[14px] font-black text-[#111]">Select Size</h3>
+                  <span className="text-[12px] text-[#0284c7] font-semibold cursor-pointer">Size Guide</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {SIZES.map(size => (
+                    <button
+                      key={size}
+                      onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
+                      className={`px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all duration-150 active:scale-95 ${
+                        selectedSize === size
+                          ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-sm'
+                          : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {SIZES.map(size => (
-                  <button
-                    key={size}
-                    onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
-                    className={`px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all duration-150 active:scale-95 ${
-                      selectedSize === size
-                        ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-sm'
-                        : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
+
+              {/* Color Selector */}
+              <div className="mb-5 border-t border-gray-100 pt-5">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-[14px] font-black text-[#111]">Select Colour</h3>
+                  <span className="text-[12px] text-[#666] font-semibold">{selectedColor}</span>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {COLORS.map(c => (
+                    <button
+                      key={c.label}
+                      onClick={(e) => { e.stopPropagation(); setSelectedColor(c.label); }}
+                      title={c.label}
+                      className={`relative w-10 h-10 rounded-full transition-all duration-150 active:scale-90 ${
+                        selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
+                      }`}
+                      style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
+                    >
+                      {selectedColor === c.label && (
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <Check size={16} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Color Selector */}
-            <div className="mb-5 border-t border-gray-100 pt-5">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-[14px] font-black text-[#111]">Select Colour</h3>
-                <span className="text-[12px] text-[#666] font-semibold">{selectedColor}</span>
+            {/* Quantity Selector */}
+            <div className="flex items-center justify-between border-t border-gray-100 pt-5 mb-2">
+              <div>
+                <h3 className="text-[14px] font-black text-[#111]">Quantity</h3>
+                {qty >= 10 && (
+                  <p className="text-[11px] font-bold text-[#0f8a3c] mt-0.5">Bulk discount applied!</p>
+                )}
               </div>
-              <div className="flex flex-wrap gap-3">
-                {COLORS.map(c => (
-                  <button
-                    key={c.label}
-                    onClick={(e) => { e.stopPropagation(); setSelectedColor(c.label); }}
-                    title={c.label}
-                    className={`relative w-10 h-10 rounded-full transition-all duration-150 active:scale-90 ${
-                      selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
-                    }`}
-                    style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
-                  >
-                    {selectedColor === c.label && (
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <Check size={16} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
-                      </div>
-                    )}
-                  </button>
-                ))}
+              <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden" onClick={e => e.stopPropagation()}>
+                <button
+                  onClick={() => {
+                    const newQty = Math.max(1, qty - 1);
+                    setQty(newQty);
+                    if (addedToCart) {
+                      const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
+                      if (cartItem) updateQuantity(cartItem.id, newQty);
+                    }
+                  }}
+                  className="w-10 h-10 flex items-center justify-center text-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+                >
+                  <Minus size={16} />
+                </button>
+                <span className="w-10 text-center text-[15px] font-black text-[#111] bg-white leading-[40px]">{qty}</span>
+                <button
+                  onClick={() => setQty(q => Math.min(50, q + 1))}
+                  className="w-10 h-10 flex items-center justify-center text-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+                >
+                  <Plus size={16} />
+                </button>
               </div>
-            </div>
-          </div>
-
-          {/* Quantity Selector */}
-          <div className="flex items-center justify-between border-t border-gray-100 pt-5 mb-2">
-            <div>
-              <h3 className="text-[14px] font-black text-[#111]">Quantity</h3>
-              {qty >= 10 && (
-                <p className="text-[11px] font-bold text-[#0f8a3c] mt-0.5">Bulk discount applied!</p>
-              )}
-            </div>
-            <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden" onClick={e => e.stopPropagation()}>
-              <button
-                onClick={() => {
-                  const newQty = Math.max(1, qty - 1);
-                  setQty(newQty);
-                  if (addedToCart) {
-                    const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
-                    if (cartItem) updateQuantity(cartItem.id, newQty);
-                  }
-                }}
-                className="w-10 h-10 flex items-center justify-center text-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
-              >
-                <Minus size={16} />
-              </button>
-              <span className="w-10 text-center text-[15px] font-black text-[#111] bg-white leading-[40px]">{qty}</span>
-              <button
-                onClick={() => setQty(q => Math.min(50, q + 1))}
-                className="w-10 h-10 flex items-center justify-center text-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
-              >
-                <Plus size={16} />
-              </button>
             </div>
           </div>
         </div>
 
         {/* ── Relevant Products ── */}
-        <div className="bg-white border-t border-gray-100 px-4 pt-5 pb-8" onClick={e => e.stopPropagation()}>
+        <div className={`bg-white border-t border-gray-100 px-4 pt-5 pb-8 ${isExpanded ? 'block' : 'hidden'}`} onClick={e => e.stopPropagation()}>
           <h3 className="text-[15px] font-black text-[#111] mb-4">Relevant Products</h3>
           <div className="grid grid-cols-2 gap-3 pb-8">
             {ALL_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
