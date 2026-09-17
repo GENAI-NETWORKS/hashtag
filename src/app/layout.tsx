@@ -63,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.variable} antialiased flex flex-col min-h-dvh`}>
+      <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-dvh`}>
         <Providers>
           <Header />
           <main id="main-content" className="flex-1 pb-nav lg:pb-0">
