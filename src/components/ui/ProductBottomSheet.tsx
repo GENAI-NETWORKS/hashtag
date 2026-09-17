@@ -366,7 +366,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
             </div>
             <button
               onClick={handleAddToCart}
-              className="flex-1 bg-[#0f8a3c] hover:bg-[#0c7031] text-white h-11 rounded-xl text-[14px] font-black flex items-center justify-center gap-2 transition-colors shadow-md active:scale-[0.98]"
+              className="bg-[#0f8a3c] hover:bg-[#0c7031] text-white px-6 h-11 rounded-xl text-[14px] font-black flex items-center justify-center gap-2 transition-colors shadow-md active:scale-[0.98]"
             >
               Add to cart
             </button>
