@@ -15,7 +15,6 @@ import {
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
-import { ProductBottomSheet } from '@/components/ui/ProductBottomSheet';
 import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
 import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
 
@@ -60,22 +59,11 @@ const PRODUCTS = [
 import { useWishlistStore } from '@/store/wishlistStore';
 
 // ─── Product Card ──────────────────────────────────────────────
-function DemoProductCard({ product, priority = false, onSelectProduct }: { product: typeof PRODUCTS[0]; priority?: boolean; onSelectProduct?: (p: typeof PRODUCTS[0]) => void }) {
-  const router = useRouter();
+function DemoProductCard({ product, priority = false }: { product: typeof PRODUCTS[0]; priority?: boolean }) {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => setIsMounted(true), []);
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isWishlisted = useWishlistStore((s) => s.hasItem(product.id));
-
-  const handleAction = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onSelectProduct) {
-      onSelectProduct(product);
-    } else {
-      router.push(`/products/${product.slug}`);
-    }
-  };
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -83,14 +71,10 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: { produ
     toggleWishlist(product.id);
   };
 
-  const Wrapper = onSelectProduct ? 'div' : Link;
-  const wrapperProps = onSelectProduct 
-    ? { onClick: handleAction, className: "card overflow-hidden flex flex-col group relative cursor-pointer", role: "button" }
-    : { href: `/products/${product.slug}`, className: "card overflow-hidden flex flex-col group relative" };
-
   return (
-    <Wrapper
-      {...wrapperProps as any}
+    <Link
+      href={`/products/${product.slug}`}
+      className="card overflow-hidden flex flex-col group relative"
       aria-label={product.name}
     >
       <div className="relative overflow-hidden bg-[#f8f9fa] aspect-square">
@@ -128,16 +112,15 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: { produ
             <span className="text-[15px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
             <span className="text-[11px] sm:text-[12px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
           </div>
-          <button
-            onClick={handleAction}
+          <span
             className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[12px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
             aria-label="View details"
           >
             <span className="whitespace-nowrap px-1">View</span>
-          </button>
+          </span>
         </div>
       </div>
-    </Wrapper>
+    </Link>
   );
 }
 
@@ -176,7 +159,7 @@ function BlinkitHero() {
           <div className="relative z-10 p-5 w-3/4">
             <h3 className="text-xl font-black text-white mb-1 leading-tight">Custom<br />T-Shirts</h3>
             <p className="text-white/80 text-xs mb-3">Premium cotton polos & round necks</p>
-            <div className="inline-flex px-3 py-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-bold rounded-lg border border-white/30">
+            <div className="inline-flex px-3 py-1.5 bg-white/25 backdrop-blur-sm text-white text-xs font-bold rounded-lg border border-white/30">
               Order Now
             </div>
           </div>
@@ -264,15 +247,6 @@ export function DesktopHomeUI() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
 
-  // Bottom Sheet State
-  const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-
-  const handleSelectProduct = (product: typeof PRODUCTS[0]) => {
-    setSelectedProduct(product);
-    setIsBottomSheetOpen(true);
-  };
-
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
     if (!hasSeenOnboarding) {
@@ -337,7 +311,7 @@ export function DesktopHomeUI() {
             <Link href="/products?bestseller=true" className="text-xs font-semibold text-[#EC008C] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
           </div>
           <div className="product-grid">
-            {bestsellers.map((p, i) => <DemoProductCard key={p.id} product={p} priority={i < 2} onSelectProduct={handleSelectProduct} />)}
+            {bestsellers.map((p, i) => <DemoProductCard key={p.id} product={p} priority={i < 2} />)}
           </div>
         </section>
 
@@ -374,7 +348,7 @@ export function DesktopHomeUI() {
             <Link href="/products" className="text-xs font-semibold text-[#00AEEF] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
           </div>
           <div className="product-grid">
-            {featured.map((p) => <DemoProductCard key={p.id} product={p} onSelectProduct={handleSelectProduct} />)}
+            {featured.map((p) => <DemoProductCard key={p.id} product={p} />)}
           </div>
         </section>
 
@@ -439,12 +413,6 @@ export function DesktopHomeUI() {
       </div>
 
       <FloatingCartButton />
-      
-      <ProductBottomSheet 
-        product={selectedProduct} 
-        isOpen={isBottomSheetOpen} 
-        onClose={() => setIsBottomSheetOpen(false)} 
-      />
     </>
   );
 }

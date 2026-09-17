@@ -143,8 +143,12 @@ function ProductsContent() {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const handleSelectProduct = (product: any) => {
-    setSelectedProduct(product);
-    setIsBottomSheetOpen(true);
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+      router.push(`/products/${product.slug}`);
+    } else {
+      setSelectedProduct(product);
+      setIsBottomSheetOpen(true);
+    }
   };
 
   const category = searchParams.get('category') || '';
