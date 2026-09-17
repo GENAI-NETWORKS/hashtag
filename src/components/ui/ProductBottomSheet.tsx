@@ -151,7 +151,7 @@ function ProductDetailCard({
       {/* ── Scrollable body ── */}
       <div
         ref={scrollRef}
-        className={`flex-1 overflow-x-hidden flex flex-col ${isExpanded ? 'overflow-y-auto pb-[130px]' : 'overflow-y-hidden select-none pb-[88px]'}`}
+        className={`flex-1 overflow-x-hidden flex flex-col ${isExpanded ? 'overflow-y-auto pb-[130px]' : 'overflow-y-hidden select-none pb-[150px]'}`}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {/* Hero Image */}
