@@ -119,6 +119,17 @@ function ProductDetailCard({
 
     addItem(syntheticProduct, syntheticVariant, undefined, qty);
     setAddedToCart(true);
+    
+    // Trigger confetti animation
+    import('canvas-confetti').then((confetti) => {
+      confetti.default({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.8 },
+        colors: ['#00AEEF', '#EC008C', '#FFD700', '#0f8a3c'],
+        zIndex: 9999
+      });
+    });
   };
 
   return (
