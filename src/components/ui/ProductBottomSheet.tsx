@@ -38,14 +38,17 @@ interface ProductBottomSheetProps {
 function ProductDetailCard({ 
   product, 
   onClose, 
+  onCollapse,
   isExpanded, 
   onExpand 
 }: { 
   product: DemoProduct; 
-  onClose: () => void; 
+  onClose: () => void;
+  onCollapse: () => void;
   isExpanded: boolean; 
   onExpand: () => void; 
 }) {
+
   const [selectedSize,  setSelectedSize]  = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [qty,           setQty]           = useState(1);
@@ -56,33 +59,30 @@ function ProductDetailCard({
   const updateQuantity  = useCartStore(s => s.updateQuantity);
   const scrollRef       = useRef<HTMLDivElement>(null);
 
-  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientY);
+    setTouchStartY(e.targetTouches[0].clientY);
   };
-  
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart === null) return;
-    const touchEnd = e.changedTouches[0].clientY;
-    const distance = touchStart - touchEnd;
-    
-    const isAtTop = scrollRef.current ? scrollRef.current.scrollTop <= 0 : true;
 
-    if (distance > 30 && !isExpanded) {
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartY === null) return;
+    const diff = touchStartY - e.changedTouches[0].clientY;
+    const isAtTop = !scrollRef.current || scrollRef.current.scrollTop <= 2;
+    if (diff > 30 && !isExpanded) {
       onExpand();
-    } else if (distance < -30 && isExpanded && isAtTop) {
-      onClose();
+    } else if (diff < -40 && isExpanded && isAtTop) {
+      onCollapse();
     }
-    setTouchStart(null);
+    setTouchStartY(null);
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    const isAtTop = scrollRef.current ? scrollRef.current.scrollTop <= 0 : true;
-    if (e.deltaY > 30 && !isExpanded) {
+    const isAtTop = !scrollRef.current || scrollRef.current.scrollTop <= 2;
+    if (e.deltaY > 40 && !isExpanded) {
       onExpand();
-    } else if (e.deltaY < -30 && isExpanded && isAtTop) {
-      onClose();
+    } else if (e.deltaY < -40 && isExpanded && isAtTop) {
+      onCollapse();
     }
   };
 
@@ -156,12 +156,19 @@ function ProductDetailCard({
   };
 
   return (
-    <div 
-      className={`relative w-full h-full flex flex-col bg-white overflow-hidden shadow-2xl ring-1 ring-black/5 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] cursor-pointer origin-bottom ${isExpanded ? 'rounded-none scale-100' : 'rounded-3xl scale-[0.96] opacity-95 hover:scale-[0.98] hover:opacity-100'}`}
+    <motion.div
+      animate={{
+        scale: isExpanded ? 1 : 0.96,
+        opacity: isExpanded ? 1 : 0.95,
+        borderRadius: isExpanded ? '0px' : '24px',
+      }}
+      transition={{ type: 'spring', damping: 32, stiffness: 300, mass: 0.6 }}
+      className="relative w-full h-full flex flex-col bg-white overflow-hidden shadow-2xl ring-1 ring-black/5 cursor-pointer origin-bottom"
       onClick={() => { if (!isExpanded) onExpand(); }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onWheel={handleWheel}
+      style={{ willChange: 'transform, border-radius' }}
     >
       
       {/* ── Top icon bar (always visible) ── */}
@@ -189,10 +196,10 @@ function ProductDetailCard({
       <div
         ref={scrollRef}
         className={`flex-1 overflow-x-hidden flex flex-col ${isExpanded ? 'overflow-y-auto pb-[130px]' : 'overflow-y-hidden select-none pb-[150px]'}`}
-        style={{ WebkitOverflowScrolling: 'touch' }}
+        style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}
       >
         {/* Hero Image */}
-        <div className={`relative w-full bg-[#f8f9fa] flex flex-col transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isExpanded ? 'flex-none h-[42vh] min-h-[300px]' : 'flex-1 min-h-[120px]'}`}>
+        <div className={`relative w-full bg-[#f8f9fa] flex flex-col transition-[flex,height] duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isExpanded ? 'flex-none h-[42vh] min-h-[300px]' : 'flex-1 min-h-[120px]'}`}>
           <div className="relative flex-1 w-full mt-12 mb-8">
             <Image
               src={product.image || '/placeholder.png'}
@@ -414,7 +421,7 @@ function ProductDetailCard({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -530,37 +537,50 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
           {/* ── Carousel Container ── */}
           <motion.div
             initial={{ y: '100%' }}
-            animate={{ y: 0 }}
+            animate={{
+              y: 0,
+              height: isAnyExpanded ? '100dvh' : 'calc(100dvh - 3rem - 16px)',
+              marginTop: isAnyExpanded ? 0 : 48,
+              marginBottom: isAnyExpanded ? 0 : 12,
+            }}
             exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 26, stiffness: 240, mass: 0.5 }}
-            className={`relative z-10 w-full transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isAnyExpanded ? 'mt-0 mb-0' : 'mb-3 mt-12'}`}
-            style={{ height: isAnyExpanded ? '100dvh' : 'calc(100dvh - 3rem - env(safe-area-bottom, 16px))' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 260, mass: 0.55 }}
+            className="relative z-10 w-full"
+            style={{ willChange: 'transform, height' }}
           >
             <div key={emblaKey} className="overflow-hidden h-full" ref={emblaRef}>
-              <div 
-                className="flex h-full touch-pan-y transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]" 
-                style={{ 
-                  marginLeft: isAnyExpanded ? '0' : '1rem', 
-                  marginRight: isAnyExpanded ? '0' : '1rem' 
+              <motion.div
+                animate={{
+                  marginLeft: isAnyExpanded ? 0 : 16,
+                  marginRight: isAnyExpanded ? 0 : 16,
                 }}
+                transition={{ type: 'spring', damping: 30, stiffness: 260, mass: 0.55 }}
+                className="flex h-full touch-pan-y"
               >
                 {ALL_PRODUCTS.map((p) => {
                   const isThisExpanded = expandedProductId === p.id;
                   return (
-                    <div 
-                      key={p.id} 
-                      className={`h-full relative transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isThisExpanded ? 'flex-[0_0_100%] pr-0' : 'flex-[0_0_92%] pr-3'}`}
+                    <motion.div
+                      key={p.id}
+                      animate={{
+                        flexBasis: isThisExpanded ? '100%' : '92%',
+                        paddingRight: isThisExpanded ? 0 : 12,
+                      }}
+                      transition={{ type: 'spring', damping: 30, stiffness: 260, mass: 0.55 }}
+                      className="h-full relative flex-shrink-0"
+                      style={{ willChange: 'flex-basis' }}
                     >
                       <ProductDetailCard 
                         product={p} 
-                        onClose={handleClose} 
+                        onClose={handleClose}
+                        onCollapse={() => setExpandedProductId(null)}
                         isExpanded={isThisExpanded}
                         onExpand={() => setExpandedProductId(p.id)}
                       />
-                    </div>
+                    </motion.div>
                   );
                 })}
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
