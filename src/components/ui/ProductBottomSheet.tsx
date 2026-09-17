@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown, Search, Share2, ChevronRight,
@@ -44,7 +44,17 @@ const COLORS  = [
 ];
 
 // ─── Product Detail Card (Inner Component) ────────────────────────────────────
-function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose: () => void }) {
+function ProductDetailCard({ 
+  product, 
+  onClose, 
+  isExpanded, 
+  onExpand 
+}: { 
+  product: DemoProduct; 
+  onClose: () => void; 
+  isExpanded: boolean; 
+  onExpand: () => void; 
+}) {
   const [selectedSize,  setSelectedSize]  = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [qty,           setQty]           = useState(1);
@@ -58,10 +68,22 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
   const mrp       = Math.round(product.price * 1.32);
   const discount  = Math.round(((mrp - product.price) / mrp) * 100);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!selectedSize || !selectedColor) {
-      toast.error('Please select a size and colour', { id: 'variant-toast' });
-      if (scrollRef.current) scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      if (!isExpanded) {
+        onExpand();
+      }
+      setTimeout(() => {
+        const variantSection = document.getElementById(`variant-selectors-${product.id}`);
+        if (variantSection && scrollRef.current) {
+          scrollRef.current.scrollTo({
+            top: variantSection.offsetTop - 60,
+            behavior: 'smooth'
+          });
+        }
+        toast.error('Please select a size and colour', { id: 'variant-toast' });
+      }, 150);
       return;
     }
 
@@ -100,12 +122,15 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col bg-white rounded-3xl overflow-hidden shadow-xl ring-1 ring-black/5">
+    <div 
+      className={`relative w-full h-full flex flex-col bg-white overflow-hidden shadow-xl ring-1 ring-black/5 transition-all duration-300 cursor-pointer ${isExpanded ? 'rounded-none' : 'rounded-3xl'}`}
+      onClick={() => { if (!isExpanded) onExpand(); }}
+    >
       
       {/* ── Top icon bar (always visible) ── */}
       <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-4 pt-4 pointer-events-none">
         <button
-          onClick={onClose}
+          onClick={(e) => { e.stopPropagation(); onClose(); }}
           className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm pointer-events-auto active:scale-90 transition-transform"
         >
           <ChevronDown size={22} className="text-[#333]" />
@@ -126,7 +151,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
       {/* ── Scrollable body ── */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-x-hidden overflow-y-auto overscroll-contain pb-[88px]"
+        className={`flex-1 overflow-x-hidden pb-[88px] ${isExpanded ? 'overflow-y-auto' : 'overflow-y-hidden select-none'}`}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {/* Hero Image */}
@@ -184,7 +209,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
           {/* Product name */}
           <h1 className="text-[20px] font-black text-[#111] leading-snug mb-1">{product.name}</h1>
           {product.description && (
-            <p className="text-[13px] text-[#777] leading-relaxed mb-4">{product.description}</p>
+            <p className="text-[13px] text-[#777] leading-relaxed mb-4 line-clamp-2">{product.description}</p>
           )}
 
           {/* Price */}
@@ -195,8 +220,36 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
           </div>
           <p className="text-[11px] text-[#888] font-medium mb-5">₹{product.price}/piece  •  Inclusive of all taxes</p>
 
-          {/* ── Variant Selectors ── */}
-          <div id="variant-selectors">
+          {/* ── Brand Row (Moved up for summary view) ── */}
+          <div className="bg-white border-t border-gray-100 py-4 flex items-center justify-between mt-2">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-[#eafbf0] border border-[#c3f0d0] flex items-center justify-center">
+                <ShoppingBag size={22} className="text-[#0f8a3c]" />
+              </div>
+              <div>
+                <p className="text-[14px] font-black text-[#111]">Hashtag Prints, Salem</p>
+                <p className="text-[12px] text-[#0f8a3c] font-semibold">Explore all products</p>
+              </div>
+            </div>
+            <ChevronRight size={18} className="text-[#aaa]" />
+          </div>
+
+          {/* ── 72hr Replacement (End of Summary View) ── */}
+          <div className="bg-white border-t border-gray-100 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-[#eff8ff] border border-[#bae1ff] flex items-center justify-center">
+                <RotateCcw size={20} className="text-[#0284c7]" />
+              </div>
+              <div>
+                <p className="text-[14px] font-black text-[#111]">72 hours only replacement</p>
+                <p className="text-[12px] text-[#888] font-medium">Subject to our return policy</p>
+              </div>
+            </div>
+            <ChevronRight size={18} className="text-[#aaa]" />
+          </div>
+
+          {/* ── Variant Selectors (Hidden below fold in Summary View) ── */}
+          <div id={`variant-selectors-${product.id}`} className="mt-4">
             {/* Size Selector */}
             <div className="mb-5 border-t border-gray-100 pt-5">
               <div className="flex items-center justify-between mb-3">
@@ -207,7 +260,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
                 {SIZES.map(size => (
                   <button
                     key={size}
-                    onClick={() => setSelectedSize(size)}
+                    onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
                     className={`px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all duration-150 active:scale-95 ${
                       selectedSize === size
                         ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-sm'
@@ -230,7 +283,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
                 {COLORS.map(c => (
                   <button
                     key={c.label}
-                    onClick={() => setSelectedColor(c.label)}
+                    onClick={(e) => { e.stopPropagation(); setSelectedColor(c.label); }}
                     title={c.label}
                     className={`relative w-10 h-10 rounded-full transition-all duration-150 active:scale-90 ${
                       selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
@@ -238,7 +291,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
                     style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
                   >
                     {selectedColor === c.label && (
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <Check size={16} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
                       </div>
                     )}
@@ -256,7 +309,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
                 <p className="text-[11px] font-bold text-[#0f8a3c] mt-0.5">Bulk discount applied!</p>
               )}
             </div>
-            <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden" onClick={e => e.stopPropagation()}>
               <button
                 onClick={() => {
                   const newQty = Math.max(1, qty - 1);
@@ -270,7 +323,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
               >
                 <Minus size={16} />
               </button>
-              <span className="w-10 text-center text-[15px] font-black text-[#111] bg-white">{qty}</span>
+              <span className="w-10 text-center text-[15px] font-black text-[#111] bg-white leading-[40px]">{qty}</span>
               <button
                 onClick={() => setQty(q => Math.min(50, q + 1))}
                 className="w-10 h-10 flex items-center justify-center text-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
@@ -281,36 +334,8 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
           </div>
         </div>
 
-        {/* ── Brand Row ── */}
-        <div className="bg-white border-t border-gray-100 px-4 py-4 flex items-center justify-between mt-2">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-[#eafbf0] border border-[#c3f0d0] flex items-center justify-center">
-              <ShoppingBag size={22} className="text-[#0f8a3c]" />
-            </div>
-            <div>
-              <p className="text-[14px] font-black text-[#111]">Hashtag Prints, Salem</p>
-              <p className="text-[12px] text-[#0f8a3c] font-semibold">Explore all products</p>
-            </div>
-          </div>
-          <ChevronRight size={18} className="text-[#aaa]" />
-        </div>
-
-        {/* ── 72hr Replacement ── */}
-        <div className="bg-white border-t border-gray-100 px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-[#eff8ff] border border-[#bae1ff] flex items-center justify-center">
-              <RotateCcw size={20} className="text-[#0284c7]" />
-            </div>
-            <div>
-              <p className="text-[14px] font-black text-[#111]">72 hours only replacement</p>
-              <p className="text-[12px] text-[#888] font-medium">Subject to our return policy</p>
-            </div>
-          </div>
-          <ChevronRight size={18} className="text-[#aaa]" />
-        </div>
-
         {/* ── Relevant Products ── */}
-        <div className="bg-white border-t border-gray-100 px-4 pt-5 pb-8">
+        <div className="bg-white border-t border-gray-100 px-4 pt-5 pb-8" onClick={e => e.stopPropagation()}>
           <h3 className="text-[15px] font-black text-[#111] mb-4">Relevant Products</h3>
           <div className="grid grid-cols-2 gap-3 pb-8">
             {ALL_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
@@ -322,7 +347,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
       {/* ── end scrollable ── */}
 
       {/* ── Fixed Bottom Bar (Inside Card) ── */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.04)]">
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.04)]" onClick={e => e.stopPropagation()}>
         {addedToCart ? (
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 flex-1 min-w-0">
@@ -348,7 +373,7 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
               }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
                 <Minus size={16} />
               </button>
-              <span className="w-9 text-center text-[15px] font-black text-[#0f8a3c]">{qty}</span>
+              <span className="w-9 text-center text-[15px] font-black text-[#0f8a3c] leading-[40px]">{qty}</span>
               <button onClick={() => {
                 const newQty = qty + 1;
                 setQty(newQty);
@@ -382,6 +407,8 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
 
 // ─── Main Modal Component ─────────────────────────────────────────────────────
 export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }: ProductBottomSheetProps) {
+  const [expandedProductId, setExpandedProductId] = useState<number | null>(null);
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     align: 'center',
     skipSnaps: false,
@@ -395,6 +422,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
       if (index !== -1) {
         emblaApi.scrollTo(index, true); // instant scroll without animation
       }
+      setExpandedProductId(null); // Reset expanded state when opening
     }
   }, [isOpen, product, emblaApi]);
 
@@ -411,11 +439,17 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     return () => { emblaApi.off('select', onSelect); };
   }, [emblaApi, onSelectProduct]);
 
+  // Disable drag when expanded
+  useEffect(() => {
+    if (!emblaApi) return;
+    const isExpanded = expandedProductId !== null;
+    emblaApi.reInit({ watchDrag: !isExpanded });
+  }, [expandedProductId, emblaApi]);
+
   // Lock body scroll and emit events for FloatingCartButton
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      // Emit full screen event to ensure the cart pill translates up correctly
       window.dispatchEvent(new Event('productSheetOpened'));
       window.dispatchEvent(new Event('productSheetFullScreen'));
     } else {
@@ -428,6 +462,18 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
       window.dispatchEvent(new Event('productSheetClosed'));
     };
   }, [isOpen]);
+
+  const handleClose = () => {
+    if (expandedProductId !== null) {
+      // If expanded, collapse first
+      setExpandedProductId(null);
+    } else {
+      // If summary, close modal
+      onClose();
+    }
+  };
+
+  const isAnyExpanded = expandedProductId !== null;
 
   return (
     <AnimatePresence>
@@ -449,16 +495,33 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200, mass: 0.8 }}
-            className="relative z-10 w-full mb-3 mt-12"
-            style={{ height: 'calc(100dvh - 3rem - env(safe-area-inset-bottom, 16px))' }}
+            className={`relative z-10 w-full transition-all duration-300 ${isAnyExpanded ? 'mt-0 mb-0' : 'mb-3 mt-12'}`}
+            style={{ height: isAnyExpanded ? '100dvh' : 'calc(100dvh - 3rem - env(safe-area-inset-bottom, 16px))' }}
           >
             <div className="overflow-hidden h-full" ref={emblaRef}>
-              <div className="flex h-full touch-pan-y" style={{ marginLeft: '1rem', marginRight: '1rem' }}>
-                {ALL_PRODUCTS.map((p) => (
-                  <div key={p.id} className="flex-[0_0_92%] h-full pr-3 relative">
-                    <ProductDetailCard product={p} onClose={onClose} />
-                  </div>
-                ))}
+              <div 
+                className="flex h-full touch-pan-y transition-all duration-300" 
+                style={{ 
+                  marginLeft: isAnyExpanded ? '0' : '1rem', 
+                  marginRight: isAnyExpanded ? '0' : '1rem' 
+                }}
+              >
+                {ALL_PRODUCTS.map((p) => {
+                  const isThisExpanded = expandedProductId === p.id;
+                  return (
+                    <div 
+                      key={p.id} 
+                      className={`h-full relative transition-all duration-300 ${isThisExpanded ? 'flex-[0_0_100%] pr-0' : 'flex-[0_0_92%] pr-3'}`}
+                    >
+                      <ProductDetailCard 
+                        product={p} 
+                        onClose={handleClose} 
+                        isExpanded={isThisExpanded}
+                        onExpand={() => setExpandedProductId(p.id)}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
