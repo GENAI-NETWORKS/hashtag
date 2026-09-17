@@ -128,7 +128,6 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
               aria-label="Add to cart">
               ADD
             </button>
-            <span className="text-[9px] text-[#888] mt-1 pr-1 font-medium">options</span>
           </div>
         </div>
       </div>
