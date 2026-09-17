@@ -44,7 +44,7 @@ export function CategoryChip({ category, index = 0, isActive = false, size = 'md
 
   const iconSize = size === 'sm' ? 'w-12 h-12' : 'w-16 h-16';
   const iconPx = size === 'sm' ? 20 : 26;
-  const textSize = size === 'sm' ? 'text-[11px]' : 'text-xs';
+  const textSize = size === 'sm' ? 'text-[12px]' : 'text-xs';
   const maxWidth = size === 'sm' ? 'max-w-[56px]' : 'max-w-[72px]';
 
   return (

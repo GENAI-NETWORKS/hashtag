@@ -246,7 +246,7 @@ export default function ProductDetailPage() {
             {/* Trust Chips */}
             <div className="flex flex-wrap gap-2 pt-1">
               {['Same-day dispatch before 12 PM', 'Free delivery above ₹999', '100% quality guarantee'].map(info => (
-                <span key={info} className="flex items-center gap-1 text-[11px] text-[#444] bg-[#f8f9fa] border border-[#e5e7eb] px-2.5 py-1 rounded-full">
+                <span key={info} className="flex items-center gap-1 text-[12px] text-[#444] bg-[#f8f9fa] border border-[#e5e7eb] px-2.5 py-1 rounded-full">
                   <Info size={10} className="text-[#00AEEF]" />{info}
                 </span>
               ))}
@@ -336,7 +336,7 @@ export default function ProductDetailPage() {
         style={{ zIndex: 9999, bottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))', boxShadow: '0 -4px 20px rgba(0,0,0,0.08)' }}>
         <div className="flex items-center justify-between gap-3">
           <div className="flex-shrink-0 text-left">
-            <p className="text-[11px] text-[#888]">Total</p>
+            <p className="text-[12px] text-[#888]">Total</p>
             <p className="font-black text-[#111] text-lg leading-none">{formatPrice(totalPrice)}</p>
           </div>
           <button

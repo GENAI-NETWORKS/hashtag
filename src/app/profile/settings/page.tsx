@@ -75,7 +75,7 @@ export default function AccountSettingsPage() {
               />
               <Mail size={16} className="absolute right-3 top-3 text-[#ccc]" />
             </div>
-            <p className="text-[11px] text-[#888] mt-1">Email cannot be changed.</p>
+            <p className="text-[12px] text-[#888] mt-1">Email cannot be changed.</p>
           </div>
 
           <div>

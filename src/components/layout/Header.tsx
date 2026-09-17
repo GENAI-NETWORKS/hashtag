@@ -70,7 +70,7 @@ export function Header() {
           </button>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-5 mx-2 flex-shrink-0 text-[14px] font-bold text-[#444]">
+          <nav className="hidden lg:flex items-center gap-5 mx-2 flex-shrink-0 text-[15px] font-bold text-[#444]">
             <Link href="/" className="hover:text-[#00AEEF] transition-colors">Home</Link>
             <Link href="/about" className="hover:text-[#00AEEF] transition-colors">About Us</Link>
             <Link href="/products?category=bulk-printing" className="hover:text-[#00AEEF] transition-colors">Bulk Order</Link>
@@ -114,7 +114,7 @@ export function Header() {
             >
               <ShoppingCart size={22} />
               {isMounted && itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#EC008C] text-white text-[11px] font-bold flex items-center justify-center leading-none animate-scaleIn">
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#EC008C] text-white text-[12px] font-bold flex items-center justify-center leading-none animate-scaleIn">
                   {itemCount > 99 ? '99+' : itemCount}
                 </span>
               )}

@@ -86,7 +86,7 @@ export default function AdminDashboard() {
           </div>
           <div>
             <p className="font-black text-sm">Hashtag Admin</p>
-            <p className="text-[11px] text-white/50">Dashboard</p>
+            <p className="text-[12px] text-white/50">Dashboard</p>
           </div>
         </div>
         <div className="flex items-center gap-3">

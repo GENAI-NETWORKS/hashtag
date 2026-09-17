@@ -7,7 +7,7 @@ export default function NotFound() {
 
       {/* CMYK splash number */}
       <div className="relative mb-8 select-none">
-        <span className="text-[121px] sm:text-[161px] font-black leading-none"
+        <span className="text-[122px] sm:text-[162px] font-black leading-none"
           style={{
             background: 'linear-gradient(135deg,#00AEEF 0%,#EC008C 50%,#FFD700 100%)',
             WebkitBackgroundClip: 'text',

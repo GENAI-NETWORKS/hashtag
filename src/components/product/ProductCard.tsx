@@ -63,19 +63,19 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         {/* Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {product.isBestseller && (
-            <span className="badge badge-magenta text-[11px] px-2 py-0.5">
+            <span className="badge badge-magenta text-[12px] px-2 py-0.5">
               <Zap size={9} />Bestseller
             </span>
           )}
           {product.isFeatured && !product.isBestseller && (
-            <span className="badge badge-cyan text-[11px] px-2 py-0.5">Featured</span>
+            <span className="badge badge-cyan text-[12px] px-2 py-0.5">Featured</span>
           )}
         </div>
       </div>
 
       {/* Content */}
       <div className="p-3 flex flex-col flex-1">
-        <p className="text-[11px] text-[#888] font-medium uppercase tracking-wide mb-0.5 truncate">
+        <p className="text-[12px] text-[#888] font-medium uppercase tracking-wide mb-0.5 truncate">
           {product.category?.name}
         </p>
         <h3 className="text-sm font-semibold text-[#111] leading-snug line-clamp-2 flex-1">
@@ -89,22 +89,22 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             <span className="text-xs font-semibold text-[#444]">
               {Number(product.avgRating).toFixed(1)}
             </span>
-            <span className="text-[11px] text-[#888]">({product.reviewCount})</span>
+            <span className="text-[12px] text-[#888]">({product.reviewCount})</span>
           </div>
         )}
 
         {/* Price + Add button */}
         <div className="flex items-center justify-between mt-2.5 gap-1 sm:gap-2">
           <div className="leading-none flex flex-col sm:flex-row sm:items-baseline">
-            <span className="text-[14px] sm:text-base font-black text-[#111]">
+            <span className="text-[15px] sm:text-base font-black text-[#111]">
               {formatPrice(product.basePrice)}
             </span>
-            <span className="text-[10px] sm:text-[11px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
+            <span className="text-[11px] sm:text-[12px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
           </div>
 
           <button
             onClick={handleAddToCart}
-            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px]"
+            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[12px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px]"
             style={{
               background: added
                 ? '#16a34a'

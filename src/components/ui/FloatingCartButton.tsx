@@ -101,14 +101,14 @@ export function FloatingCartButton() {
               </div>
             )}
             <div className="flex flex-col justify-center">
-              <p className="text-white font-black text-[14px] sm:text-[15px] leading-tight tracking-wide">View cart</p>
-              <p className="text-white/90 text-[11px] sm:text-[12px] font-bold">{totalItems} item{totalItems > 1 ? 's' : ''}</p>
+              <p className="text-white font-black text-[15px] sm:text-[16px] leading-tight tracking-wide">View cart</p>
+              <p className="text-white/90 text-[12px] sm:text-[13px] font-bold">{totalItems} item{totalItems > 1 ? 's' : ''}</p>
             </div>
           </div>
 
           {/* Right: total + arrow */}
           <div className="flex items-center gap-1 bg-black/20 rounded-full pl-3 pr-2 py-1 border border-white/10">
-            <p className="text-white font-black text-[14px] sm:text-[15px]">₹{totalPrice}</p>
+            <p className="text-white font-black text-[15px] sm:text-[16px]">₹{totalPrice}</p>
             <ChevronRight size={16} className="text-white/90 ml-0.5" />
           </div>
         </Link>

@@ -98,7 +98,7 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
       <div className="relative overflow-hidden bg-[#f8f9fa] aspect-square">
         <Image src={product.image} alt={product.name} fill sizes="(max-width:640px) 50vw,33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" unoptimized />
         {product.bestseller && (
-          <span className="absolute top-2 left-2 badge badge-magenta text-[11px] px-2 py-0.5 flex items-center gap-1">
+          <span className="absolute top-2 left-2 badge badge-magenta text-[12px] px-2 py-0.5 flex items-center gap-1">
             <Zap size={9} /> Bestseller
           </span>
         )}
@@ -110,17 +110,17 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
         </button>
       </div>
       <div className="p-3 flex flex-col flex-1">
-        <p className="text-[11px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
+        <p className="text-[12px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
         <h3 className="text-sm font-semibold text-[#111] leading-snug line-clamp-2 flex-1">{product.name}</h3>
         <div className="flex items-center gap-1 mt-1.5">
           <Star size={11} className="fill-[#FFD700] text-[#FFD700]" />
           <span className="text-xs font-semibold text-[#444]">{product.rating}</span>
-          <span className="text-[11px] text-[#888]">({product.reviews})</span>
+          <span className="text-[12px] text-[#888]">({product.reviews})</span>
         </div>
         <div className="flex items-center justify-between mt-2.5 gap-1 sm:gap-2">
           <div className="leading-none flex flex-col sm:flex-row sm:items-baseline">
-            <span className="text-[14px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
-            <span className="text-[10px] sm:text-[11px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
+            <span className="text-[15px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
+            <span className="text-[11px] sm:text-[12px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
           </div>
           <div className="flex flex-col items-end flex-shrink-0">
             <button onClick={handleAdd}
@@ -195,7 +195,7 @@ function ProductsContent() {
                   <cat.icon size={20} className="text-gray-400" />
                 )}
               </div>
-              <span className={`text-[11px] leading-tight text-center ${isActive ? 'font-bold text-[#111]' : 'font-semibold text-[#666]'}`}>
+              <span className={`text-[12px] leading-tight text-center ${isActive ? 'font-bold text-[#111]' : 'font-semibold text-[#666]'}`}>
                 {cat.name}
               </span>
             </button>
@@ -210,17 +210,17 @@ function ProductsContent() {
 
           {/* Filters Row */}
           <div className="flex items-center gap-2 mb-4 sticky top-0 bg-white/95 backdrop-blur-sm py-2 z-10 -mx-3 px-3 sm:-mx-4 sm:px-4 overflow-x-auto scrollbar-hide shadow-[0_4px_6px_-6px_rgba(0,0,0,0.1)]">
-            <button onClick={() => setShowSort(true)} className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[14px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
+            <button onClick={() => setShowSort(true)} className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[15px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
               <SlidersHorizontal size={14} className="text-gray-500" /> Filters <ChevronDown size={14} className="text-gray-500" />
             </button>
-            <button onClick={() => setShowSort(true)} className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[14px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
+            <button onClick={() => setShowSort(true)} className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[15px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
               <ArrowUpDown size={14} className="text-gray-500" /> Sort <ChevronDown size={14} className="text-gray-500" />
             </button>
-            <button className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[14px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
+            <button className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-300 text-[15px] font-semibold text-[#444] bg-white whitespace-nowrap active:bg-gray-50 transition-colors">
               Material <ChevronDown size={14} className="text-gray-500" />
             </button>
             {hasFilters && (
-              <button onClick={() => router.push('/products')} className="flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full border border-red-200 text-[14px] font-semibold text-red-600 bg-red-50 whitespace-nowrap">
+              <button onClick={() => router.push('/products')} className="flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full border border-red-200 text-[15px] font-semibold text-red-600 bg-red-50 whitespace-nowrap">
                 <X size={14} /> Clear
               </button>
             )}
