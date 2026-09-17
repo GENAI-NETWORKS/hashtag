@@ -62,9 +62,8 @@ export function FloatingCartButton() {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + ((item.product?.basePrice || 0) * item.quantity), 0);
   
-  // Get last-added item's image for the pill thumbnail
-  const lastItem = items[items.length - 1];
-  const thumbSrc = lastItem?.product?.images?.[0] || null;
+  // Get unique images from cart items (up to 3)
+  const uniqueImages = Array.from(new Set(items.map(item => item.product?.images?.[0]).filter(Boolean))).slice(0, 3);
 
   const isHome = pathname === '/';
   const baseBottom = (isHome && !isBannerClosed) ? 'bottom-[136px]' : 'bottom-[80px]';
@@ -89,11 +88,19 @@ export function FloatingCartButton() {
           href="/cart"
           className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-[#0a7032] to-[#16a34a] rounded-full px-2 py-1.5 sm:px-3 sm:py-2 shadow-[0_8px_30px_rgba(22,163,74,0.4)] active:scale-[0.98] hover:scale-[1.02] transition-all duration-300 ring-2 ring-white/20"
         >
-          {/* Left: thumbnail + text */}
+          {/* Left: thumbnail(s) + text */}
           <div className="flex items-center gap-2.5">
-            {thumbSrc ? (
-              <div className="w-9 h-9 rounded-full bg-white overflow-hidden relative flex-shrink-0 shadow-inner">
-                <Image src={thumbSrc} alt="Cart item" fill className="object-cover" unoptimized />
+            {uniqueImages.length > 0 ? (
+              <div className="flex items-center relative h-9" style={{ width: `${36 + (uniqueImages.length - 1) * 20}px` }}>
+                {uniqueImages.map((src, idx) => (
+                  <div 
+                    key={idx} 
+                    className="w-9 h-9 rounded-full bg-white overflow-hidden absolute flex-shrink-0 shadow-sm border-2 border-[#0f8a3c]"
+                    style={{ left: `${idx * 20}px`, zIndex: idx }}
+                  >
+                    <Image src={src as string} alt="Cart item" fill className="object-cover" unoptimized />
+                  </div>
+                ))}
               </div>
             ) : (
               <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 shadow-inner">

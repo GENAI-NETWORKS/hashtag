@@ -422,25 +422,28 @@ function ProductDetailCard({
 export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }: ProductBottomSheetProps) {
   const [expandedProductId, setExpandedProductId] = useState<number | null>(null);
 
+  // Key forces Embla to fully remount with the correct startIndex when product changes.
+  // This is the ONLY reliable way to avoid the jump/shake on non-first cards.
+  const [emblaKey, setEmblaKey] = useState(() => `embla-${product?.id ?? 0}`);
+
+  const startIndex = product ? Math.max(0, ALL_PRODUCTS.findIndex(p => p.id === product.id)) : 0;
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     align: 'center',
     skipSnaps: false,
     dragFree: false,
     duration: 40,
     dragThreshold: 5,
-    startIndex: product ? Math.max(0, ALL_PRODUCTS.findIndex(p => p.id === product.id)) : 0
+    startIndex
   });
 
-  // When modal opens, jump to the correct product
+  // When a new product is opened, force remount so startIndex is applied instantly
   useEffect(() => {
-    if (isOpen && product && emblaApi) {
-      const index = ALL_PRODUCTS.findIndex(p => p.id === product.id);
-      if (index !== -1) {
-        emblaApi.scrollTo(index, true); // instant scroll without animation
-      }
-      setExpandedProductId(null); // Reset expanded state when opening
+    if (isOpen && product) {
+      setEmblaKey(`embla-${product.id}-${Date.now()}`);
+      setExpandedProductId(null);
     }
-  }, [isOpen, product, emblaApi]);
+  }, [isOpen, product?.id]);
 
   // Sync selected product when swiping
   useEffect(() => {
@@ -533,7 +536,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             className={`relative z-10 w-full transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isAnyExpanded ? 'mt-0 mb-0' : 'mb-3 mt-12'}`}
             style={{ height: isAnyExpanded ? '100dvh' : 'calc(100dvh - 3rem - env(safe-area-bottom, 16px))' }}
           >
-            <div className="overflow-hidden h-full" ref={emblaRef}>
+            <div key={emblaKey} className="overflow-hidden h-full" ref={emblaRef}>
               <div 
                 className="flex h-full touch-pan-y transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]" 
                 style={{ 
