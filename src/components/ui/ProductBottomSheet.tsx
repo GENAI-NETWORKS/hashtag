@@ -174,80 +174,55 @@ function ProductDetailCard({
           </div>
         </div>
 
-        {/* ── Spec Pills ── */}
-        <div className="bg-white border-b border-gray-100 px-4 py-2.5 flex gap-2 overflow-x-auto hide-scrollbar flex-none">
-          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 w-fit">
-            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Delivery</p>
-            <p className="text-[13px] font-black text-[#111]">Same Day</p>
-          </div>
-          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 w-fit">
-            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Category</p>
-            <p className="text-[13px] font-black text-[#111] line-clamp-1">{product.category || 'Custom'}</p>
-          </div>
-        </div>
-
-        {/* ── Main product info ── */}
-        <div className="bg-white px-4 pt-3 pb-3 flex-none">
-          {/* Rating + Delivery row */}
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-1.5 text-[#666]">
-              <Clock size={13} />
-              <span className="text-[12px] font-semibold">22 mins</span>
+        {/* ── Main product info (Ultra Compact for Mobile) ── */}
+        <div className="bg-white px-4 pt-3 pb-2 flex-none flex flex-col justify-end">
+          {/* Category, Time & Rating Row */}
+          <div className="flex items-center gap-2 mb-2 w-full">
+            <div className="flex items-center gap-1 bg-[#eafbf0] text-[#0f8a3c] px-2 py-1 rounded-md">
+              <Clock size={12} className="stroke-[2.5]" />
+              <span className="text-[11px] font-bold">22 mins</span>
             </div>
-            <div className="flex items-center gap-0.5">
-              {[1,2,3,4,5].map(s => (
-                <Star key={s} size={12}
-                  className={s <= Math.round(product.rating || 4.5)
-                    ? 'fill-[#FFB800] text-[#FFB800]'
-                    : 'fill-gray-200 text-gray-200'}
-                />
-              ))}
-              <span className="text-[12px] font-bold text-[#333] ml-1">{product.reviews || 0}</span>
+            <div className="flex items-center gap-1 bg-gray-100 text-gray-700 px-2 py-1 rounded-md">
+              <span className="text-[11px] font-bold line-clamp-1">{product.category || 'Custom'}</span>
+            </div>
+            <div className="flex items-center gap-1 ml-auto bg-gray-50 px-2 py-1 rounded-md border border-gray-100">
+              <Star size={11} className="fill-[#FFB800] text-[#FFB800]" />
+              <span className="text-[11px] font-bold text-[#333]">{product.reviews || 0} reviews</span>
             </div>
           </div>
 
           {/* Product name */}
-          <h1 className="text-[20px] font-black text-[#111] leading-tight mb-1">{product.name}</h1>
+          <h1 className="text-[18px] font-black text-[#111] leading-tight mb-1">{product.name}</h1>
           
           {/* Description (Hidden in Summary Mode) */}
           {product.description && isExpanded && (
-            <p className="text-[13px] text-[#777] leading-relaxed mb-3 line-clamp-2">{product.description}</p>
+            <p className="text-[13px] text-[#777] leading-relaxed mb-3 mt-2 line-clamp-2">{product.description}</p>
           )}
 
-          {/* Price */}
-          <div className="flex items-baseline gap-2 mb-0.5 mt-2">
-            <span className="text-[26px] font-black text-[#111] leading-none">₹{product.price}</span>
-            <span className="text-[14px] text-[#888] line-through font-medium">MRP ₹{mrp}</span>
-            <span className="text-[12px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded">{discount}% off</span>
+          {/* Price & Taxes */}
+          <div className="flex items-baseline gap-2 mt-1">
+            <span className="text-[24px] font-black text-[#111] leading-none">₹{product.price}</span>
+            <span className="text-[13px] text-[#888] line-through font-medium">₹{mrp}</span>
+            <span className="text-[11px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded ml-1">{discount}% off</span>
           </div>
-          <p className="text-[11px] text-[#888] font-medium mb-3">₹{product.price}/piece  •  Inclusive of all taxes</p>
+          <p className="text-[10px] text-[#888] font-medium mb-3 mt-1">₹{product.price}/piece  •  Inclusive of all taxes</p>
 
-          {/* ── Brand Row ── */}
-          <div className="bg-white border-t border-gray-100 py-3 flex items-center justify-between mt-1">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#eafbf0] border border-[#c3f0d0] flex items-center justify-center">
-                <ShoppingBag size={20} className="text-[#0f8a3c]" />
+          {/* ── Brand & Replacement Mini-Pills ── */}
+          <div className="border-t border-gray-100 pt-3 flex flex-col gap-2 w-full">
+            <div className="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 active:bg-gray-100 transition-colors">
+              <div className="flex items-center gap-2.5">
+                <ShoppingBag size={14} className="text-[#0f8a3c]" />
+                <p className="text-[12px] font-black text-[#111]">Hashtag Prints, Salem</p>
               </div>
-              <div>
-                <p className="text-[14px] font-black text-[#111]">Hashtag Prints, Salem</p>
-                <p className="text-[12px] text-[#0f8a3c] font-semibold">Explore all products</p>
-              </div>
+              <p className="text-[11px] text-[#0f8a3c] font-bold flex items-center gap-0.5">Explore <ChevronRight size={12}/></p>
             </div>
-            <ChevronRight size={16} className="text-[#aaa]" />
-          </div>
-
-          {/* ── 72hr Replacement ── */}
-          <div className="bg-white border-t border-gray-100 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#eff8ff] border border-[#bae1ff] flex items-center justify-center">
-                <RotateCcw size={18} className="text-[#0284c7]" />
+            <div className="flex items-center justify-between bg-[#f8fbff] border border-[#e5f0ff] rounded-xl px-3 py-2">
+              <div className="flex items-center gap-2.5">
+                <RotateCcw size={14} className="text-[#0284c7]" />
+                <p className="text-[12px] font-black text-[#111]">72 hours replacement</p>
               </div>
-              <div>
-                <p className="text-[14px] font-black text-[#111]">72 hours only replacement</p>
-                <p className="text-[12px] text-[#888] font-medium">Subject to our return policy</p>
-              </div>
+              <p className="text-[11px] text-[#0284c7] font-medium flex items-center gap-0.5">Policy <ChevronRight size={12}/></p>
             </div>
-            <ChevronRight size={16} className="text-[#aaa]" />
           </div>
 
           {/* ── Variant & Quantity (Hidden in Summary Mode) ── */}
