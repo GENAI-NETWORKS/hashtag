@@ -106,10 +106,9 @@ export function FloatingCartButton() {
             </div>
           </div>
 
-          {/* Right: total + arrow */}
-          <div className="flex items-center gap-1 bg-black/20 rounded-full pl-3 pr-2 py-1 border border-white/10">
-            <p className="text-white font-black text-[15px] sm:text-[16px]">₹{totalPrice}</p>
-            <ChevronRight size={16} className="text-white/90 ml-0.5" />
+          {/* Right: arrow */}
+          <div className="flex items-center justify-center w-8 h-8 bg-black/20 rounded-full border border-white/10 ml-1">
+            <ChevronRight size={18} className="text-white" />
           </div>
         </Link>
       </div>

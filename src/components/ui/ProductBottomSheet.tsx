@@ -69,12 +69,21 @@ function ProductDetailCard({
     
     const isAtTop = scrollRef.current ? scrollRef.current.scrollTop <= 0 : true;
 
-    if (distance > 50 && !isExpanded) {
+    if (distance > 30 && !isExpanded) {
       onExpand();
-    } else if (distance < -50 && isExpanded && isAtTop) {
+    } else if (distance < -30 && isExpanded && isAtTop) {
       onClose();
     }
     setTouchStart(null);
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    const isAtTop = scrollRef.current ? scrollRef.current.scrollTop <= 0 : true;
+    if (e.deltaY > 30 && !isExpanded) {
+      onExpand();
+    } else if (e.deltaY < -30 && isExpanded && isAtTop) {
+      onClose();
+    }
   };
 
   const { hasSizes, hasColors, sizes: SIZES, colors: COLORS } = getProductOptions(product.categorySlug || '');
@@ -148,10 +157,11 @@ function ProductDetailCard({
 
   return (
     <div 
-      className={`relative w-full h-full flex flex-col bg-white overflow-hidden shadow-xl ring-1 ring-black/5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] cursor-pointer origin-bottom ${isExpanded ? 'rounded-none scale-100' : 'rounded-3xl scale-[0.98] opacity-95 hover:scale-[0.99] hover:opacity-100'}`}
+      className={`relative w-full h-full flex flex-col bg-white overflow-hidden shadow-2xl ring-1 ring-black/5 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] cursor-pointer origin-bottom ${isExpanded ? 'rounded-none scale-100' : 'rounded-3xl scale-[0.96] opacity-95 hover:scale-[0.98] hover:opacity-100'}`}
       onClick={() => { if (!isExpanded) onExpand(); }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onWheel={handleWheel}
     >
       
       {/* ── Top icon bar (always visible) ── */}
@@ -182,7 +192,7 @@ function ProductDetailCard({
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {/* Hero Image */}
-        <div className={`relative w-full bg-[#f8f9fa] flex flex-col transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isExpanded ? 'flex-none h-[42vh] min-h-[300px]' : 'flex-1 min-h-[120px]'}`}>
+        <div className={`relative w-full bg-[#f8f9fa] flex flex-col transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isExpanded ? 'flex-none h-[42vh] min-h-[300px]' : 'flex-1 min-h-[120px]'}`}>
           <div className="relative flex-1 w-full mt-12 mb-8">
             <Image
               src={product.image || '/placeholder.png'}
@@ -417,7 +427,8 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     skipSnaps: false,
     dragFree: false,
     duration: 40,
-    dragThreshold: 5
+    dragThreshold: 5,
+    startIndex: product ? Math.max(0, ALL_PRODUCTS.findIndex(p => p.id === product.id)) : 0
   });
 
   // When modal opens, jump to the correct product
@@ -518,13 +529,13 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 28, stiffness: 220, mass: 0.6 }}
-            className={`relative z-10 w-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isAnyExpanded ? 'mt-0 mb-0' : 'mb-3 mt-12'}`}
-            style={{ height: isAnyExpanded ? '100dvh' : 'calc(100dvh - 3rem - env(safe-area-inset-bottom, 16px))' }}
+            transition={{ type: 'spring', damping: 26, stiffness: 240, mass: 0.5 }}
+            className={`relative z-10 w-full transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isAnyExpanded ? 'mt-0 mb-0' : 'mb-3 mt-12'}`}
+            style={{ height: isAnyExpanded ? '100dvh' : 'calc(100dvh - 3rem - env(safe-area-bottom, 16px))' }}
           >
             <div className="overflow-hidden h-full" ref={emblaRef}>
               <div 
-                className="flex h-full touch-pan-y transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]" 
+                className="flex h-full touch-pan-y transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]" 
                 style={{ 
                   marginLeft: isAnyExpanded ? '0' : '1rem', 
                   marginRight: isAnyExpanded ? '0' : '1rem' 
@@ -535,7 +546,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
                   return (
                     <div 
                       key={p.id} 
-                      className={`h-full relative transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isThisExpanded ? 'flex-[0_0_100%] pr-0' : 'flex-[0_0_92%] pr-3'}`}
+                      className={`h-full relative transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isThisExpanded ? 'flex-[0_0_100%] pr-0' : 'flex-[0_0_92%] pr-3'}`}
                     >
                       <ProductDetailCard 
                         product={p} 
