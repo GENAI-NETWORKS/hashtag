@@ -216,13 +216,6 @@ function ProductDetailCard({
               </div>
               <p className="text-[11px] text-[#0f8a3c] font-bold flex items-center gap-0.5">Explore <ChevronRight size={12}/></p>
             </div>
-            <div className="flex items-center justify-between bg-[#f8fbff] border border-[#e5f0ff] rounded-xl px-3 py-2">
-              <div className="flex items-center gap-2.5">
-                <RotateCcw size={14} className="text-[#0284c7]" />
-                <p className="text-[12px] font-black text-[#111]">72 hours replacement</p>
-              </div>
-              <p className="text-[11px] text-[#0284c7] font-medium flex items-center gap-0.5">Policy <ChevronRight size={12}/></p>
-            </div>
           </div>
 
           {/* ── Variant & Quantity (Hidden in Summary Mode) ── */}
