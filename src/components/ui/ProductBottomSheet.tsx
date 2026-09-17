@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown, Search, Share2, ChevronRight,
-  Star, Clock, RotateCcw, Plus, Minus, ShoppingBag, Check
+  Star, Clock, RotateCcw, Plus, Minus, ShoppingBag, Check, Heart
 } from 'lucide-react';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
@@ -111,6 +111,9 @@ function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose
           <ChevronDown size={22} className="text-[#333]" />
         </button>
         <div className="flex items-center gap-2 pointer-events-auto">
+          <button className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90">
+            <Heart size={18} className="text-[#333]" />
+          </button>
           <button className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90">
             <Search size={18} className="text-[#333]" />
           </button>
