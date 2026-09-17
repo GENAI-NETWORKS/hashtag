@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown, Search, Share2, ChevronRight,
   Star, Clock, RotateCcw, Plus, Minus, ShoppingBag, Check
@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import toast from 'react-hot-toast';
 import { ALL_PRODUCTS, ProductCard } from '@/app/products/page';
+import useEmblaCarousel from 'embla-carousel-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface DemoProduct {
@@ -42,160 +43,28 @@ const COLORS  = [
   { label: 'Yellow',  hex: '#FDD835', border: '#e5c100' },
 ];
 
-// ─── Swipe Animation Variants ───────────────────────────────────────────────────
-const swipeVariants = {
-  enter: (direction: number) => {
-    return { x: direction > 0 ? '100%' : '-100%', opacity: 0 };
-  },
-  center: { zIndex: 1, x: 0, opacity: 1 },
-  exit: (direction: number) => {
-    return { zIndex: 0, x: direction < 0 ? '100%' : '-100%', opacity: 0 };
-  }
-};
-const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number) => {
-  return Math.abs(offset) * velocity;
-};
-
-// ─── Component ────────────────────────────────────────────────────────────────
-export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }: ProductBottomSheetProps) {
-  // Sheet expansion state
-  const [isFullScreen, setIsFullScreen]   = useState(false);
-  // Selection state
+// ─── Product Detail Card (Inner Component) ────────────────────────────────────
+function ProductDetailCard({ product, onClose }: { product: DemoProduct, onClose: () => void }) {
   const [selectedSize,  setSelectedSize]  = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [qty,           setQty]           = useState(1);
   const [addedToCart,   setAddedToCart]   = useState(false);
-  
-  // Swipe state
-  const [direction, setDirection] = useState(0);
 
-  // Cart store
   const addItem         = useCartStore(s => s.addItem);
   const items           = useCartStore(s => s.items);
   const updateQuantity  = useCartStore(s => s.updateQuantity);
+  const scrollRef       = useRef<HTMLDivElement>(null);
 
-  const scrollRef   = useRef<HTMLDivElement>(null);
-  const sheetRef    = useRef<HTMLDivElement>(null);
-
-  const paginate = useCallback((newDirection: number) => {
-    if (!product || !onSelectProduct) return;
-    const currentIndex = ALL_PRODUCTS.findIndex(p => p.id === product.id);
-    if (currentIndex === -1) return;
-    
-    setDirection(newDirection);
-    
-    let nextIndex = currentIndex + newDirection;
-    if (nextIndex >= ALL_PRODUCTS.length) nextIndex = 0;
-    if (nextIndex < 0) nextIndex = ALL_PRODUCTS.length - 1;
-    
-    onSelectProduct(ALL_PRODUCTS[nextIndex]);
-  }, [product, onSelectProduct]);
-
-  // Reset full screen ONLY when sheet opens
-  useEffect(() => {
-    if (isOpen) {
-      setIsFullScreen(false);
-    }
-  }, [isOpen]);
-
-  // Reset product state when product changes
-  useEffect(() => {
-    if (product) {
-      setSelectedSize('');
-      setSelectedColor('');
-      setQty(1);
-      setAddedToCart(false);
-      if (scrollRef.current) scrollRef.current.scrollTop = 0;
-    }
-  }, [product?.id]);
-
-  // Lock body scroll when sheet is open and emit events for floating components
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      window.dispatchEvent(new Event('productSheetOpened'));
-    } else {
-      document.body.style.overflow = '';
-      window.dispatchEvent(new Event('productSheetClosed'));
-    }
-    return () => { 
-      document.body.style.overflow = ''; 
-      window.dispatchEvent(new Event('productSheetClosed'));
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isFullScreen) {
-      window.dispatchEvent(new Event('productSheetFullScreen'));
-    } else {
-      window.dispatchEvent(new Event('productSheetPartial'));
-    }
-  }, [isFullScreen]);
-
-  const touchStartY = useRef(0);
-  const touchCurrentY = useRef(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchCurrentY.current = e.touches[0].clientY;
-    
-    // Check if scrolling down to expand to full screen
-    if (!isFullScreen && scrollRef.current && scrollRef.current.scrollTop > 10) {
-      setIsFullScreen(true);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    if (!scrollRef.current) return;
-    
-    // If we are at the top of the content, and the user dragged down by more than 60px
-    if (isFullScreen && scrollRef.current.scrollTop <= 0) {
-      const deltaY = touchCurrentY.current - touchStartY.current;
-      if (deltaY > 60) {
-        onClose();
-      }
-    }
-  };
-
-  const handleContentScroll = useCallback(() => {
-    if (!isFullScreen && scrollRef.current && scrollRef.current.scrollTop > 10) {
-      setIsFullScreen(true);
-    }
-    
-    // Handle iOS overscroll pulling down
-    if (isFullScreen && scrollRef.current && scrollRef.current.scrollTop < -40) {
-      onClose();
-    }
-  }, [isFullScreen, onClose]);
-
-  if (!product) return null;
-
-  // Price calculations
   const mrp       = Math.round(product.price * 1.32);
   const discount  = Math.round(((mrp - product.price) / mrp) * 100);
-  const colorObj  = COLORS.find(c => c.label === selectedColor) || COLORS[0];
 
-  // Cart info
-  const cartCount = items.reduce((s, i) => s + i.quantity, 0);
-  const cartTotal = items.reduce((s, i) => s + (Number(i.product?.basePrice || 0) * i.quantity), 0);
-  const lastImg   = items[items.length - 1]?.product?.images?.[0] ?? null;
-
-  // ── Add to cart ──────────────────────────────────────────────────────────────
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
-      setIsFullScreen(true);
       toast.error('Please select a size and colour', { id: 'variant-toast' });
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      if (scrollRef.current) scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    // Build a synthetic Product object that matches the real Product interface
     const syntheticProduct = {
       id:           product.id,
       categoryId:   1,
@@ -212,11 +81,10 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
       reviewCount:  product.reviews || 0,
       createdAt:    new Date().toISOString(),
       updatedAt:    new Date().toISOString(),
-    } as any; // cast to any since demo product has no DB id
+    } as any;
 
-    // Build a synthetic variant carrying size + color — this is what flows to admin orders
     const syntheticVariant = {
-      id:            product.id * 100 + SIZES.indexOf(selectedSize), // stable synthetic ID
+      id:            product.id * 100 + SIZES.indexOf(selectedSize),
       productId:     product.id,
       size:          selectedSize,
       color:         selectedColor,
@@ -231,401 +99,367 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     setAddedToCart(true);
   };
 
-  // ── Drag handler ──────────────────────────────────────────────────────────────
-  const handleDragEnd = (_: any, info: PanInfo) => {
-    if (info.offset.y > 120 && !isFullScreen) {
-      onClose();                  // drag down → close
-    } else if (info.velocity.y < -300 || info.offset.y < -60) {
-      setIsFullScreen(true);      // fast flick up → expand
-    } else if (isFullScreen && info.offset.y > 80) {
-      setIsFullScreen(false);     // drag down from full → collapse to 3/4
-    }
-  };
+  return (
+    <div className="relative w-full h-full flex flex-col bg-white rounded-3xl overflow-hidden shadow-xl ring-1 ring-black/5">
+      
+      {/* ── Top icon bar (always visible) ── */}
+      <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-4 pt-4 pointer-events-none">
+        <button
+          onClick={onClose}
+          className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm pointer-events-auto active:scale-90 transition-transform"
+        >
+          <ChevronDown size={22} className="text-[#333]" />
+        </button>
+        <div className="flex items-center gap-2 pointer-events-auto">
+          <button className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90">
+            <Search size={18} className="text-[#333]" />
+          </button>
+          <button className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90">
+            <Share2 size={18} className="text-[#333]" />
+          </button>
+        </div>
+      </div>
 
-  // ── Sheet height ──────────────────────────────────────────────────────────────
-  // isFullScreen=false → sheet top at 25% → sheet height = 75vh (3/4)
-  // isFullScreen=true  → sheet top at 0%  → full screen
-  const sheetY = isFullScreen ? '0%' : '25%';
+      {/* ── Scrollable body ── */}
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-x-hidden overflow-y-auto overscroll-contain pb-[88px]"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
+        {/* Hero Image */}
+        <div className="relative w-full bg-[#f8f9fa] flex flex-col" style={{ height: 'clamp(280px, 60vw, 420px)' }}>
+          <div className="relative flex-1 w-full mt-12 mb-8">
+            <Image
+              src={product.image || '/placeholder.png'}
+              alt={product.name}
+              fill
+              className="object-contain px-8 drop-shadow-xl"
+              unoptimized
+              priority
+            />
+          </div>
+          {/* Image indicator dots */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+            {[0,1,2].map(i => (
+              <div key={i} className={`rounded-full transition-all ${i===0 ? 'w-5 h-1.5 bg-[#0f8a3c]' : 'w-1.5 h-1.5 bg-gray-300'}`} />
+            ))}
+          </div>
+        </div>
+
+        {/* ── Spec Pills ── */}
+        <div className="bg-white border-b border-gray-100 px-4 py-3 flex gap-2 overflow-x-auto hide-scrollbar">
+          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 min-w-[100px]">
+            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Delivery</p>
+            <p className="text-[13px] font-black text-[#111]">Same Day</p>
+          </div>
+          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 min-w-[110px]">
+            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Category</p>
+            <p className="text-[13px] font-black text-[#111] line-clamp-1">{product.category || 'Custom'}</p>
+          </div>
+        </div>
+
+        {/* ── Main product info ── */}
+        <div className="bg-white px-4 pt-4 pb-5">
+          {/* Rating + Delivery row */}
+          <div className="flex items-center gap-4 mb-3">
+            <div className="flex items-center gap-1.5 text-[#666]">
+              <Clock size={13} />
+              <span className="text-[12px] font-semibold">22 mins</span>
+            </div>
+            <div className="flex items-center gap-0.5">
+              {[1,2,3,4,5].map(s => (
+                <Star key={s} size={12}
+                  className={s <= Math.round(product.rating || 4.5)
+                    ? 'fill-[#FFB800] text-[#FFB800]'
+                    : 'fill-gray-200 text-gray-200'}
+                />
+              ))}
+              <span className="text-[12px] font-bold text-[#333] ml-1">{product.reviews || 0}</span>
+            </div>
+          </div>
+
+          {/* Product name */}
+          <h1 className="text-[20px] font-black text-[#111] leading-snug mb-1">{product.name}</h1>
+          {product.description && (
+            <p className="text-[13px] text-[#777] leading-relaxed mb-4">{product.description}</p>
+          )}
+
+          {/* Price */}
+          <div className="flex items-baseline gap-2 mb-0.5 mt-4">
+            <span className="text-[28px] font-black text-[#111] leading-none">₹{product.price}</span>
+            <span className="text-[14px] text-[#888] line-through font-medium">MRP ₹{mrp}</span>
+            <span className="text-[12px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded">{discount}% off</span>
+          </div>
+          <p className="text-[11px] text-[#888] font-medium mb-5">₹{product.price}/piece  •  Inclusive of all taxes</p>
+
+          {/* ── Variant Selectors ── */}
+          <div id="variant-selectors">
+            {/* Size Selector */}
+            <div className="mb-5 border-t border-gray-100 pt-5">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-[14px] font-black text-[#111]">Select Size</h3>
+                <span className="text-[12px] text-[#0284c7] font-semibold cursor-pointer">Size Guide</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {SIZES.map(size => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className={`px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all duration-150 active:scale-95 ${
+                      selectedSize === size
+                        ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-sm'
+                        : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Color Selector */}
+            <div className="mb-5 border-t border-gray-100 pt-5">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-[14px] font-black text-[#111]">Select Colour</h3>
+                <span className="text-[12px] text-[#666] font-semibold">{selectedColor}</span>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {COLORS.map(c => (
+                  <button
+                    key={c.label}
+                    onClick={() => setSelectedColor(c.label)}
+                    title={c.label}
+                    className={`relative w-10 h-10 rounded-full transition-all duration-150 active:scale-90 ${
+                      selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
+                    }`}
+                    style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
+                  >
+                    {selectedColor === c.label && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Check size={16} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Quantity Selector */}
+          <div className="flex items-center justify-between border-t border-gray-100 pt-5 mb-2">
+            <div>
+              <h3 className="text-[14px] font-black text-[#111]">Quantity</h3>
+              {qty >= 10 && (
+                <p className="text-[11px] font-bold text-[#0f8a3c] mt-0.5">Bulk discount applied!</p>
+              )}
+            </div>
+            <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden">
+              <button
+                onClick={() => {
+                  const newQty = Math.max(1, qty - 1);
+                  setQty(newQty);
+                  if (addedToCart) {
+                    const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
+                    if (cartItem) updateQuantity(cartItem.id, newQty);
+                  }
+                }}
+                className="w-10 h-10 flex items-center justify-center text-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+              >
+                <Minus size={16} />
+              </button>
+              <span className="w-10 text-center text-[15px] font-black text-[#111] bg-white">{qty}</span>
+              <button
+                onClick={() => setQty(q => Math.min(50, q + 1))}
+                className="w-10 h-10 flex items-center justify-center text-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Brand Row ── */}
+        <div className="bg-white border-t border-gray-100 px-4 py-4 flex items-center justify-between mt-2">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-[#eafbf0] border border-[#c3f0d0] flex items-center justify-center">
+              <ShoppingBag size={22} className="text-[#0f8a3c]" />
+            </div>
+            <div>
+              <p className="text-[14px] font-black text-[#111]">Hashtag Prints, Salem</p>
+              <p className="text-[12px] text-[#0f8a3c] font-semibold">Explore all products</p>
+            </div>
+          </div>
+          <ChevronRight size={18} className="text-[#aaa]" />
+        </div>
+
+        {/* ── 72hr Replacement ── */}
+        <div className="bg-white border-t border-gray-100 px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-[#eff8ff] border border-[#bae1ff] flex items-center justify-center">
+              <RotateCcw size={20} className="text-[#0284c7]" />
+            </div>
+            <div>
+              <p className="text-[14px] font-black text-[#111]">72 hours only replacement</p>
+              <p className="text-[12px] text-[#888] font-medium">Subject to our return policy</p>
+            </div>
+          </div>
+          <ChevronRight size={18} className="text-[#aaa]" />
+        </div>
+
+        {/* ── Relevant Products ── */}
+        <div className="bg-white border-t border-gray-100 px-4 pt-5 pb-8">
+          <h3 className="text-[15px] font-black text-[#111] mb-4">Relevant Products</h3>
+          <div className="grid grid-cols-2 gap-3 pb-8">
+            {ALL_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* ── end scrollable ── */}
+
+      {/* ── Fixed Bottom Bar (Inside Card) ── */}
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.04)]">
+        {addedToCart ? (
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 flex-1 min-w-0">
+              <div className="w-11 h-11 rounded-xl bg-[#f0f0f0] overflow-hidden relative flex-shrink-0">
+                <Image src={product.image || '/placeholder.png'} alt={product.name} fill className="object-contain p-1" unoptimized />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[13px] font-black text-[#111] leading-none">
+                  ₹{product.price * qty}
+                  <span className="text-[11px] font-medium text-[#888] ml-1 line-through">₹{mrp * qty}</span>
+                </p>
+                <p className="text-[11px] text-[#555] font-medium mt-0.5 truncate">
+                  {qty}× · {selectedSize} · {selectedColor}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center border-2 border-[#0f8a3c] rounded-xl overflow-hidden bg-white shadow-sm">
+              <button onClick={() => {
+                const newQty = Math.max(1, qty - 1);
+                setQty(newQty);
+                const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
+                if (cartItem) updateQuantity(cartItem.id, newQty);
+              }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
+                <Minus size={16} />
+              </button>
+              <span className="w-9 text-center text-[15px] font-black text-[#0f8a3c]">{qty}</span>
+              <button onClick={() => {
+                const newQty = qty + 1;
+                setQty(newQty);
+                const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
+                if (cartItem) updateQuantity(cartItem.id, newQty);
+              }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
+                <Plus size={16} />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[11px] text-[#888] font-medium">
+                {qty} {qty > 1 ? 'pieces' : 'piece'}
+              </p>
+              <p className="text-[16px] font-black text-[#111] leading-none mt-0.5">₹{product.price * qty}</p>
+            </div>
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 bg-[#0f8a3c] hover:bg-[#0c7031] text-white h-11 rounded-xl text-[14px] font-black flex items-center justify-center gap-2 transition-colors shadow-md active:scale-[0.98]"
+            >
+              Add to cart
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Modal Component ─────────────────────────────────────────────────────
+export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }: ProductBottomSheetProps) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    align: 'center',
+    skipSnaps: false,
+    dragFree: false
+  });
+
+  // When modal opens, jump to the correct product
+  useEffect(() => {
+    if (isOpen && product && emblaApi) {
+      const index = ALL_PRODUCTS.findIndex(p => p.id === product.id);
+      if (index !== -1) {
+        emblaApi.scrollTo(index, true); // instant scroll without animation
+      }
+    }
+  }, [isOpen, product, emblaApi]);
+
+  // Sync selected product when swiping
+  useEffect(() => {
+    if (!emblaApi || !onSelectProduct) return;
+    const onSelect = () => {
+      const index = emblaApi.selectedScrollSnap();
+      if (ALL_PRODUCTS[index]) {
+        onSelectProduct(ALL_PRODUCTS[index]);
+      }
+    };
+    emblaApi.on('select', onSelect);
+    return () => { emblaApi.off('select', onSelect); };
+  }, [emblaApi, onSelectProduct]);
+
+  // Lock body scroll and emit events for FloatingCartButton
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      // Emit full screen event to ensure the cart pill translates up correctly
+      window.dispatchEvent(new Event('productSheetOpened'));
+      window.dispatchEvent(new Event('productSheetFullScreen'));
+    } else {
+      document.body.style.overflow = '';
+      window.dispatchEvent(new Event('productSheetClosed'));
+      window.dispatchEvent(new Event('productSheetPartial'));
+    }
+    return () => { 
+      document.body.style.overflow = ''; 
+      window.dispatchEvent(new Event('productSheetClosed'));
+    };
+  }, [isOpen]);
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
+        <div className="fixed inset-0 z-[60] flex flex-col justify-end pointer-events-auto">
           {/* ── Backdrop ── */}
           <motion.div
-            key="bs-backdrop"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.55 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
+            transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black z-[60]"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
 
-          {/* ── Sheet ── */}
+          {/* ── Carousel Container ── */}
           <motion.div
-            key="bs-sheet"
-            ref={sheetRef}
             initial={{ y: '100%' }}
-            animate={{ y: sheetY }}
+            animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 250, mass: 0.8 }}
-            drag="y"
-            dragListener={!isFullScreen}
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={{ top: 0.05, bottom: 0.3 }}
-            onDragEnd={handleDragEnd}
-            className="fixed left-0 right-0 bottom-0 z-[70] bg-white flex flex-col max-w-[600px] mx-auto"
-            style={{
-              height: '100dvh',
-              borderTopLeftRadius:  isFullScreen ? 0 : 22,
-              borderTopRightRadius: isFullScreen ? 0 : 22,
-              overflow: 'hidden',
-              willChange: 'transform',
-            }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200, mass: 0.8 }}
+            className="relative z-10 w-full mb-3 mt-12"
+            style={{ height: 'calc(100dvh - 3rem - env(safe-area-inset-bottom, 16px))' }}
           >
-
-            {/* ── Top icon bar (always visible) ── */}
-            <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-4 pt-4 pointer-events-none">
-              <button
-                onClick={onClose}
-                className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg pointer-events-auto active:scale-90 transition-transform"
-              >
-                <ChevronDown size={22} className="text-[#333]" />
-              </button>
-              <div className="flex items-center gap-2 pointer-events-auto">
-                <button className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg">
-                  <Search size={18} className="text-[#333]" />
-                </button>
-                <button className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg">
-                  <Share2 size={18} className="text-[#333]" />
-                </button>
+            <div className="overflow-hidden h-full" ref={emblaRef}>
+              <div className="flex h-full touch-pan-y" style={{ marginLeft: '1rem', marginRight: '1rem' }}>
+                {ALL_PRODUCTS.map((p) => (
+                  <div key={p.id} className="flex-[0_0_92%] h-full pr-3 relative">
+                    <ProductDetailCard product={p} onClose={onClose} />
+                  </div>
+                ))}
               </div>
             </div>
-
-            {/* Drag pill (only visible in 3/4 mode) */}
-            {!isFullScreen && (
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 z-30 w-10 h-1.5 bg-gray-300 rounded-full" />
-            )}
-
-            {/* ── Scrollable body ── */}
-            <div
-              ref={scrollRef}
-              onScroll={handleContentScroll}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              className="flex-1 overflow-x-hidden overflow-y-auto overscroll-contain relative"
-              style={{ WebkitOverflowScrolling: 'touch', paddingBottom: 100 }}
-            >
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                <motion.div
-                  key={product.id}
-                  custom={direction}
-                  variants={swipeVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: "spring", stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.2 }
-                  }}
-                  drag={isFullScreen ? "x" : false}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={1}
-                  dragDirectionLock
-                  onDragEnd={(e, { offset, velocity }) => {
-                    const swipe = swipePower(offset.x, velocity.x);
-                    if (swipe < -swipeConfidenceThreshold) {
-                      paginate(1);
-                    } else if (swipe > swipeConfidenceThreshold) {
-                      paginate(-1);
-                    }
-                  }}
-                  className="w-full flex flex-col"
-                >
-
-              {/* Hero Image */}
-              <div
-                className="relative w-full bg-[#f2f2f2] cursor-pointer"
-                style={{ height: 'clamp(200px, 55vw, 360px)' }}
-                onClick={() => setIsFullScreen(true)}
-              >
-                <Image
-                  src={product.image || '/placeholder.png'}
-                  alt={product.name}
-                  fill
-                  className="object-contain p-6"
-                  unoptimized
-                  priority
-                />
-                {/* Image indicator dots */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-                  {[0,1,2].map(i => (
-                    <div key={i} className={`rounded-full transition-all ${i===0 ? 'w-5 h-1.5 bg-[#0f8a3c]' : 'w-1.5 h-1.5 bg-gray-300'}`} />
-                  ))}
-                </div>
-              </div>
-
-              {/* ── Spec Pills ── */}
-              <div className="bg-white border-b border-gray-100 px-4 py-3 flex gap-2 overflow-x-auto hide-scrollbar">
-                <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 min-w-[100px]">
-                  <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Delivery</p>
-                  <p className="text-[13px] font-black text-[#111]">Same Day</p>
-                </div>
-                <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 min-w-[110px]">
-                  <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Category</p>
-                  <p className="text-[13px] font-black text-[#111] line-clamp-1">{product.category || 'Custom'}</p>
-                </div>
-              </div>
-
-              {/* ── Main product info ── */}
-              <div className="bg-white px-4 pt-4 pb-5">
-                {/* Rating + Delivery row */}
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="flex items-center gap-1.5 text-[#666]">
-                    <Clock size={13} />
-                    <span className="text-[12px] font-semibold">22 mins</span>
-                  </div>
-                  <div className="flex items-center gap-0.5">
-                    {[1,2,3,4,5].map(s => (
-                      <Star key={s} size={12}
-                        className={s <= Math.round(product.rating || 4.5)
-                          ? 'fill-[#FFB800] text-[#FFB800]'
-                          : 'fill-gray-200 text-gray-200'}
-                      />
-                    ))}
-                    <span className="text-[12px] font-bold text-[#333] ml-1">{product.reviews || 0}</span>
-                  </div>
-                </div>
-
-                {/* Product name */}
-                <h1 className="text-[20px] font-black text-[#111] leading-snug mb-1">{product.name}</h1>
-                {product.description && (
-                  <p className="text-[13px] text-[#777] leading-relaxed mb-4">{product.description}</p>
-                )}
-
-                {/* Price */}
-                <div className="flex items-baseline gap-2 mb-0.5">
-                  <span className="text-[28px] font-black text-[#111] leading-none">₹{product.price}</span>
-                  <span className="text-[14px] text-[#888] line-through font-medium">MRP ₹{mrp}</span>
-                  <span className="text-[12px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded">{discount}% off</span>
-                </div>
-                <p className="text-[11px] text-[#888] font-medium mb-5">₹{product.price}/piece  •  Inclusive of all taxes</p>
-
-                {/* ── Variant Selectors ── */}
-                <div id="variant-selectors">
-                  {/* ── Size Selector ── */}
-                  <div className="mb-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-[14px] font-black text-[#111]">Select Size</h3>
-                      <span className="text-[12px] text-[#0284c7] font-semibold">Size Guide</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {SIZES.map(size => (
-                        <button
-                          key={size}
-                          onClick={() => setSelectedSize(size)}
-                          className={`px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all duration-150 active:scale-95 ${
-                            selectedSize === size
-                              ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-md'
-                              : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
-                          }`}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* ── Color Selector ── */}
-                  <div className="mb-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-[14px] font-black text-[#111]">Select Colour</h3>
-                      <span className="text-[12px] text-[#666] font-semibold">{selectedColor}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-3">
-                      {COLORS.map(c => (
-                        <button
-                          key={c.label}
-                          onClick={() => setSelectedColor(c.label)}
-                          title={c.label}
-                          className={`relative w-9 h-9 rounded-full transition-all duration-150 active:scale-90 ${
-                            selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
-                          }`}
-                          style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
-                        >
-                          {selectedColor === c.label && (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <Check size={14} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
-                            </div>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── Quantity Selector ── */}
-                <div className="flex items-center gap-4 mb-2">
-                  <h3 className="text-[14px] font-black text-[#111]">Quantity</h3>
-                  <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden">
-                    <button
-                      onClick={() => {
-                        const newQty = Math.max(1, qty - 1);
-                        setQty(newQty);
-                        if (addedToCart) {
-                          const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
-                          if (cartItem) updateQuantity(cartItem.id, newQty);
-                        }
-                      }}
-                      className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
-                    >
-                      <Minus size={16} />
-                    </button>
-                    <span className="w-10 text-center text-[15px] font-black text-[#111]">{qty}</span>
-                    <button
-                      onClick={() => setQty(q => Math.min(50, q + 1))}
-                      className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
-                    >
-                      <Plus size={16} />
-                    </button>
-                  </div>
-                  {qty >= 10 && (
-                    <span className="text-[11px] font-bold text-[#0f8a3c] bg-[#eafbf0] px-2 py-1 rounded-full">Bulk discount applied!</span>
-                  )}
-                </div>
-              </div>
-
-              {/* ── Brand Row ── */}
-              <div className="bg-white border-t border-gray-100 px-4 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-[#eafbf0] border border-[#c3f0d0] flex items-center justify-center">
-                    <ShoppingBag size={22} className="text-[#0f8a3c]" />
-                  </div>
-                  <div>
-                    <p className="text-[14px] font-black text-[#111]">Hashtag Prints, Salem</p>
-                    <p className="text-[12px] text-[#0f8a3c] font-semibold">Explore all products</p>
-                  </div>
-                </div>
-                <ChevronRight size={18} className="text-[#aaa]" />
-              </div>
-
-              {/* ── 72hr Replacement ── */}
-              <div className="bg-white border-t border-gray-100 px-4 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-[#eff8ff] border border-[#bae1ff] flex items-center justify-center">
-                    <RotateCcw size={20} className="text-[#0284c7]" />
-                  </div>
-                  <div>
-                    <p className="text-[14px] font-black text-[#111]">72 hours only replacement</p>
-                    <p className="text-[12px] text-[#888] font-medium">Subject to our return policy</p>
-                  </div>
-                </div>
-                <ChevronRight size={18} className="text-[#aaa]" />
-              </div>
-
-              {/* ── About product ── */}
-              <div className="bg-white border-t border-gray-100 px-4 pt-4 pb-8">
-                <h3 className="text-[15px] font-black text-[#111] mb-3">About this product</h3>
-                <div className="space-y-2.5">
-                  {[
-                    'Premium DTF / screen print on top-grade fabric',
-                    'Custom artwork, logos, and photo prints',
-                    'Same-day dispatch on orders placed before 12 PM',
-                    'Colour-accurate, UV-resistant, wash-safe prints',
-                    'Bulk orders: 10+ pieces get up to 40% off',
-                  ].map((feat, i) => (
-                    <div key={i} className="flex items-start gap-2.5">
-                      <div className="w-4 h-4 rounded-full bg-[#eafbf0] flex items-center justify-center mt-0.5 flex-shrink-0">
-                        <div className="w-1.5 h-1.5 bg-[#0f8a3c] rounded-full" />
-                      </div>
-                      <p className="text-[13px] text-[#555] font-medium leading-snug">{feat}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* ── Relevant Products (Only visible in Full Screen) ── */}
-              {isFullScreen && (
-                <div className="bg-white border-t border-gray-100 px-4 pt-4 pb-8">
-                  <h3 className="text-[15px] font-black text-[#111] mb-3">Relevant Products</h3>
-                  <div className="grid grid-cols-2 gap-3 pb-8">
-                    {ALL_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
-                      <ProductCard key={p.id} product={p} onSelect={onSelectProduct} />
-                    ))}
-                  </div>
-                </div>
-              )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            {/* end scrollable */}
-
-            {/* ── Fixed Bottom Bar ── */}
-            <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-              {addedToCart ? (
-                /* After adding — show cart summary on left, +/- on right */
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                    <div className="w-11 h-11 rounded-xl bg-[#f0f0f0] overflow-hidden relative flex-shrink-0">
-                      <Image src={product.image || '/placeholder.png'} alt={product.name} fill className="object-contain p-1" unoptimized />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[13px] font-black text-[#111] leading-none">
-                        ₹{product.price * qty}
-                        <span className="text-[11px] font-medium text-[#888] ml-1 line-through">₹{mrp * qty}</span>
-                      </p>
-                      <p className="text-[11px] text-[#555] font-medium mt-0.5 truncate">
-                        {qty}× · {selectedSize} · {selectedColor}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center border-2 border-[#0f8a3c] rounded-xl overflow-hidden">
-                    <button onClick={() => {
-                      const newQty = Math.max(1, qty - 1);
-                      setQty(newQty);
-                      const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
-                      if (cartItem) updateQuantity(cartItem.id, newQty);
-                    }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
-                      <Minus size={16} />
-                    </button>
-                    <span className="w-9 text-center text-[15px] font-black text-[#0f8a3c]">{qty}</span>
-                    <button onClick={() => {
-                      const newQty = qty + 1;
-                      setQty(newQty);
-                      const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
-                      if (cartItem) updateQuantity(cartItem.id, newQty);
-                    }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
-                      <Plus size={16} />
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                /* Before adding — show price on left, Add to cart on right */
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-[11px] text-[#888] font-medium">
-                      {selectedSize} · {selectedColor}
-                    </p>
-                    <p className="text-[16px] font-black text-[#111] leading-none">
-                      ₹{product.price}
-                      <span className="text-[12px] font-medium text-[#888] ml-1.5 line-through">₹{mrp}</span>
-                    </p>
-                    <p className="text-[10px] text-[#555] mt-0.5">Inclusive of all taxes</p>
-                  </div>
-                  <button
-                    onClick={handleAddToCart}
-                    className="bg-[#0f8a3c] hover:bg-[#0a7032] text-white px-7 py-3.5 rounded-xl font-black text-[15px] shadow-[0_4px_14px_rgba(15,138,60,0.35)] active:scale-95 transition-all whitespace-nowrap"
-                  >
-                    Add to cart
-                  </button>
-                </div>
-              )}
-            </div>
-
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );

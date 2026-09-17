@@ -79,8 +79,8 @@ export function FloatingCartButton() {
   }
   
   // If the product bottom sheet is open, we need to translate the cart up so it doesn't overlap the "Add to Cart" sticky footer.
-  // 64px translation gives a perfect tight gap above the 67px tall footer (which is at bottom-0).
-  const sheetOffsetClass = (isProductSheetOpen && isProductSheetFullScreen) ? 'max-[1023px]:-translate-y-[64px]' : 'translate-y-0';
+  // 72px translation gives a perfect 8px gap above the 68px tall footer (which is inside a card at mb-3).
+  const sheetOffsetClass = (isProductSheetOpen && isProductSheetFullScreen) ? 'max-[1023px]:-translate-y-[72px]' : 'translate-y-0';
 
   return (
     <div className={`fixed ${bottomClass} left-0 right-0 z-[100000] px-4 pointer-events-none flex justify-center transition-all duration-300 ${sheetOffsetClass}`}>
