@@ -10,12 +10,9 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, getProductOptions } from '@/lib/utils';
 import { ALL_PRODUCTS } from '../page';
 import toast from 'react-hot-toast';
-
-const SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
-const COLORS = ['White', 'Black', 'Navy Blue', 'Red', 'Yellow', 'Royal Blue'];
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -52,8 +49,7 @@ export default function ProductDetailPage() {
     );
   }
 
-  const hasSizes = product.categorySlug === 'custom-tshirt-printing';
-  const hasColors = product.categorySlug === 'custom-tshirt-printing';
+  const { hasSizes, hasColors, sizes: SIZES, colors: COLORS } = getProductOptions(product.categorySlug || '');
   const images = [product.image];
   const unitPrice = product.price;
   const totalPrice = unitPrice * quantity;
@@ -200,15 +196,22 @@ export default function ProductDetailPage() {
             {/* Size Selector */}
             {hasSizes && (
               <div>
-                <label className="block text-xs font-bold text-[#111] mb-2 uppercase tracking-wide">
-                  Size {selectedSize && <span className="text-[#00AEEF] normal-case font-semibold">- {selectedSize}</span>}
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-semibold text-[#111]">{getProductOptions(product.categorySlug || '').sizeTitle}</span>
+                  <button className="text-sm text-[#00AEEF] hover:underline font-medium">Size Guide</button>
+                </div>
                 <div className="flex flex-wrap gap-2">
-                  {SIZES.map(size => (
-                    <button key={size} type="button" onClickCapture={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedSize(size); }}
-                      className="min-w-[44px] h-[44px] px-3 rounded-xl border-2 text-sm font-bold transition-all"
-                      style={{ touchAction: 'manipulation', borderColor: selectedSize === size ? '#00AEEF' : '#e5e7eb', background: selectedSize === size ? '#00AEEF' : 'white', color: selectedSize === size ? 'white' : '#444' }}>
-                      {size}
+                  {SIZES.map(s => (
+                    <button
+                      key={s}
+                      onClick={() => setSelectedSize(s)}
+                      className={`min-w-[48px] h-10 px-3 rounded-lg border-2 text-sm font-bold transition-all ${
+                        selectedSize === s
+                          ? 'border-[#0f8a3c] bg-[#eafbf0] text-[#0f8a3c]'
+                          : 'border-gray-200 text-gray-700 hover:border-gray-300 bg-white'
+                      }`}
+                    >
+                      {s}
                     </button>
                   ))}
                 </div>
@@ -218,15 +221,21 @@ export default function ProductDetailPage() {
             {/* Color Selector */}
             {hasColors && (
               <div>
-                <label className="block text-xs font-bold text-[#111] mb-2 uppercase tracking-wide">
-                  Colour {selectedColor && <span className="text-[#00AEEF] normal-case font-semibold">- {selectedColor}</span>}
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {COLORS.map(color => (
-                    <button key={color} type="button" onClickCapture={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedColor(color); }}
-                      className="px-3 py-2 rounded-xl border-2 text-xs font-semibold transition-all min-h-[44px]"
-                      style={{ touchAction: 'manipulation', borderColor: selectedColor === color ? '#00AEEF' : '#e5e7eb', background: selectedColor === color ? '#e0f7ff' : 'white', color: selectedColor === color ? '#00AEEF' : '#444' }}>
-                      {color}
+                <span className="font-semibold text-[#111] block mb-3">{getProductOptions(product.categorySlug || '').colorTitle}: {selectedColor || 'None'}</span>
+                <div className="flex flex-wrap gap-3">
+                  {COLORS.map(c => (
+                    <button
+                      key={c.label}
+                      onClick={() => setSelectedColor(c.label)}
+                      className={`w-10 h-10 rounded-full border-2 transition-all relative ${
+                        selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : 'hover:scale-110'
+                      }`}
+                      style={{ backgroundColor: c.hex, borderColor: c.border }}
+                      title={c.label}
+                    >
+                      {selectedColor === c.label && (
+                        <Check size={16} className={`absolute inset-0 m-auto ${c.label === 'White' || c.label === 'Yellow' ? 'text-gray-800' : 'text-white'}`} />
+                      )}
                     </button>
                   ))}
                 </div>

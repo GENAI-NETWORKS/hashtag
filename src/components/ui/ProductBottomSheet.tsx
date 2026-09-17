@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import toast from 'react-hot-toast';
 import { ALL_PRODUCTS, ProductCard } from '@/app/products/page';
+import { getProductOptions } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -23,6 +24,7 @@ interface DemoProduct {
   reviews?: number;
   description?: string;
   category?: string;
+  categorySlug?: string;
 }
 
 interface ProductBottomSheetProps {
@@ -31,17 +33,6 @@ interface ProductBottomSheetProps {
   onClose: () => void;
   onSelectProduct?: (product: any) => void;
 }
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-const SIZES   = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
-const COLORS  = [
-  { label: 'White',   hex: '#FFFFFF', border: '#ccc' },
-  { label: 'Black',   hex: '#111111', border: '#111' },
-  { label: 'Navy',    hex: '#1e3a5f', border: '#1e3a5f' },
-  { label: 'Red',     hex: '#D32F2F', border: '#D32F2F' },
-  { label: 'Teal',    hex: '#00796B', border: '#00796B' },
-  { label: 'Yellow',  hex: '#FDD835', border: '#e5c100' },
-];
 
 // ─── Product Detail Card (Inner Component) ────────────────────────────────────
 function ProductDetailCard({ 
@@ -65,6 +56,29 @@ function ProductDetailCard({
   const updateQuantity  = useCartStore(s => s.updateQuantity);
   const scrollRef       = useRef<HTMLDivElement>(null);
 
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientY);
+  };
+  
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientY;
+    const distance = touchStart - touchEnd;
+    
+    const isAtTop = scrollRef.current ? scrollRef.current.scrollTop <= 0 : true;
+
+    if (distance > 50 && !isExpanded) {
+      onExpand();
+    } else if (distance < -50 && isExpanded && isAtTop) {
+      onClose();
+    }
+    setTouchStart(null);
+  };
+
+  const { hasSizes, hasColors, sizes: SIZES, colors: COLORS } = getProductOptions(product.categorySlug || '');
+
   const mrp       = Math.round(product.price * 1.32);
   const discount  = Math.round(((mrp - product.price) / mrp) * 100);
 
@@ -82,20 +96,20 @@ function ProductDetailCard({
             behavior: 'smooth'
           });
         }
-        toast.error('Please select a size and colour', { id: 'variant-toast' });
+        toast.error('Please select required options', { id: 'variant-toast' });
       }, 150);
       return;
     }
 
     const syntheticProduct = {
       id:           product.id,
-      categoryId:   1,
       name:         product.name,
-      slug:         product.slug,
-      description:  product.description || '',
       basePrice:    product.price,
+      categoryId:   1, // mock
+      slug:         product.slug,
       images:       [product.image],
-      tags:         [selectedColor, selectedSize],
+      description:  product.description || '',
+      tags:         [selectedColor, selectedSize].filter(Boolean),
       isActive:     true,
       isFeatured:   false,
       isBestseller: false,
@@ -106,14 +120,14 @@ function ProductDetailCard({
     } as any;
 
     const syntheticVariant = {
-      id:            product.id * 100 + SIZES.indexOf(selectedSize),
+      id:            product.id * 100 + (hasSizes ? Math.max(0, SIZES.indexOf(selectedSize)) : 0),
       productId:     product.id,
-      size:          selectedSize,
-      color:         selectedColor,
+      size:          hasSizes ? selectedSize : undefined,
+      color:         hasColors ? selectedColor : undefined,
       material:      'Custom Print',
       priceModifier: 0,
       stock:         99,
-      sku:           `${product.slug}-${selectedSize}-${selectedColor.toLowerCase()}`,
+      sku:           `${product.slug}-${hasSizes ? selectedSize : 'std'}-${hasColors ? selectedColor.toLowerCase() : 'std'}`,
       isActive:      true,
     } as any;
 
@@ -134,8 +148,10 @@ function ProductDetailCard({
 
   return (
     <div 
-      className={`relative w-full h-full flex flex-col bg-white overflow-hidden shadow-xl ring-1 ring-black/5 transition-all duration-300 cursor-pointer ${isExpanded ? 'rounded-none' : 'rounded-3xl'}`}
+      className={`relative w-full h-full flex flex-col bg-white overflow-hidden shadow-xl ring-1 ring-black/5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] cursor-pointer origin-bottom ${isExpanded ? 'rounded-none scale-100' : 'rounded-3xl scale-[0.98] opacity-95 hover:scale-[0.99] hover:opacity-100'}`}
       onClick={() => { if (!isExpanded) onExpand(); }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       
       {/* ── Top icon bar (always visible) ── */}
@@ -166,7 +182,7 @@ function ProductDetailCard({
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {/* Hero Image */}
-        <div className={`relative w-full bg-[#f8f9fa] flex flex-col ${isExpanded ? 'flex-none h-[42vh] min-h-[300px]' : 'flex-1 min-h-[120px]'}`}>
+        <div className={`relative w-full bg-[#f8f9fa] flex flex-col transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isExpanded ? 'flex-none h-[42vh] min-h-[300px]' : 'flex-1 min-h-[120px]'}`}>
           <div className="relative flex-1 w-full mt-12 mb-8">
             <Image
               src={product.image || '/placeholder.png'}
@@ -233,54 +249,58 @@ function ProductDetailCard({
           <div className={isExpanded ? 'block' : 'hidden'}>
             <div id={`variant-selectors-${product.id}`} className="mt-4">
               {/* Size Selector */}
-              <div className="mb-5 border-t border-gray-100 pt-5">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-[16px] font-black text-[#111]">Select Size</h3>
-                  <span className="text-[14px] text-[#0284c7] font-semibold cursor-pointer">Size Guide</span>
+              {hasSizes && (
+                <div className="mb-5 border-t border-gray-100 pt-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-[16px] font-black text-[#111]">{getProductOptions(product.categorySlug || '').sizeTitle}</h3>
+                    <span className="text-[14px] text-[#0284c7] font-semibold cursor-pointer">Size Guide</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {SIZES.map(size => (
+                      <button
+                        key={size}
+                        onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
+                        className={`px-4 py-2.5 rounded-xl text-[15px] font-bold border-2 transition-all duration-150 active:scale-95 ${
+                          selectedSize === size
+                            ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-sm'
+                            : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {SIZES.map(size => (
-                    <button
-                      key={size}
-                      onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
-                      className={`px-4 py-2.5 rounded-xl text-[15px] font-bold border-2 transition-all duration-150 active:scale-95 ${
-                        selectedSize === size
-                          ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-sm'
-                          : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              )}
 
               {/* Color Selector */}
-              <div className="mb-5 border-t border-gray-100 pt-5">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-[16px] font-black text-[#111]">Select Colour</h3>
-                  <span className="text-[14px] text-[#666] font-semibold">{selectedColor}</span>
+              {hasColors && (
+                <div className="mb-5 border-t border-gray-100 pt-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-[16px] font-black text-[#111]">{getProductOptions(product.categorySlug || '').colorTitle}</h3>
+                    <span className="text-[14px] text-[#666] font-semibold">{selectedColor}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {COLORS.map(c => (
+                      <button
+                        key={c.label}
+                        onClick={(e) => { e.stopPropagation(); setSelectedColor(c.label); }}
+                        title={c.label}
+                        className={`relative w-10 h-10 rounded-full transition-all duration-150 active:scale-90 ${
+                          selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
+                        }`}
+                        style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
+                      >
+                        {selectedColor === c.label && (
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <Check size={16} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  {COLORS.map(c => (
-                    <button
-                      key={c.label}
-                      onClick={(e) => { e.stopPropagation(); setSelectedColor(c.label); }}
-                      title={c.label}
-                      className={`relative w-10 h-10 rounded-full transition-all duration-150 active:scale-90 ${
-                        selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
-                      }`}
-                      style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
-                    >
-                      {selectedColor === c.label && (
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                          <Check size={16} className={c.label === 'White' || c.label === 'Yellow' ? 'text-gray-700 stroke-[3]' : 'text-white stroke-[3]'} />
-                        </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Quantity Selector */}
@@ -343,7 +363,7 @@ function ProductDetailCard({
                   <span className="text-[13px] font-medium text-[#888] ml-1 line-through">₹{mrp * qty}</span>
                 </p>
                 <p className="text-[13px] text-[#555] font-medium mt-0.5 truncate">
-                  {qty}× · {selectedSize} · {selectedColor}
+                  {qty}× {hasSizes ? `· ${selectedSize}` : ''} {hasColors ? `· ${selectedColor}` : ''}
                 </p>
               </div>
             </div>
@@ -395,7 +415,9 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     align: 'center',
     skipSnaps: false,
-    dragFree: false
+    dragFree: false,
+    duration: 40,
+    dragThreshold: 5
   });
 
   // When modal opens, jump to the correct product
@@ -432,16 +454,35 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
   // Lock body scroll and emit events for FloatingCartButton
   useEffect(() => {
     if (isOpen) {
+      const scrollY = window.scrollY;
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.overscrollBehavior = 'none';
+
       window.dispatchEvent(new Event('productSheetOpened'));
       window.dispatchEvent(new Event('productSheetFullScreen'));
     } else {
+      const scrollY = document.body.style.top;
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.overscrollBehavior = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+
       window.dispatchEvent(new Event('productSheetClosed'));
       window.dispatchEvent(new Event('productSheetPartial'));
     }
     return () => { 
       document.body.style.overflow = ''; 
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.overscrollBehavior = '';
       window.dispatchEvent(new Event('productSheetClosed'));
     };
   }, [isOpen]);
@@ -467,7 +508,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
             onClick={onClose}
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
@@ -477,13 +518,13 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200, mass: 0.8 }}
-            className={`relative z-10 w-full transition-all duration-300 ${isAnyExpanded ? 'mt-0 mb-0' : 'mb-3 mt-12'}`}
+            transition={{ type: 'spring', damping: 28, stiffness: 220, mass: 0.6 }}
+            className={`relative z-10 w-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isAnyExpanded ? 'mt-0 mb-0' : 'mb-3 mt-12'}`}
             style={{ height: isAnyExpanded ? '100dvh' : 'calc(100dvh - 3rem - env(safe-area-inset-bottom, 16px))' }}
           >
             <div className="overflow-hidden h-full" ref={emblaRef}>
               <div 
-                className="flex h-full touch-pan-y transition-all duration-300" 
+                className="flex h-full touch-pan-y transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]" 
                 style={{ 
                   marginLeft: isAnyExpanded ? '0' : '1rem', 
                   marginRight: isAnyExpanded ? '0' : '1rem' 
@@ -494,7 +535,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
                   return (
                     <div 
                       key={p.id} 
-                      className={`h-full relative transition-all duration-300 ${isThisExpanded ? 'flex-[0_0_100%] pr-0' : 'flex-[0_0_92%] pr-3'}`}
+                      className={`h-full relative transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isThisExpanded ? 'flex-[0_0_100%] pr-0' : 'flex-[0_0_92%] pr-3'}`}
                     >
                       <ProductDetailCard 
                         product={p} 

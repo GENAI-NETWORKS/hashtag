@@ -73,3 +73,85 @@ export function getDeliveryEstimate(pincode: string): { days: number; label: str
   }
   return { days: 5, label: '5-7 days' };
 }
+
+export function getProductOptions(categorySlug: string) {
+  const DEFAULT_COLORS = [
+    { label: 'White',   hex: '#FFFFFF', border: '#ccc' },
+    { label: 'Black',   hex: '#111111', border: '#111' },
+    { label: 'Navy',    hex: '#1e3a5f', border: '#1e3a5f' },
+    { label: 'Red',     hex: '#D32F2F', border: '#D32F2F' },
+    { label: 'Teal',    hex: '#00796B', border: '#00796B' },
+    { label: 'Yellow',  hex: '#FDD835', border: '#e5c100' },
+  ];
+
+  switch (categorySlug) {
+    case 'custom-tshirt-printing':
+    case 'bulk-printing':
+      return {
+        hasSizes: true,
+        hasColors: true,
+        sizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
+        colors: DEFAULT_COLORS,
+        sizeTitle: 'Select Size',
+        colorTitle: 'Select Colour'
+      };
+    case 'custom-mug-printing':
+      return {
+        hasSizes: true,
+        hasColors: true,
+        sizes: ['325ml (11oz)', '450ml (15oz)'],
+        colors: [
+          { label: 'White', hex: '#FFFFFF', border: '#ccc' },
+          { label: 'Black', hex: '#111111', border: '#111' },
+          { label: 'Magic Mug', hex: '#111111', border: '#FFD700' }
+        ],
+        sizeTitle: 'Select Capacity',
+        colorTitle: 'Select Style'
+      };
+    case 'custom-notebook-printing':
+      return {
+        hasSizes: true,
+        hasColors: false,
+        sizes: ['A6', 'A5', 'A4'],
+        colors: [],
+        sizeTitle: 'Select Format',
+        colorTitle: ''
+      };
+    case 'photo-printing-online':
+      return {
+        hasSizes: true,
+        hasColors: false,
+        sizes: ['8x8"', '12x12"', '16x20"', '24x36"'],
+        colors: [],
+        sizeTitle: 'Select Canvas Size',
+        colorTitle: ''
+      };
+    case 'business-card-printing':
+      return {
+        hasSizes: true,
+        hasColors: false,
+        sizes: ['Standard 90x50mm', 'Square 65x65mm'],
+        colors: [],
+        sizeTitle: 'Select Card Shape',
+        colorTitle: ''
+      };
+    case 'custom-sticker-printing':
+      return {
+        hasSizes: true,
+        hasColors: false,
+        sizes: ['2x2"', '3x3"', '4x4"'],
+        colors: [],
+        sizeTitle: 'Select Size',
+        colorTitle: ''
+      };
+    default:
+      return {
+        hasSizes: false,
+        hasColors: false,
+        sizes: [],
+        colors: [],
+        sizeTitle: '',
+        colorTitle: ''
+      };
+  }
+}
