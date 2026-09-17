@@ -148,14 +148,14 @@ function ProductDetailCard({
         </div>
       </div>
 
-      {/* ── Body ── */}
+      {/* ── Scrollable body ── */}
       <div
         ref={scrollRef}
-        className={`flex-1 flex flex-col w-full overflow-x-hidden ${isExpanded ? 'overflow-y-auto pb-[130px]' : 'overflow-y-hidden'}`}
+        className={`flex-1 overflow-x-hidden flex flex-col ${isExpanded ? 'overflow-y-auto pb-[130px]' : 'overflow-y-hidden select-none pb-[88px]'}`}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
-        {/* Hero Image (Shrinks dynamically in summary mode) */}
-        <div className={`relative w-full bg-[#f8f9fa] flex flex-col ${isExpanded ? 'h-[40vh] min-h-[250px] flex-none' : 'flex-1 min-h-0'}`}>
+        {/* Hero Image */}
+        <div className={`relative w-full bg-[#f8f9fa] flex flex-col ${isExpanded ? 'flex-none h-[42vh] min-h-[300px]' : 'flex-1 min-h-[120px]'}`}>
           <div className="relative flex-1 w-full mt-12 mb-8">
             <Image
               src={product.image || '/placeholder.png'}
@@ -174,86 +174,81 @@ function ProductDetailCard({
           </div>
         </div>
 
-        {/* ── Text Content (Auto height, pushes up from bottom) ── */}
-        <div className="flex-none bg-white flex flex-col">
-          {/* ── Spec Pills ── */}
-          <div className="border-b border-gray-100 px-4 py-3 flex gap-2 overflow-x-auto hide-scrollbar">
-            <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 w-fit">
-              <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Delivery</p>
-              <p className="text-[14px] font-black text-[#111]">Same Day</p>
+        {/* ── Spec Pills ── */}
+        <div className="bg-white border-b border-gray-100 px-4 py-2.5 flex gap-2 overflow-x-auto hide-scrollbar flex-none">
+          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 w-fit">
+            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Delivery</p>
+            <p className="text-[13px] font-black text-[#111]">Same Day</p>
+          </div>
+          <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 w-fit">
+            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Category</p>
+            <p className="text-[13px] font-black text-[#111] line-clamp-1">{product.category || 'Custom'}</p>
+          </div>
+        </div>
+
+        {/* ── Main product info ── */}
+        <div className="bg-white px-4 pt-3 pb-3 flex-none">
+          {/* Rating + Delivery row */}
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5 text-[#666]">
+              <Clock size={13} />
+              <span className="text-[12px] font-semibold">22 mins</span>
             </div>
-            <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 w-fit">
-              <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Category</p>
-              <p className="text-[14px] font-black text-[#111] line-clamp-1">{product.category || 'Custom'}</p>
+            <div className="flex items-center gap-0.5">
+              {[1,2,3,4,5].map(s => (
+                <Star key={s} size={12}
+                  className={s <= Math.round(product.rating || 4.5)
+                    ? 'fill-[#FFB800] text-[#FFB800]'
+                    : 'fill-gray-200 text-gray-200'}
+                />
+              ))}
+              <span className="text-[12px] font-bold text-[#333] ml-1">{product.reviews || 0}</span>
             </div>
           </div>
 
-          {/* ── Main product info ── */}
-          <div className="px-4 pt-4 pb-4">
-            {/* Rating + Delivery row */}
-            <div className="flex items-center gap-4 mb-3">
-              <div className="flex items-center gap-1.5 text-[#666]">
-                <Clock size={13} />
-                <span className="text-[13px] font-semibold">22 mins</span>
+          {/* Product name */}
+          <h1 className="text-[20px] font-black text-[#111] leading-tight mb-1">{product.name}</h1>
+          
+          {/* Description (Hidden in Summary Mode) */}
+          {product.description && isExpanded && (
+            <p className="text-[13px] text-[#777] leading-relaxed mb-3 line-clamp-2">{product.description}</p>
+          )}
+
+          {/* Price */}
+          <div className="flex items-baseline gap-2 mb-0.5 mt-2">
+            <span className="text-[26px] font-black text-[#111] leading-none">₹{product.price}</span>
+            <span className="text-[14px] text-[#888] line-through font-medium">MRP ₹{mrp}</span>
+            <span className="text-[12px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded">{discount}% off</span>
+          </div>
+          <p className="text-[11px] text-[#888] font-medium mb-3">₹{product.price}/piece  •  Inclusive of all taxes</p>
+
+          {/* ── Brand Row ── */}
+          <div className="bg-white border-t border-gray-100 py-3 flex items-center justify-between mt-1">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#eafbf0] border border-[#c3f0d0] flex items-center justify-center">
+                <ShoppingBag size={20} className="text-[#0f8a3c]" />
               </div>
-              <div className="flex items-center gap-0.5">
-                {[1,2,3,4,5].map(s => (
-                  <Star key={s} size={12}
-                    className={s <= Math.round(product.rating || 4.5)
-                      ? 'fill-[#FFB800] text-[#FFB800]'
-                      : 'fill-gray-200 text-gray-200'}
-                  />
-                ))}
-                <span className="text-[13px] font-bold text-[#333] ml-1">{product.reviews || 0}</span>
+              <div>
+                <p className="text-[14px] font-black text-[#111]">Hashtag Prints, Salem</p>
+                <p className="text-[12px] text-[#0f8a3c] font-semibold">Explore all products</p>
               </div>
             </div>
+            <ChevronRight size={16} className="text-[#aaa]" />
+          </div>
 
-            {/* Product name */}
-            <h1 className="text-[21px] font-black text-[#111] leading-snug mb-1">{product.name}</h1>
-            {product.description && (
-              <p className="text-[14px] text-[#777] leading-relaxed mb-4 line-clamp-2">{product.description}</p>
-            )}
-
-            {/* Price */}
-            <div className="flex items-baseline gap-2 mb-0.5 mt-3">
-              <span className="text-[29px] font-black text-[#111] leading-none">₹{product.price}</span>
-              <span className="text-[15px] text-[#888] line-through font-medium">MRP ₹{mrp}</span>
-              <span className="text-[13px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded">{discount}% off</span>
-            </div>
-            <p className="text-[12px] text-[#888] font-medium mb-4">₹{product.price}/piece  •  Inclusive of all taxes</p>
-
-            {/* ── Brand Row (Moved up for summary view) ── */}
-            <div className="border-t border-gray-100 py-3 flex items-center justify-between mt-1">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-[#eafbf0] border border-[#c3f0d0] flex items-center justify-center">
-                  <ShoppingBag size={22} className="text-[#0f8a3c]" />
-                </div>
-                <div>
-                  <p className="text-[15px] font-black text-[#111]">Hashtag Prints, Salem</p>
-                  <p className="text-[13px] text-[#0f8a3c] font-semibold">Explore all products</p>
-                </div>
+          {/* ── 72hr Replacement ── */}
+          <div className="bg-white border-t border-gray-100 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#eff8ff] border border-[#bae1ff] flex items-center justify-center">
+                <RotateCcw size={18} className="text-[#0284c7]" />
               </div>
-              <ChevronRight size={18} className="text-[#aaa]" />
-            </div>
-
-            {/* ── 72hr Replacement (End of Summary View) ── */}
-            <div className="border-t border-gray-100 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-[#eff8ff] border border-[#bae1ff] flex items-center justify-center">
-                  <RotateCcw size={20} className="text-[#0284c7]" />
-                </div>
-                <div>
-                  <p className="text-[15px] font-black text-[#111]">72 hours only replacement</p>
-                  <p className="text-[13px] text-[#888] font-medium">Subject to our return policy</p>
-                </div>
+              <div>
+                <p className="text-[14px] font-black text-[#111]">72 hours only replacement</p>
+                <p className="text-[12px] text-[#888] font-medium">Subject to our return policy</p>
               </div>
-              <ChevronRight size={18} className="text-[#aaa]" />
             </div>
-            
-            {/* ── Spacer for Floating Cart in Summary Mode ── */}
-            {!isExpanded && (
-              <div className="h-[60px] w-full" /> 
-            )}
+            <ChevronRight size={16} className="text-[#aaa]" />
+          </div>
 
           {/* ── Variant & Quantity (Hidden in Summary Mode) ── */}
           <div className={isExpanded ? 'block' : 'hidden'}>
@@ -352,7 +347,6 @@ function ProductDetailCard({
             ))}
           </div>
         </div>
-      </div>
       </div>
       {/* ── end scrollable ── */}
 
