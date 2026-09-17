@@ -178,15 +178,15 @@ function ProductDetailCard({
         <div className="bg-white px-4 pt-3 pb-2 flex-none flex flex-col justify-end">
           {/* Category, Time & Rating Row */}
           <div className="flex items-center gap-2 mb-2 w-full">
-            <div className="flex items-center gap-1 bg-[#eafbf0] text-[#0f8a3c] px-2 py-1 rounded-md">
-              <Clock size={12} className="stroke-[2.5]" />
+            <div className="flex items-center gap-1 bg-[#eafbf0] text-[#0f8a3c] px-2 py-1 rounded-md whitespace-nowrap flex-shrink-0">
+              <Clock size={12} className="stroke-[2.5] flex-shrink-0" />
               <span className="text-[12px] font-bold">22 mins</span>
             </div>
-            <div className="flex items-center gap-1 bg-gray-100 text-gray-700 px-2 py-1 rounded-md">
-              <span className="text-[12px] font-bold line-clamp-1">{product.category || 'Custom'}</span>
+            <div className="flex items-center gap-1 bg-gray-100 text-gray-700 px-2 py-1 rounded-md min-w-0 overflow-hidden">
+              <span className="text-[12px] font-bold truncate">{product.category || 'Custom'}</span>
             </div>
-            <div className="flex items-center gap-1 ml-auto bg-gray-50 px-2 py-1 rounded-md border border-gray-100">
-              <Star size={11} className="fill-[#FFB800] text-[#FFB800]" />
+            <div className="flex items-center gap-1 ml-auto bg-gray-50 px-2 py-1 rounded-md border border-gray-100 whitespace-nowrap flex-shrink-0">
+              <Star size={11} className="fill-[#FFB800] text-[#FFB800] flex-shrink-0" />
               <span className="text-[12px] font-bold text-[#333]">{product.reviews || 0} reviews</span>
             </div>
           </div>
