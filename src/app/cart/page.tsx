@@ -38,7 +38,7 @@ function CartItemRow({ item }: { item: LocalCartItem }) {
 
       {/* Details */}
       <div className="flex-1 min-w-0">
-        <p className="text-[10px] text-[#888] font-medium mb-0.5 truncate">
+        <p className="text-[11px] text-[#888] font-medium mb-0.5 truncate">
           {item.product.category?.name}
         </p>
         <h3 className="text-sm font-semibold text-[#111] line-clamp-2 leading-snug">
@@ -49,12 +49,12 @@ function CartItemRow({ item }: { item: LocalCartItem }) {
         {(item.variant?.size || item.variant?.color) && (
           <div className="flex gap-1.5 mt-1 flex-wrap">
             {item.variant.size && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f0f9ff] text-[#00AEEF] font-semibold">
+              <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#f0f9ff] text-[#00AEEF] font-semibold">
                 {item.variant.size}
               </span>
             )}
             {item.variant.color && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f8f9fa] text-[#444] font-medium">
+              <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#f8f9fa] text-[#444] font-medium">
                 {item.variant.color}
               </span>
             )}
@@ -63,7 +63,7 @@ function CartItemRow({ item }: { item: LocalCartItem }) {
 
         {/* Customization indicator */}
         {item.customization && (
-          <p className="text-[10px] text-[#EC008C] font-medium mt-1 flex items-center gap-1">
+          <p className="text-[11px] text-[#EC008C] font-medium mt-1 flex items-center gap-1">
             <Tag size={9} /> Custom design applied
           </p>
         )}
@@ -257,7 +257,7 @@ export default function CartPage() {
             </div>
 
             {total < 999 && (
-              <p className="text-[10px] text-[#888] text-center">
+              <p className="text-[11px] text-[#888] text-center">
                 Add {formatPrice(999 - total)} more for free delivery
               </p>
             )}

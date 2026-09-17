@@ -25,7 +25,7 @@ function WishlistCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
       <div className="relative overflow-hidden bg-[#f8f9fa] aspect-square">
         <Image src={product.image} alt={product.name} fill sizes="(max-width:640px) 50vw,33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" unoptimized />
         {product.bestseller && (
-          <span className="absolute top-2 left-2 badge badge-magenta text-[10px] px-2 py-0.5 flex items-center gap-1">
+          <span className="absolute top-2 left-2 badge badge-magenta text-[11px] px-2 py-0.5 flex items-center gap-1">
             <Zap size={9} /> Bestseller
           </span>
         )}
@@ -37,11 +37,11 @@ function WishlistCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
         </button>
       </div>
       <div className="p-3 flex flex-col flex-1">
-        <p className="text-[10px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
+        <p className="text-[11px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
         <h3 className="text-sm font-semibold text-[#111] leading-snug line-clamp-2 flex-1">{product.name}</h3>
         <div className="flex items-center justify-between mt-2.5 gap-1 sm:gap-2">
           <div className="leading-none flex flex-col sm:flex-row sm:items-baseline">
-            <span className="text-[13px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
+            <span className="text-[14px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
           </div>
           <button
             onClick={(e) => {
@@ -51,7 +51,7 @@ function WishlistCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
               // @ts-ignore
               addItem({ id: product.id, name: product.name, basePrice: product.price, images: [product.image], slug: product.slug, categoryId: 1 });
             }}
-            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
+            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
           >
             <span className="whitespace-nowrap px-1">{hasOptions ? 'Select' : 'Add'}</span>
           </button>

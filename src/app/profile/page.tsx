@@ -91,7 +91,7 @@ export default function ProfilePage() {
           <div key={label} className="card p-4 text-center">
             <Icon size={20} className="mx-auto mb-1.5" style={{ color }} />
             <p className="text-lg font-black text-[#111]">{value}</p>
-            <p className="text-[10px] text-[#888] font-medium">{label}</p>
+            <p className="text-[11px] text-[#888] font-medium">{label}</p>
           </div>
         ))}
       </div>

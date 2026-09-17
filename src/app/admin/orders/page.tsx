@@ -72,7 +72,7 @@ function OrderRow({ order, onStatusUpdate }: { order: Order; onStatusUpdate: (id
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-black text-[#111] text-sm">Order #{order.id}</span>
             <span
-              className="badge text-[10px] flex items-center gap-1 px-2 py-0.5"
+              className="badge text-[11px] flex items-center gap-1 px-2 py-0.5"
               style={{ background: `${config?.color}18`, color: config?.color }}
             >
               <StatusIcon size={10} />

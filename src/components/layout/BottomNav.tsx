@@ -85,14 +85,14 @@ export function BottomNav() {
                   style={{ transform: isActive ? 'scale(1.1)' : 'scale(1)' }}
                 />
                 {isMounted && badge && itemCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#EC008C] text-white text-[9px] font-bold flex items-center justify-center leading-none">
+                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#EC008C] text-white text-[10px] font-bold flex items-center justify-center leading-none">
                     {itemCount > 9 ? '9+' : itemCount}
                   </span>
                 )}
               </span>
 
               <span
-                className="text-[10px] font-semibold leading-none"
+                className="text-[11px] font-semibold leading-none"
                 style={{ color: isActive ? '#00AEEF' : '#888' }}
               >
                 {label}

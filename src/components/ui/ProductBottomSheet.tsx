@@ -177,12 +177,12 @@ function ProductDetailCard({
         {/* ── Spec Pills ── */}
         <div className="bg-white border-b border-gray-100 px-4 py-3 flex gap-2 overflow-x-auto hide-scrollbar">
           <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 w-fit">
-            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Delivery</p>
-            <p className="text-[13px] font-black text-[#111]">Same Day</p>
+            <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Delivery</p>
+            <p className="text-[14px] font-black text-[#111]">Same Day</p>
           </div>
           <div className="flex-shrink-0 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 w-fit">
-            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Category</p>
-            <p className="text-[13px] font-black text-[#111] line-clamp-1">{product.category || 'Custom'}</p>
+            <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wide mb-0.5">Category</p>
+            <p className="text-[14px] font-black text-[#111] line-clamp-1">{product.category || 'Custom'}</p>
           </div>
         </div>
 
@@ -192,7 +192,7 @@ function ProductDetailCard({
           <div className="flex items-center gap-4 mb-3">
             <div className="flex items-center gap-1.5 text-[#666]">
               <Clock size={13} />
-              <span className="text-[12px] font-semibold">22 mins</span>
+              <span className="text-[13px] font-semibold">22 mins</span>
             </div>
             <div className="flex items-center gap-0.5">
               {[1,2,3,4,5].map(s => (
@@ -202,23 +202,23 @@ function ProductDetailCard({
                     : 'fill-gray-200 text-gray-200'}
                 />
               ))}
-              <span className="text-[12px] font-bold text-[#333] ml-1">{product.reviews || 0}</span>
+              <span className="text-[13px] font-bold text-[#333] ml-1">{product.reviews || 0}</span>
             </div>
           </div>
 
           {/* Product name */}
-          <h1 className="text-[20px] font-black text-[#111] leading-snug mb-1">{product.name}</h1>
+          <h1 className="text-[21px] font-black text-[#111] leading-snug mb-1">{product.name}</h1>
           {product.description && (
-            <p className="text-[13px] text-[#777] leading-relaxed mb-4 line-clamp-2">{product.description}</p>
+            <p className="text-[14px] text-[#777] leading-relaxed mb-4 line-clamp-2">{product.description}</p>
           )}
 
           {/* Price */}
           <div className="flex items-baseline gap-2 mb-0.5 mt-4">
-            <span className="text-[28px] font-black text-[#111] leading-none">₹{product.price}</span>
-            <span className="text-[14px] text-[#888] line-through font-medium">MRP ₹{mrp}</span>
-            <span className="text-[12px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded">{discount}% off</span>
+            <span className="text-[29px] font-black text-[#111] leading-none">₹{product.price}</span>
+            <span className="text-[15px] text-[#888] line-through font-medium">MRP ₹{mrp}</span>
+            <span className="text-[13px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded">{discount}% off</span>
           </div>
-          <p className="text-[11px] text-[#888] font-medium mb-5">₹{product.price}/piece  •  Inclusive of all taxes</p>
+          <p className="text-[12px] text-[#888] font-medium mb-5">₹{product.price}/piece  •  Inclusive of all taxes</p>
 
           {/* ── Brand Row (Moved up for summary view) ── */}
           <div className="bg-white border-t border-gray-100 py-4 flex items-center justify-between mt-2">
@@ -227,8 +227,8 @@ function ProductDetailCard({
                 <ShoppingBag size={22} className="text-[#0f8a3c]" />
               </div>
               <div>
-                <p className="text-[14px] font-black text-[#111]">Hashtag Prints, Salem</p>
-                <p className="text-[12px] text-[#0f8a3c] font-semibold">Explore all products</p>
+                <p className="text-[15px] font-black text-[#111]">Hashtag Prints, Salem</p>
+                <p className="text-[13px] text-[#0f8a3c] font-semibold">Explore all products</p>
               </div>
             </div>
             <ChevronRight size={18} className="text-[#aaa]" />
@@ -241,8 +241,8 @@ function ProductDetailCard({
                 <RotateCcw size={20} className="text-[#0284c7]" />
               </div>
               <div>
-                <p className="text-[14px] font-black text-[#111]">72 hours only replacement</p>
-                <p className="text-[12px] text-[#888] font-medium">Subject to our return policy</p>
+                <p className="text-[15px] font-black text-[#111]">72 hours only replacement</p>
+                <p className="text-[13px] text-[#888] font-medium">Subject to our return policy</p>
               </div>
             </div>
             <ChevronRight size={18} className="text-[#aaa]" />
@@ -254,15 +254,15 @@ function ProductDetailCard({
               {/* Size Selector */}
               <div className="mb-5 border-t border-gray-100 pt-5">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-[14px] font-black text-[#111]">Select Size</h3>
-                  <span className="text-[12px] text-[#0284c7] font-semibold cursor-pointer">Size Guide</span>
+                  <h3 className="text-[15px] font-black text-[#111]">Select Size</h3>
+                  <span className="text-[13px] text-[#0284c7] font-semibold cursor-pointer">Size Guide</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {SIZES.map(size => (
                     <button
                       key={size}
                       onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
-                      className={`px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all duration-150 active:scale-95 ${
+                      className={`px-4 py-2.5 rounded-xl text-[14px] font-bold border-2 transition-all duration-150 active:scale-95 ${
                         selectedSize === size
                           ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-sm'
                           : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
@@ -277,8 +277,8 @@ function ProductDetailCard({
               {/* Color Selector */}
               <div className="mb-5 border-t border-gray-100 pt-5">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-[14px] font-black text-[#111]">Select Colour</h3>
-                  <span className="text-[12px] text-[#666] font-semibold">{selectedColor}</span>
+                  <h3 className="text-[15px] font-black text-[#111]">Select Colour</h3>
+                  <span className="text-[13px] text-[#666] font-semibold">{selectedColor}</span>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {COLORS.map(c => (
@@ -305,9 +305,9 @@ function ProductDetailCard({
             {/* Quantity Selector */}
             <div className="flex items-center justify-between border-t border-gray-100 pt-5 mb-2">
               <div>
-                <h3 className="text-[14px] font-black text-[#111]">Quantity</h3>
+                <h3 className="text-[15px] font-black text-[#111]">Quantity</h3>
                 {qty >= 10 && (
-                  <p className="text-[11px] font-bold text-[#0f8a3c] mt-0.5">Bulk discount applied!</p>
+                  <p className="text-[12px] font-bold text-[#0f8a3c] mt-0.5">Bulk discount applied!</p>
                 )}
               </div>
               <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden" onClick={e => e.stopPropagation()}>
@@ -324,7 +324,7 @@ function ProductDetailCard({
                 >
                   <Minus size={16} />
                 </button>
-                <span className="w-10 text-center text-[15px] font-black text-[#111] bg-white leading-[40px]">{qty}</span>
+                <span className="w-10 text-center text-[16px] font-black text-[#111] bg-white leading-[40px]">{qty}</span>
                 <button
                   onClick={() => setQty(q => Math.min(50, q + 1))}
                   className="w-10 h-10 flex items-center justify-center text-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
@@ -338,7 +338,7 @@ function ProductDetailCard({
 
         {/* ── Relevant Products ── */}
         <div className={`bg-white border-t border-gray-100 px-4 pt-5 pb-8 ${isExpanded ? 'block' : 'hidden'}`} onClick={e => e.stopPropagation()}>
-          <h3 className="text-[15px] font-black text-[#111] mb-4">Relevant Products</h3>
+          <h3 className="text-[16px] font-black text-[#111] mb-4">Relevant Products</h3>
           <div className="grid grid-cols-2 gap-3 pb-8">
             {ALL_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
               <ProductCard key={p.id} product={p} />
@@ -357,11 +357,11 @@ function ProductDetailCard({
                 <Image src={product.image || '/placeholder.png'} alt={product.name} fill className="object-contain p-1" unoptimized />
               </div>
               <div className="min-w-0">
-                <p className="text-[13px] font-black text-[#111] leading-none">
+                <p className="text-[14px] font-black text-[#111] leading-none">
                   ₹{product.price * qty}
-                  <span className="text-[11px] font-medium text-[#888] ml-1 line-through">₹{mrp * qty}</span>
+                  <span className="text-[12px] font-medium text-[#888] ml-1 line-through">₹{mrp * qty}</span>
                 </p>
-                <p className="text-[11px] text-[#555] font-medium mt-0.5 truncate">
+                <p className="text-[12px] text-[#555] font-medium mt-0.5 truncate">
                   {qty}× · {selectedSize} · {selectedColor}
                 </p>
               </div>
@@ -375,7 +375,7 @@ function ProductDetailCard({
               }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
                 <Minus size={16} />
               </button>
-              <span className="w-9 text-center text-[15px] font-black text-[#0f8a3c] leading-[40px]">{qty}</span>
+              <span className="w-9 text-center text-[16px] font-black text-[#0f8a3c] leading-[40px]">{qty}</span>
               <button onClick={() => {
                 const newQty = qty + 1;
                 setQty(newQty);
@@ -389,14 +389,14 @@ function ProductDetailCard({
         ) : (
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[11px] text-[#888] font-medium">
+              <p className="text-[12px] text-[#888] font-medium">
                 {qty} {qty > 1 ? 'pieces' : 'piece'}
               </p>
-              <p className="text-[16px] font-black text-[#111] leading-none mt-0.5">₹{product.price * qty}</p>
+              <p className="text-[17px] font-black text-[#111] leading-none mt-0.5">₹{product.price * qty}</p>
             </div>
             <button
               onClick={handleAddToCart}
-              className="bg-[#0f8a3c] hover:bg-[#0c7031] text-white px-6 h-11 rounded-xl text-[14px] font-black flex items-center justify-center gap-2 transition-colors shadow-md active:scale-[0.98]"
+              className="bg-[#0f8a3c] hover:bg-[#0c7031] text-white px-6 h-11 rounded-xl text-[15px] font-black flex items-center justify-center gap-2 transition-colors shadow-md active:scale-[0.98]"
             >
               Add to cart
             </button>

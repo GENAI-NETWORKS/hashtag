@@ -88,7 +88,7 @@ function OrderTimeline({ status, history }: { status: OrderStatus; history: Orde
               </p>
               <p className="text-xs text-[#888] mt-0.5">{step.sub}</p>
               {historyEntry && (
-                <p className="text-[10px] text-[#aaa] mt-1">
+                <p className="text-[11px] text-[#aaa] mt-1">
                   {new Date(historyEntry.createdAt).toLocaleString('en-IN')}
                   {historyEntry.note ? ` - ${historyEntry.note}` : ''}
                 </p>
@@ -160,7 +160,7 @@ export default function OrderDetailPage() {
         </div>
         {order.estimatedDelivery && order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && (
           <div className="text-right">
-            <p className="text-[10px] text-[#888]">Est. delivery</p>
+            <p className="text-[11px] text-[#888]">Est. delivery</p>
             <p className="text-sm font-bold text-[#00AEEF]">
               {new Date(order.estimatedDelivery).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
             </p>
@@ -192,7 +192,7 @@ export default function OrderDetailPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-[#111] line-clamp-1">{item.product?.name}</p>
                   {(item.variant?.size || item.variant?.color) && (
-                    <p className="text-[10px] text-[#888]">
+                    <p className="text-[11px] text-[#888]">
                       {[item.variant.size, item.variant.color].filter(Boolean).join(' · ')}
                     </p>
                   )}

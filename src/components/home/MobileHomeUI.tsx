@@ -134,7 +134,7 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: {
           unoptimized
         />
         {product.bestseller && (
-          <span className="absolute top-2 left-2 bg-[#EC008C] text-white text-[9px] font-black px-2 py-0.5 rounded-full flex items-center gap-0.5">
+          <span className="absolute top-2 left-2 bg-[#EC008C] text-white text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-0.5">
             <Zap size={8} /> Best
           </span>
         )}
@@ -150,21 +150,21 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: {
 
       {/* Text area */}
       <div className="px-2.5 pt-2 pb-2.5 flex flex-col flex-1">
-        <p className="text-[9px] text-[#888] font-bold uppercase tracking-wide mb-0.5 truncate">{product.category}</p>
-        <h3 className="text-[12px] font-bold text-[#111] leading-snug line-clamp-2 flex-1 mb-1.5">{product.name}</h3>
+        <p className="text-[10px] text-[#888] font-bold uppercase tracking-wide mb-0.5 truncate">{product.category}</p>
+        <h3 className="text-[13px] font-bold text-[#111] leading-snug line-clamp-2 flex-1 mb-1.5">{product.name}</h3>
 
         {/* Rating mini */}
         <div className="flex items-center gap-0.5 mb-2">
           <Star size={9} className="fill-[#FFB800] text-[#FFB800]" />
-          <span className="text-[10px] font-bold text-[#444]">{product.rating}</span>
-          <span className="text-[9px] text-[#888] ml-0.5">({product.reviews})</span>
+          <span className="text-[11px] font-bold text-[#444]">{product.rating}</span>
+          <span className="text-[10px] text-[#888] ml-0.5">({product.reviews})</span>
         </div>
 
         {/* Price + Add button row */}
         <div className="flex items-center justify-between gap-1">
           <div>
-            <span className="text-[13px] font-black text-[#111]">₹{product.price}</span>
-            <p className="text-[9px] text-[#888] leading-none mt-0.5">onwards</p>
+            <span className="text-[14px] font-black text-[#111]">₹{product.price}</span>
+            <p className="text-[10px] text-[#888] leading-none mt-0.5">onwards</p>
           </div>
           {/* Green + button exactly like Blinkit */}
           <button
@@ -437,10 +437,10 @@ export function MobileHomeUI() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-black text-[15px] leading-tight tracking-wide uppercase bg-gradient-to-r from-[#00AEEF] via-[#EC008C] to-[#FFF200] text-transparent bg-clip-text drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
+                <span className="font-black text-[16px] leading-tight tracking-wide uppercase bg-gradient-to-r from-[#00AEEF] via-[#EC008C] to-[#FFF200] text-transparent bg-clip-text drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
                   Your Ideas,
                 </span>
-                <span className="text-white/95 text-[10px] sm:text-[11px] font-bold tracking-widest flex items-center gap-1.5 uppercase mt-0.5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)]">
+                <span className="text-white/95 text-[11px] sm:text-[12px] font-bold tracking-widest flex items-center gap-1.5 uppercase mt-0.5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)]">
                   Printed With Heart <Heart size={10} className="fill-[#EC008C] text-transparent" />
                 </span>
               </div>
@@ -449,7 +449,7 @@ export function MobileHomeUI() {
             <div className="flex items-center gap-2.5">
               <Link href="/cart" className="bg-black/40 p-2.5 rounded-full border border-white/10 relative shadow-inner touch-target hover:scale-105 transition-transform">
                  <Wallet size={20} className="text-[#FFD700]" />
-                 <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#333] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border border-[#555] whitespace-nowrap">₹0</div>
+                 <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#333] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#555] whitespace-nowrap">₹0</div>
               </Link>
               <Link href="/profile" className="bg-black/40 p-2.5 rounded-full border border-white/10 shadow-inner touch-target hover:scale-105 transition-transform text-white">
                  <User size={20} />
@@ -465,7 +465,7 @@ export function MobileHomeUI() {
             <input 
               type="text" 
               placeholder="Search for t-shirts, mugs, gifts..."
-              className="flex-1 bg-transparent border-none outline-none px-3 text-[#111] font-medium placeholder:text-[#888] placeholder:font-normal text-[15px]"
+              className="flex-1 bg-transparent border-none outline-none px-3 text-[#111] font-medium placeholder:text-[#888] placeholder:font-normal text-[16px]"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -480,29 +480,29 @@ export function MobileHomeUI() {
               <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform">
                 <ShoppingBag size={28} className="text-white drop-shadow-md" />
               </div>
-              <span className="text-[12px] font-bold border-b-[3px] border-white pb-0.5">All</span>
+              <span className="text-[13px] font-bold border-b-[3px] border-white pb-0.5">All</span>
            </Link>
 
            <Link href="/products?category=custom-gifts-printing" className="flex flex-col items-center gap-1.5 relative group">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#EC008C] text-white text-[10px] font-black px-2 py-0.5 rounded-full border border-white whitespace-nowrap z-10 shadow-sm animate-pulse">New</div>
-              <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform text-[26px]">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#EC008C] text-white text-[11px] font-black px-2 py-0.5 rounded-full border border-white whitespace-nowrap z-10 shadow-sm animate-pulse">New</div>
+              <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform text-[27px]">
                 🪔
               </div>
-              <span className="text-[12px] font-bold text-[#FFD700]">Diwali Offers</span>
+              <span className="text-[13px] font-bold text-[#FFD700]">Diwali Offers</span>
            </Link>
 
            <Link href="/products?category=custom-tshirt-printing" className="flex flex-col items-center gap-1.5 group">
               <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform">
                 <Shirt size={28} className="text-white opacity-90 drop-shadow-md" />
               </div>
-              <span className="text-[12px] font-semibold opacity-90">T-Shirts</span>
+              <span className="text-[13px] font-semibold opacity-90">T-Shirts</span>
            </Link>
 
            <Link href="/products?category=custom-gifts-printing" className="flex flex-col items-center gap-1.5 group">
               <div className="w-12 h-12 flex flex-col items-center justify-end group-hover:scale-110 transition-transform">
                 <Gift size={28} className="text-white opacity-90 drop-shadow-md" />
               </div>
-              <span className="text-[12px] font-semibold opacity-90">Gifts</span>
+              <span className="text-[13px] font-semibold opacity-90">Gifts</span>
            </Link>
         </div>
       </div>
@@ -550,10 +550,10 @@ export function MobileHomeUI() {
            <div className="text-center mb-6 relative z-10 mt-3 flex flex-col items-center">
              <div className="flex items-center justify-center gap-3 mb-1">
                 <div className="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#FFD700] to-[#FFD700]" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFB300] text-[10px] tracking-[0.3em] uppercase font-bold drop-shadow-sm">Celebrate</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFB300] text-[11px] tracking-[0.3em] uppercase font-bold drop-shadow-sm">Celebrate</span>
                 <div className="h-[1px] w-12 bg-gradient-to-l from-transparent via-[#FFD700] to-[#FFD700]" />
              </div>
-             <h2 className="text-[34px] sm:text-[38px] font-serif font-black leading-none relative inline-block">
+             <h2 className="text-[35px] sm:text-[39px] font-serif font-black leading-none relative inline-block">
                 {/* Subtle glow behind */}
                 <span className="absolute inset-0 blur-lg bg-gradient-to-r from-[#FFD700]/20 to-[#FF8C00]/20 z-0 rounded-full scale-150" />
                 <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-b from-[#FFF3B0] via-[#FFE5B4] to-[#FFB300] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
@@ -568,8 +568,8 @@ export function MobileHomeUI() {
               {/* Tall Left Card */}
               <Link href="/products?category=custom-gifts-printing" className="col-span-5 bg-[#FFE1A8] rounded-[16px] p-3 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[220px] sm:min-h-[260px]">
                 <div className="relative z-10 mb-2">
-                  <h3 className="text-[#8B1C10] font-black text-[20px] sm:text-[24px] leading-[1.05] mb-1.5">Festive<br/>Essentials</h3>
-                  <span className="text-[#8B1C10] text-[10px] font-bold bg-white/50 px-2 py-0.5 rounded text-center block w-max border border-[#8B1C10]/20">Up to 40% OFF</span>
+                  <h3 className="text-[#8B1C10] font-black text-[21px] sm:text-[25px] leading-[1.05] mb-1.5">Festive<br/>Essentials</h3>
+                  <span className="text-[#8B1C10] text-[11px] font-bold bg-white/50 px-2 py-0.5 rounded text-center block w-max border border-[#8B1C10]/20">Up to 40% OFF</span>
                 </div>
                 <div className="relative flex-1 w-full mt-2">
                   <Image src="/uploads/products/Corporate Gifting Set.png" alt="Gifts" fill className="object-contain object-bottom group-hover:scale-105 transition-transform drop-shadow-xl" />
@@ -580,7 +580,7 @@ export function MobileHomeUI() {
               <div className="col-span-7 grid grid-cols-2 gap-3">
                 {/* Card 1 */}
                 <Link href="/products?category=custom-gifts-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
-                  <h3 className="text-[#8B1C10] font-black text-[12px] sm:text-[14px] leading-tight text-center relative z-10">Corporate<br/>Gifts</h3>
+                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Corporate<br/>Gifts</h3>
                   <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/A5 Spiral Custom Notebook.png" alt="Notebooks" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md" />
                   </div>
@@ -588,7 +588,7 @@ export function MobileHomeUI() {
                 
                 {/* Card 2 */}
                 <Link href="/products?category=custom-tshirt-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
-                  <h3 className="text-[#8B1C10] font-black text-[12px] sm:text-[14px] leading-tight text-center relative z-10">Custom<br/>Apparel</h3>
+                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Custom<br/>Apparel</h3>
                   <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/tshirt.jpg" alt="Apparel" fill className="object-cover object-bottom group-hover:scale-110 transition-transform rounded-md" />
                   </div>
@@ -596,7 +596,7 @@ export function MobileHomeUI() {
 
                 {/* Card 3 */}
                 <Link href="/products?category=photo-printing-online" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
-                  <h3 className="text-[#8B1C10] font-black text-[12px] sm:text-[14px] leading-tight text-center relative z-10">Decor &<br/>Canvas</h3>
+                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Decor &<br/>Canvas</h3>
                   <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/Premium Canvas Photo Print.png" alt="Canvas" fill className="object-cover object-bottom group-hover:scale-110 transition-transform rounded-md" />
                   </div>
@@ -604,7 +604,7 @@ export function MobileHomeUI() {
 
                 {/* Card 4 */}
                 <Link href="/products?category=bulk-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
-                  <h3 className="text-[#8B1C10] font-black text-[12px] sm:text-[14px] leading-tight text-center relative z-10">Bulk<br/>Orders</h3>
+                  <h3 className="text-[#8B1C10] font-black text-[13px] sm:text-[15px] leading-tight text-center relative z-10">Bulk<br/>Orders</h3>
                   <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/Standard Business Cards (100 pcs).png" alt="Bulk" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md rounded-md" />
                   </div>
@@ -631,9 +631,9 @@ export function MobileHomeUI() {
           
           <div className="flex flex-col items-center justify-center mb-6 relative z-10">
              <div className="flex items-center gap-3">
-               <span className="text-[22px] animate-pulse">🪔</span>
-               <h2 id="festive-heading" className="text-[26px] sm:text-[30px] font-serif font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B1C10] to-[#b32415] tracking-wide drop-shadow-sm">Festive Picks</h2>
-               <span className="text-[22px] animate-pulse">🪔</span>
+               <span className="text-[23px] animate-pulse">🪔</span>
+               <h2 id="festive-heading" className="text-[27px] sm:text-[31px] font-serif font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B1C10] to-[#b32415] tracking-wide drop-shadow-sm">Festive Picks</h2>
+               <span className="text-[23px] animate-pulse">🪔</span>
              </div>
              <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-[#FF8C00]/50 to-transparent mt-2" />
           </div>
@@ -643,7 +643,7 @@ export function MobileHomeUI() {
             {bestsellers.map((p, i) => (
               <div key={p.id} className="relative w-[150px] sm:w-[170px] flex-shrink-0 snap-start bg-white rounded-[16px] shadow-[0_4px_12px_rgba(139,28,16,0.08)] border border-[#FFD700]/40 p-1.5 pt-4 transition-transform hover:scale-105">
                  {/* Live Timer Badge */}
-                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B1C10] text-white text-[10px] sm:text-[11px] font-bold px-2 py-1 rounded-full flex items-center justify-center gap-1 w-max border border-[#FFD700] shadow-sm z-20 whitespace-nowrap">
+                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B1C10] text-white text-[11px] sm:text-[12px] font-bold px-2 py-1 rounded-full flex items-center justify-center gap-1 w-max border border-[#FFD700] shadow-sm z-20 whitespace-nowrap">
                    <Clock size={12} className="text-[#FFD700] animate-pulse" /> Offer ends in {formatTime(timeLeft)}
                  </div>
                  <DemoProductCard product={p} priority={i < 2} onSelectProduct={handleSelectProduct} />
@@ -656,7 +656,7 @@ export function MobileHomeUI() {
         <div aria-label="Explore Categories" className="-mx-4 px-0">
           {CATEGORY_GROUPS.map((group) => (
             <div key={group.title} className="mb-1 bg-white px-4 pt-5 pb-6 border-b border-gray-100">
-              <h2 className="text-[19px] font-black text-[#111] mb-4">{group.title}</h2>
+              <h2 className="text-[20px] font-black text-[#111] mb-4">{group.title}</h2>
               <div className="grid grid-cols-4 gap-x-3 gap-y-5">
                 {group.items.map((cat) => {
                   const product = PRODUCTS.find(p => p.image === cat.image) || PRODUCTS[0];
@@ -678,7 +678,7 @@ export function MobileHomeUI() {
                           unoptimized
                         />
                       </div>
-                      <span className="text-[11px] sm:text-[12px] font-bold text-center leading-snug text-[#222] line-clamp-2">{cat.name}</span>
+                      <span className="text-[12px] sm:text-[13px] font-bold text-center leading-snug text-[#222] line-clamp-2">{cat.name}</span>
                     </button>
                   );
                 })}
@@ -702,10 +702,10 @@ export function MobileHomeUI() {
                    {bannerIndex === 0 ? <Bike size={32} strokeWidth={1.5} /> : <Tag size={32} strokeWidth={1.5} />}
                  </div>
                  <div className="min-w-[200px] transition-opacity duration-300">
-                    <h4 className="text-[#0284c7] font-bold text-[14px] leading-tight">
+                    <h4 className="text-[#0284c7] font-bold text-[15px] leading-tight">
                       {bannerIndex === 0 ? 'Get FREE delivery' : 'Extra 10% OFF'}
                     </h4>
-                    <p className="text-[12px] font-medium text-gray-500 mt-0.5">
+                    <p className="text-[13px] font-medium text-gray-500 mt-0.5">
                       {bannerIndex === 0 ? 'on your order above ₹999' : 'on your first order using NEW10'} <ChevronRight size={12} className="inline opacity-60 -mt-0.5" />
                     </p>
                  </div>
@@ -715,7 +715,7 @@ export function MobileHomeUI() {
                    <X size={14} />
                  </button>
                  <div className="flex flex-col items-center gap-0.5 border-l border-gray-200 pl-3">
-                   <span className="text-[10px] font-bold text-gray-500 leading-none">{bannerIndex + 1}/2</span>
+                   <span className="text-[11px] font-bold text-gray-500 leading-none">{bannerIndex + 1}/2</span>
                    <div className="flex gap-1 mt-0.5">
                      <div className={`w-1 h-1 rounded-full ${bannerIndex === 0 ? 'bg-[#111]' : 'bg-gray-300'}`} />
                      <div className={`w-1 h-1 rounded-full ${bannerIndex === 1 ? 'bg-[#111]' : 'bg-gray-300'}`} />

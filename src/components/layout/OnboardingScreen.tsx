@@ -110,7 +110,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
         </div>
 
         {/* Headings */}
-        <h1 className="text-[28px] font-black text-[#222] mb-2 text-center leading-tight">
+        <h1 className="text-[29px] font-black text-[#222] mb-2 text-center leading-tight">
           Salem&apos;s custom<br />printing app
         </h1>
         <p className="text-[#666] font-semibold text-base mb-8">
@@ -154,7 +154,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
         </form>
 
         {/* Terms Text */}
-        <p className="text-[11px] text-gray-400 font-medium text-center mt-8">
+        <p className="text-[12px] text-gray-400 font-medium text-center mt-8">
           By continuing, you agree to our <button className="underline underline-offset-2">Terms of service</button> & <button className="underline underline-offset-2">Privacy policy</button>
         </p>
       </div>

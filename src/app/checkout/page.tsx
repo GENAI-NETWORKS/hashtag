@@ -185,13 +185,13 @@ export default function CheckoutPage() {
 
         <div className="bg-[#f8f9fa] w-full rounded-2xl p-6 mb-8 border border-[#e5e7eb] text-left grid grid-cols-2 gap-4">
           <div className="border-r border-[#e5e7eb]">
-            <p className="text-[10px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+            <p className="text-[11px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
               <CheckCircle2 size={12} className="text-[#00AEEF]" /> Order ID
             </p>
             <p className="text-xl sm:text-2xl font-black text-[#111]">#{placedOrderId}</p>
           </div>
           <div className="pl-2">
-             <p className="text-[10px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+             <p className="text-[11px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
                <MapPin size={12} className="text-[#EC008C]" /> Delivery By
              </p>
              <p className="text-lg sm:text-xl font-black text-[#16a34a]">
@@ -404,7 +404,7 @@ export default function CheckoutPage() {
             <div className="flex items-center gap-2 mb-2">
               <CreditCard size={16} className="text-[#00AEEF]" />
               <h3 className="text-sm font-bold text-[#111]">Payment</h3>
-              <span className="badge badge-cyan text-[10px]">Mock Mode</span>
+              <span className="badge badge-cyan text-[11px]">Mock Mode</span>
             </div>
             <p className="text-xs text-[#888]">
               Payment gateway (Razorpay) will be integrated here. Click &ldquo;Place Order&rdquo; to simulate a successful payment.

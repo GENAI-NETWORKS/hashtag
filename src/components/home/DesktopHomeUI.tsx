@@ -104,7 +104,7 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: { produ
           unoptimized
         />
         {product.bestseller && (
-          <span className="absolute top-2 left-2 badge badge-magenta text-[10px] px-2 py-0.5 flex items-center gap-1">
+          <span className="absolute top-2 left-2 badge badge-magenta text-[11px] px-2 py-0.5 flex items-center gap-1">
             <Zap size={9} /> Bestseller
           </span>
         )}
@@ -116,21 +116,21 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: { produ
         </button>
       </div>
       <div className="p-3 flex flex-col flex-1">
-        <p className="text-[10px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
+        <p className="text-[11px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
         <h3 className="text-sm font-semibold text-[#111] leading-snug line-clamp-2 flex-1">{product.name}</h3>
         <div className="flex items-center gap-1 mt-1.5">
           <Star size={11} className="fill-[#FFD700] text-[#FFD700]" />
           <span className="text-xs font-semibold text-[#444]">{product.rating}</span>
-          <span className="text-[10px] text-[#888]">({product.reviews})</span>
+          <span className="text-[11px] text-[#888]">({product.reviews})</span>
         </div>
         <div className="flex items-center justify-between mt-2.5 gap-1 sm:gap-2">
           <div className="leading-none flex flex-col sm:flex-row sm:items-baseline">
-            <span className="text-[13px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
-            <span className="text-[9px] sm:text-[10px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
+            <span className="text-[14px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
+            <span className="text-[10px] sm:text-[11px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
           </div>
           <button
             onClick={handleAction}
-            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
+            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
             aria-label="View details"
           >
             <span className="whitespace-nowrap px-1">View</span>
@@ -320,7 +320,7 @@ export function DesktopHomeUI() {
                   <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg shadow-sm bg-[#f8f9fa] border border-gray-100 flex-shrink-0">
                     <Image src={cat.image} alt={cat.name} fill className="object-cover" sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px" />
                   </div>
-                  <span className="text-[11px] sm:text-xs font-semibold text-center leading-tight text-[#444] group-hover:text-[#111] transition-colors">{cat.name}</span>
+                  <span className="text-[12px] sm:text-xs font-semibold text-center leading-tight text-[#444] group-hover:text-[#111] transition-colors">{cat.name}</span>
                 </Link>
               );
             })}
@@ -428,7 +428,7 @@ export function DesktopHomeUI() {
                 </Link>
                 <div className="flex items-center gap-2">
                   <div className="flex -space-x-2">
-                    {[1, 2, 3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-[#e5e7eb] border-2 border-white flex items-center justify-center text-[10px] text-[#888] font-bold">≡ƒÿè</div>)}
+                    {[1, 2, 3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-[#e5e7eb] border-2 border-white flex items-center justify-center text-[11px] text-[#888] font-bold">≡ƒÿè</div>)}
                   </div>
                   <span className="text-xs font-semibold text-[#888]">10k+ Happy Customers</span>
                 </div>
