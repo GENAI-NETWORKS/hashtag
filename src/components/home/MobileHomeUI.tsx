@@ -550,10 +550,10 @@ export function MobileHomeUI() {
            <div className="text-center mb-6 relative z-10 mt-3 flex flex-col items-center">
              <div className="flex items-center justify-center gap-3 mb-1">
                 <div className="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#FFD700] to-[#FFD700]" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFB300] text-[12px] tracking-[0.3em] uppercase font-bold drop-shadow-sm">Celebrate</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFB300] text-[14px] tracking-[0.3em] uppercase font-bold drop-shadow-sm">Celebrate</span>
                 <div className="h-[1px] w-12 bg-gradient-to-l from-transparent via-[#FFD700] to-[#FFD700]" />
              </div>
-             <h2 className="text-[36px] sm:text-[40px] font-serif font-black leading-none relative inline-block">
+             <h2 className="text-[26px] sm:text-[30px] font-serif font-black leading-none relative inline-block">
                 {/* Subtle glow behind */}
                 <span className="absolute inset-0 blur-lg bg-gradient-to-r from-[#FFD700]/20 to-[#FF8C00]/20 z-0 rounded-full scale-150" />
                 <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-b from-[#FFF3B0] via-[#FFE5B4] to-[#FFB300] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
@@ -568,7 +568,7 @@ export function MobileHomeUI() {
               {/* Tall Left Card */}
               <Link href="/products?category=custom-gifts-printing" className="col-span-5 bg-[#FFE1A8] rounded-[16px] p-3 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[220px] sm:min-h-[260px]">
                 <div className="relative z-10 mb-2">
-                  <h3 className="text-[#8B1C10] font-black text-[22px] sm:text-[26px] leading-[1.05] mb-1.5">Festive<br/>Essentials</h3>
+                  <h3 className="text-[#8B1C10] font-black text-[24px] sm:text-[28px] leading-[1.05] mb-1.5">Festive<br/>Essentials</h3>
                   <span className="text-[#8B1C10] text-[12px] font-bold bg-white/50 px-2 py-0.5 rounded text-center block w-max border border-[#8B1C10]/20">Up to 40% OFF</span>
                 </div>
                 <div className="relative flex-1 w-full mt-2">
@@ -580,7 +580,7 @@ export function MobileHomeUI() {
               <div className="col-span-7 grid grid-cols-2 gap-3">
                 {/* Card 1 */}
                 <Link href="/products?category=custom-gifts-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
-                  <h3 className="text-[#8B1C10] font-black text-[14px] sm:text-[16px] leading-tight text-center relative z-10">Corporate<br/>Gifts</h3>
+                  <h3 className="text-[#8B1C10] font-black text-[17px] sm:text-[19px] leading-tight text-center relative z-10">Corporate<br/>Gifts</h3>
                   <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/A5 Spiral Custom Notebook.png" alt="Notebooks" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md" />
                   </div>
@@ -588,7 +588,7 @@ export function MobileHomeUI() {
                 
                 {/* Card 2 */}
                 <Link href="/products?category=custom-tshirt-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
-                  <h3 className="text-[#8B1C10] font-black text-[14px] sm:text-[16px] leading-tight text-center relative z-10">Custom<br/>Apparel</h3>
+                  <h3 className="text-[#8B1C10] font-black text-[17px] sm:text-[19px] leading-tight text-center relative z-10">Custom<br/>Apparel</h3>
                   <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/tshirt.jpg" alt="Apparel" fill className="object-cover object-bottom group-hover:scale-110 transition-transform rounded-md" />
                   </div>
@@ -596,15 +596,15 @@ export function MobileHomeUI() {
 
                 {/* Card 3 */}
                 <Link href="/products?category=photo-printing-online" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
-                  <h3 className="text-[#8B1C10] font-black text-[14px] sm:text-[16px] leading-tight text-center relative z-10">Decor &<br/>Canvas</h3>
+                  <h3 className="text-[#8B1C10] font-black text-[17px] sm:text-[19px] leading-tight text-center relative z-10">Decor &<br/>Canvas</h3>
                   <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/Premium Canvas Photo Print.png" alt="Canvas" fill className="object-cover object-bottom group-hover:scale-110 transition-transform rounded-md" />
                   </div>
                 </Link>
 
                 {/* Card 4 */}
-                <Link href="/products?category=bulk-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
-                  <h3 className="text-[#8B1C10] font-black text-[14px] sm:text-[16px] leading-tight text-center relative z-10">Bulk<br/>Orders</h3>
+                <Link href="/products?category=custom-gifts-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
+                  <h3 className="text-[#8B1C10] font-black text-[17px] sm:text-[19px] leading-tight text-center relative z-10">Bulk<br/>Orders</h3>
                   <div className="relative flex-1 w-full mt-1.5">
                     <Image src="/uploads/products/Standard Business Cards (100 pcs).png" alt="Bulk" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md rounded-md" />
                   </div>
@@ -656,7 +656,7 @@ export function MobileHomeUI() {
         <div aria-label="Explore Categories" className="-mx-4 px-0">
           {CATEGORY_GROUPS.map((group) => (
             <div key={group.title} className="mb-1 bg-white px-4 pt-5 pb-6 border-b border-gray-100">
-              <h2 className="text-[21px] font-black text-[#111] mb-4">{group.title}</h2>
+              <h2 className="text-[24px] font-black text-[#111] mb-4">{group.title}</h2>
               <div className="grid grid-cols-4 gap-x-3 gap-y-5">
                 {group.items.map((cat) => {
                   const product = PRODUCTS.find(p => p.image === cat.image) || PRODUCTS[0];
@@ -678,7 +678,7 @@ export function MobileHomeUI() {
                           unoptimized
                         />
                       </div>
-                      <span className="text-[13px] sm:text-[14px] font-bold text-center leading-snug text-[#222] line-clamp-2">{cat.name}</span>
+                      <span className="text-[16px] sm:text-[18px] font-bold text-center leading-snug text-[#222] line-clamp-2">{cat.name}</span>
                     </button>
                   );
                 })}
