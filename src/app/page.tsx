@@ -10,13 +10,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media (max-width: 1023px) {
-          header.sticky-header { display: none !important; }
-          main#main-content { padding-top: 0 !important; }
-        }
-        body { background-color: #f4f6f9; }
-      `}} />
+
       <div className="block lg:hidden">
         <MobileHomeUI />
       </div>

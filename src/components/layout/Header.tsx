@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Search, ShoppingCart, User, MapPin, X, Menu, ChevronRight } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { useAuthStore } from '@/store/authStore';
@@ -35,9 +35,11 @@ export function Header() {
     }
   };
 
+  const pathname = usePathname();
+
   return (
     <header
-      className="sticky-header bg-white border-b border-[#e5e7eb] transition-shadow duration-200"
+      className={`sticky-header bg-white border-b border-[#e5e7eb] transition-shadow duration-200 ${pathname === '/' ? 'hidden lg:block' : ''}`}
       style={{ boxShadow: scrolled ? '0 2px 16px rgba(0,0,0,0.08)' : 'none' }}
     >
       {/* Top bar - desktop only */}
