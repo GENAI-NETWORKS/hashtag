@@ -219,12 +219,6 @@ function ProductDetailCard({
               priority
             />
           </div>
-          {/* Image indicator dots */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-            {[0,1,2].map(i => (
-              <div key={i} className={`rounded-full transition-all ${i===0 ? 'w-5 h-1.5 bg-[#0f8a3c]' : 'w-1.5 h-1.5 bg-gray-300'}`} />
-            ))}
-          </div>
         </div>
 
         {/* ── Main product info (Ultra Compact for Mobile) ── */}
