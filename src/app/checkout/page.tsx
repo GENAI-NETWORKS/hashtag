@@ -149,41 +149,55 @@ export default function CheckoutPage() {
   };
 
   // Order success screen
+  useEffect(() => {
+    if (step === 3 && placedOrderId) {
+      import('canvas-confetti').then((confetti) => {
+        confetti.default({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.4 },
+          colors: ['#00AEEF', '#EC008C', '#FFD700', '#16a34a'],
+          zIndex: 9999
+        });
+      });
+    }
+  }, [step, placedOrderId]);
+
   if (step === 3 && placedOrderId) {
     const randomQuote = SUCCESS_QUOTES[placedOrderId % SUCCESS_QUOTES.length]; // Deterministic based on order ID for consistency during re-renders
 
     return (
-      <div className="container-app py-12 md:py-20 max-w-2xl mx-auto flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-700">
+      <div className="container-app min-h-[85vh] py-8 flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-700">
         
         {/* Animated Checkmark and Glow */}
-        <div className="relative mb-8 w-40 h-40 flex flex-col items-center justify-center">
+        <div className="relative mb-6 w-32 h-32 flex flex-col items-center justify-center">
           <div className="absolute inset-0 bg-[#16a34a]/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '3s' }} />
           <div className="absolute inset-0 bg-[#00AEEF]/20 rounded-full blur-2xl animate-pulse delay-75" style={{ animationDuration: '4s' }} />
           
-          <div className="relative z-10 w-24 h-24 bg-gradient-to-tr from-[#16a34a] to-[#22c55e] rounded-full shadow-2xl shadow-green-500/30 flex items-center justify-center animate-bounce" style={{ animationDuration: '2s' }}>
-            <CheckCircle2 size={56} className="text-white drop-shadow-md" />
+          <div className="relative z-10 w-20 h-20 bg-gradient-to-tr from-[#16a34a] to-[#22c55e] rounded-full shadow-2xl shadow-green-500/30 flex items-center justify-center animate-bounce" style={{ animationDuration: '2s' }}>
+            <CheckCircle2 size={48} className="text-white drop-shadow-md" />
           </div>
           
           {/* Confetti Elements */}
-          <div className="absolute top-0 right-2 text-4xl animate-ping opacity-80" style={{ animationDuration: '3s' }}>🎉</div>
-          <div className="absolute bottom-2 left-0 text-3xl animate-pulse opacity-90">✨</div>
-          <div className="absolute top-8 left-4 text-3xl animate-bounce" style={{ animationDelay: '0.5s' }}>🎈</div>
+          <div className="absolute top-0 right-2 text-3xl animate-ping opacity-80" style={{ animationDuration: '3s' }}>🎉</div>
+          <div className="absolute bottom-2 left-0 text-2xl animate-pulse opacity-90">✨</div>
+          <div className="absolute top-6 left-2 text-2xl animate-bounce" style={{ animationDelay: '0.5s' }}>🎈</div>
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-black text-[#111] mb-5 tracking-tight leading-tight">
+        <h1 className="text-3xl md:text-4xl font-black text-[#111] mb-5 tracking-tight leading-tight">
           Woohoo! <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00AEEF] to-[#EC008C]">Order Placed!</span>
         </h1>
         
-        <div className="relative px-6 py-5 rounded-2xl bg-gradient-to-br from-[#f8f9fa] to-white border border-[#e5e7eb] shadow-sm mb-8 w-full max-w-md mx-auto">
+        <div className="relative px-6 py-5 rounded-2xl bg-gradient-to-br from-[#f8f9fa] to-white border border-[#e5e7eb] shadow-sm mb-6 w-full max-w-sm mx-auto">
           <div className="absolute -left-2 -top-3 text-4xl opacity-20 text-[#EC008C]">❝</div>
-          <p className="text-lg font-black text-[#444] italic z-10 relative">
+          <p className="text-[16px] font-bold text-[#444] z-10 relative leading-snug">
             {randomQuote}
           </p>
           <div className="absolute -right-1 -bottom-5 text-4xl opacity-20 text-[#00AEEF]">❞</div>
         </div>
 
-        <div className="bg-[#f8f9fa] w-full rounded-2xl p-6 mb-8 border border-[#e5e7eb] text-left grid grid-cols-2 gap-4">
+        <div className="bg-[#f8f9fa] w-full max-w-sm mx-auto rounded-2xl p-4 mb-6 border border-[#e5e7eb] text-left grid grid-cols-2 gap-4">
           <div className="border-r border-[#e5e7eb]">
             <p className="text-[12px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
               <CheckCircle2 size={12} className="text-[#00AEEF]" /> Order ID
@@ -202,11 +216,11 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 w-full max-w-md mx-auto">
-          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary px-6 w-fit font-bold shadow-xl shadow-[#00AEEF]/20 group">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-sm mx-auto">
+          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary px-6 w-full sm:w-fit font-bold shadow-xl shadow-[#00AEEF]/20 group">
             Track My Order <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <Link href="/products" className="btn btn-outline px-6 w-fit font-bold border-2 hover:bg-black hover:text-white transition-colors">
+          <Link href="/products" className="btn btn-outline px-6 w-full sm:w-fit font-bold border-2 hover:bg-black hover:text-white transition-colors">
             Continue Shopping
           </Link>
         </div>
