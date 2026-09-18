@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useCartStore } from '@/store/cartStore';
+import { useWishlistStore } from '@/store/wishlistStore';
 import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
@@ -17,6 +18,7 @@ export default function ProfilePage() {
   const logout = useAuthStore((s) => s.logout);
   const clearCart = useCartStore((s) => s.clearCart);
   const router = useRouter();
+  const wishlistItems = useWishlistStore((s) => s.items);
 
   const [mounted, setMounted] = useState(false);
 
@@ -86,7 +88,7 @@ export default function ProfilePage() {
       <div className="grid grid-cols-2 gap-3 mb-5">
         {[
           { label: 'Orders', value: orders?.length?.toString() || '0', icon: ShoppingBag, color: '#00AEEF' },
-          { label: 'Wishlist', value: '-', icon: Heart, color: '#EC008C' },
+          { label: 'Wishlist', value: mounted ? wishlistItems.length.toString() : '-', icon: Heart, color: '#EC008C' },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="card p-4 text-center">
             <Icon size={20} className="mx-auto mb-1.5" style={{ color }} />
