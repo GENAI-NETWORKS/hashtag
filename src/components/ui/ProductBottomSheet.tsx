@@ -42,7 +42,8 @@ function ProductDetailCard({
   onCollapse,
   isExpanded, 
   onExpand,
-  layoutId
+  layoutId,
+  onSelectProduct
 }: { 
   product: DemoProduct; 
   onClose: () => void;
@@ -50,6 +51,7 @@ function ProductDetailCard({
   isExpanded: boolean; 
   onExpand: () => void;
   layoutId?: string;
+  onSelectProduct?: (product: any) => void;
 }) {
 
   const [selectedSize,  setSelectedSize]  = useState('');
@@ -361,7 +363,7 @@ function ProductDetailCard({
           <h3 className="text-[17px] font-black text-[#111] mb-4">Relevant Products</h3>
           <div className="grid grid-cols-2 gap-3 pb-8">
             {(ALL_PRODUCTS || []).filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} onSelect={onSelectProduct} />
             ))}
           </div>
         </div>
@@ -571,6 +573,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
                             isExpanded={false}
                             onExpand={() => setExpandedProductId(p.id)}
                             layoutId={`product-card-${p.id}`}
+                            onSelectProduct={onSelectProduct}
                           />
                         )}
                       </div>
@@ -592,6 +595,10 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
                   isExpanded={true}
                   onExpand={() => {}}
                   layoutId={`product-card-${expandedProductId}`}
+                  onSelectProduct={(p) => {
+                    if (onSelectProduct) onSelectProduct(p);
+                    setExpandedProductId(p.id);
+                  }}
                 />
               </div>
             )}
