@@ -96,7 +96,7 @@ function LoginContent() {
 
   return (
     <div className="min-h-[80dvh] flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-[340px]">
 
         {/* Header */}
         <div className="text-center mb-8">
