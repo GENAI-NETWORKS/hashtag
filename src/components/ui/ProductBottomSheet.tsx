@@ -433,10 +433,6 @@ function ProductDetailCard({
 export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }: ProductBottomSheetProps) {
   const [expandedProductId, setExpandedProductId] = useState<number | null>(null);
 
-  // Key forces Embla to fully remount with the correct startIndex when product changes.
-  // This is the ONLY reliable way to avoid the jump/shake on non-first cards.
-  const [emblaKey, setEmblaKey] = useState(() => `embla-${product?.id ?? 0}`);
-
   const startIndex = product ? Math.max(0, (ALL_PRODUCTS || []).findIndex(p => p.id === product.id)) : 0;
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -448,13 +444,21 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     startIndex
   });
 
-  // When a new product is opened, force remount so startIndex is applied instantly
+  // Reset expanded state when opening
   useEffect(() => {
-    if (isOpen && product) {
-      setEmblaKey(`embla-${product.id}-${Date.now()}`);
+    if (isOpen) {
       setExpandedProductId(null);
     }
-  }, [isOpen, product?.id]);
+  }, [isOpen]);
+
+  // Sync Embla to the product prop (if it was changed from outside or related products)
+  useEffect(() => {
+    if (!emblaApi || !product) return;
+    const index = (ALL_PRODUCTS || []).findIndex(p => p.id === product.id);
+    if (index >= 0 && index !== emblaApi.selectedScrollSnap()) {
+      emblaApi.scrollTo(index, true);
+    }
+  }, [emblaApi, product?.id]);
 
   // Sync selected product when swiping
   useEffect(() => {
@@ -551,7 +555,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
               marginBottom: 12
             }}
           >
-            <div key={emblaKey} className="overflow-hidden h-full" ref={emblaRef}>
+            <div className="overflow-hidden h-full" ref={emblaRef}>
               <div className="flex h-full touch-pan-y pl-4">
                 {(ALL_PRODUCTS || []).map((p) => {
                   // We only render the layoutId if this card is NOT currently expanded.
