@@ -184,18 +184,20 @@ function LoginContent() {
               )}
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary btn-lg w-full mt-2"
-              style={{ background: 'linear-gradient(135deg, #00AEEF, #0090c5)' }}
-            >
-              {loading ? (
-                <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Logging in...</span>
-              ) : (
-                <><LogIn size={18} /> Login</>
-              )}
-            </button>
+            <div className="flex justify-center mt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary btn-lg px-12"
+                style={{ background: 'linear-gradient(135deg, #00AEEF, #0090c5)' }}
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Logging in...</span>
+                ) : (
+                  <><LogIn size={18} /> Login</>
+                )}
+              </button>
+            </div>
           </form>
         )}
 
@@ -278,18 +280,20 @@ function LoginContent() {
               )}
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary btn-lg w-full mt-2"
-              style={{ background: 'linear-gradient(135deg, #EC008C, #c4006b)' }}
-            >
-              {loading ? (
-                <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Creating account...</span>
-              ) : (
-                <><UserPlus size={18} /> Create Account</>
-              )}
-            </button>
+            <div className="flex justify-center mt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary btn-lg px-12"
+                style={{ background: 'linear-gradient(135deg, #EC008C, #c4006b)' }}
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Creating account...</span>
+                ) : (
+                  <><UserPlus size={18} /> Create Account</>
+                )}
+              </button>
+            </div>
           </form>
         )}
 
