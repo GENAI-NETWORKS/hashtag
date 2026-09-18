@@ -9,7 +9,8 @@ import {
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import toast from 'react-hot-toast';
-import { ALL_PRODUCTS, ProductCard } from '@/app/products/page';
+import { ALL_PRODUCTS } from '@/lib/products';
+import { ProductCard } from '@/components/ui/ProductCard';
 import { getProductOptions } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
 
@@ -40,13 +41,15 @@ function ProductDetailCard({
   onClose, 
   onCollapse,
   isExpanded, 
-  onExpand 
+  onExpand,
+  layoutId
 }: { 
   product: DemoProduct; 
   onClose: () => void;
   onCollapse: () => void;
   isExpanded: boolean; 
-  onExpand: () => void; 
+  onExpand: () => void;
+  layoutId?: string;
 }) {
 
   const [selectedSize,  setSelectedSize]  = useState('');
@@ -157,12 +160,11 @@ function ProductDetailCard({
 
   return (
     <motion.div
+      layoutId={layoutId}
       animate={{
-        scale: isExpanded ? 1 : 0.96,
-        opacity: isExpanded ? 1 : 0.95,
         borderRadius: isExpanded ? '0px' : '24px',
       }}
-      transition={{ type: 'spring', damping: 32, stiffness: 300, mass: 0.6 }}
+      transition={{ type: 'spring', damping: 30, stiffness: 260, mass: 0.55 }}
       className="relative w-full h-full flex flex-col bg-white overflow-hidden shadow-2xl ring-1 ring-black/5 cursor-pointer origin-bottom"
       onClick={() => { if (!isExpanded) onExpand(); }}
       onTouchStart={handleTouchStart}
@@ -534,55 +536,66 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
 
-          {/* ── Carousel Container ── */}
+          {/* ── Carousel Container (Always Summary Mode) ── */}
           <motion.div
             initial={{ y: '100%' }}
-            animate={{
-              y: 0,
-              height: isAnyExpanded ? '100dvh' : 'calc(100dvh - 3rem - 16px)',
-              marginTop: isAnyExpanded ? 0 : 48,
-              marginBottom: isAnyExpanded ? 0 : 12,
-            }}
+            animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 260, mass: 0.55 }}
             className="relative z-10 w-full"
-            style={{ willChange: 'transform, height' }}
+            style={{ 
+              height: 'calc(100dvh - 3rem - 16px)',
+              marginTop: 48,
+              marginBottom: 12
+            }}
           >
             <div key={emblaKey} className="overflow-hidden h-full" ref={emblaRef}>
-              <motion.div
-                animate={{
-                  marginLeft: isAnyExpanded ? 0 : 16,
-                  marginRight: isAnyExpanded ? 0 : 16,
-                }}
-                transition={{ type: 'spring', damping: 30, stiffness: 260, mass: 0.55 }}
-                className="flex h-full touch-pan-y"
-              >
+              <div className="flex h-full touch-pan-y pl-4">
                 {ALL_PRODUCTS.map((p) => {
+                  // We only render the layoutId if this card is NOT currently expanded.
+                  // If it IS expanded, the layoutId is rendered in the full-screen overlay below.
                   const isThisExpanded = expandedProductId === p.id;
+                  
                   return (
-                    <motion.div
+                    <div
                       key={p.id}
-                      animate={{
-                        flexBasis: isThisExpanded ? '100%' : '92%',
-                        paddingRight: isThisExpanded ? 0 : 12,
-                      }}
-                      transition={{ type: 'spring', damping: 30, stiffness: 260, mass: 0.55 }}
-                      className="h-full relative flex-shrink-0"
-                      style={{ willChange: 'flex-basis' }}
+                      className="h-full relative flex-shrink-0 flex-[0_0_92%] pr-3"
                     >
-                      <ProductDetailCard 
-                        product={p} 
-                        onClose={handleClose}
-                        onCollapse={() => setExpandedProductId(null)}
-                        isExpanded={isThisExpanded}
-                        onExpand={() => setExpandedProductId(p.id)}
-                      />
-                    </motion.div>
+                      {/* Hide the carousel card when it is expanded, the layoutId component will take over */}
+                      <div className="w-full h-full" style={{ opacity: isThisExpanded ? 0 : 1 }}>
+                        {!isThisExpanded && (
+                          <ProductDetailCard 
+                            product={p} 
+                            onClose={handleClose}
+                            onCollapse={() => setExpandedProductId(null)}
+                            isExpanded={false}
+                            onExpand={() => setExpandedProductId(p.id)}
+                            layoutId={`product-card-${p.id}`}
+                          />
+                        )}
+                      </div>
+                    </div>
                   );
                 })}
-              </motion.div>
+              </div>
             </div>
           </motion.div>
+
+          {/* ── Full Screen Expanded Overlay ── */}
+          <AnimatePresence>
+            {expandedProductId && (
+              <div className="fixed inset-0 z-[70] pointer-events-auto">
+                <ProductDetailCard 
+                  product={ALL_PRODUCTS.find(p => p.id === expandedProductId)!} 
+                  onClose={handleClose}
+                  onCollapse={() => setExpandedProductId(null)}
+                  isExpanded={true}
+                  onExpand={() => {}}
+                  layoutId={`product-card-${expandedProductId}`}
+                />
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       )}
     </AnimatePresence>

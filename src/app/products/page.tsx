@@ -11,29 +11,10 @@ import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { ProductBottomSheet } from '@/components/ui/ProductBottomSheet';
 import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
+import { ALL_PRODUCTS } from '@/lib/products';
+import { ProductCard } from '@/components/ui/ProductCard';
 
-// ─── Demo product data ─────────────────────────────────────────
-export const ALL_PRODUCTS = [
-  { id:1, name:'Classic Round Neck Custom T-Shirt', slug:'classic-round-neck-custom-tshirt', price:299, category:'T-Shirts', categorySlug:'custom-tshirt-printing', image:'/uploads/products/tshirt.jpg', rating:4.8, reviews:124, bestseller:true, description:'180 GSM combed cotton. Custom front/back print. Sizes XS–3XL.' },
-  { id:2, name:'Polo Neck Custom T-Shirt', slug:'polo-neck-custom-tshirt', price:499, category:'T-Shirts', categorySlug:'custom-tshirt-printing', image:'/uploads/products/Polo Neck Custom T-Shirt.png', rating:4.6, reviews:45, bestseller:false, description:'220 GSM pique cotton polo. Embroidered or printed logo. Perfect for corporate teams.' },
-  { id:3, name:'A5 Spiral Custom Notebook', slug:'a5-spiral-custom-notebook', price:199, category:'Notebooks', categorySlug:'custom-notebook-printing', image:'/uploads/products/A5 Spiral Custom Notebook.png', rating:4.7, reviews:89, bestseller:false, description:'200 pages, ruled. Custom cover print. Durable spiral binding.' },
-  { id:4, name:'Custom Hardcover Notebook', slug:'custom-hardcover-notebook', price:349, category:'Notebooks', categorySlug:'custom-notebook-printing', image:'/uploads/products/Custom Hardcover Notebook.png', rating:4.5, reviews:33, bestseller:false, description:'A5 hardcover with 150 ruled pages. Custom logo on cover.' },
-  { id:5, name:'Custom Photo Magic Mug', slug:'custom-photo-magic-mug', price:349, category:'Photo Mugs', categorySlug:'custom-mug-printing', image:'/uploads/products/Custom Photo Magic Mug.png', rating:4.9, reviews:201, bestseller:true, description:'325ml ceramic mug. Heat-sensitive color change. Dishwasher safe.' },
-  { id:6, name:'Premium Canvas Photo Print', slug:'premium-canvas-photo-print', price:699, category:'Canvas Prints', categorySlug:'photo-printing-online', image:'/uploads/products/Premium Canvas Photo Print.png', rating:4.8, reviews:67, bestseller:false, description:'Gallery-quality canvas. UV-resistant inks. Ready to hang.' },
-  { id:7, name:'Standard Business Cards (100 pcs)', slug:'standard-business-cards', price:299, category:'Business Cards', categorySlug:'business-card-printing', image:'/uploads/products/Standard Business Cards (100 pcs).png', rating:4.7, reviews:156, bestseller:true, description:'350 GSM matt/gloss laminate. Double-sided full colour print.' },
-  { id:8, name:'Bulk T-Shirt Printing (50 pcs)', slug:'bulk-tshirt-printing', price:9999, category:'Bulk Orders', categorySlug:'bulk-printing', image:'/uploads/products/Bulk T-Shirt Printing (50 pcs).png', rating:4.8, reviews:42, bestseller:false, description:'50-piece bulk order. Choose sizes & colours. Screen or DTF printing.' },
-  { id:9, name:'Corporate Gifting Set', slug:'corporate-gifting-set', price:1499, category:'Custom Gifts', categorySlug:'custom-gifts-printing', image:'/uploads/products/Corporate Gifting Set.png', rating:4.9, reviews:88, bestseller:true, description:'Premium gift box containing custom printed notebook, pen, and coffee mug.' },
-  { id:10, name:'Custom Printed Hoodie', slug:'custom-printed-hoodie', price:899, category:'T-Shirts', categorySlug:'custom-tshirt-printing', image:'/uploads/products/Custom Printed Hoodie.png', rating:4.7, reviews:56, bestseller:false, description:'Premium 320 GSM cotton fleece hoodie with kangaroo pockets. Stay warm and stylish with custom prints.' },
-  { id:11, name:'Oversized Drop Shoulder T-Shirt', slug:'oversized-drop-shoulder-tshirt', price:499, category:'T-Shirts', categorySlug:'custom-tshirt-printing', image:'/uploads/products/Oversized Drop Shoulder T-Shirt.png', rating:4.8, reviews:89, bestseller:true, description:'Trendy oversized t-shirt in 220 GSM heavyweight cotton. Perfect for streetwear and casual custom designs.' },
-  { id:12, name:'Custom Pocket Notebook A6', slug:'custom-pocket-notebook-a6', price:99, category:'Notebooks', categorySlug:'custom-notebook-printing', image:'/uploads/products/Custom Pocket Notebook A6.png', rating:4.6, reviews:34, bestseller:false, description:'Handy A6 pocket notebook with custom soft cover. 120 pages of 70 GSM paper. Easy to carry everywhere.' },
-  { id:13, name:'Enamel Campfire Mug', slug:'enamel-campfire-mug', price:299, category:'Photo Mugs', categorySlug:'custom-mug-printing', image:'/uploads/products/Enamel Campfire Mug.png', rating:4.9, reviews:112, bestseller:false, description:'Durable enamel mug for outdoors. Custom printing that won\'t fade. Lightweight and shatterproof.' },
-  { id:14, name:'Frosted Glass Beer Stein', slug:'frosted-glass-beer-stein', price:499, category:'Photo Mugs', categorySlug:'custom-mug-printing', image:'/uploads/products/Frosted Glass Stein.png', rating:4.8, reviews:76, bestseller:true, description:'Heavy frosted glass beer mug (16oz) with full-color custom print. Perfect for parties and gifts.' },
-  { id:15, name:'Premium Acrylic Photo Print', slug:'premium-acrylic-photo-print', price:899, category:'Canvas Prints', categorySlug:'photo-printing-online', image:'/uploads/products/Premium Acrylic Photo Print.png', rating:5.0, reviews:45, bestseller:true, description:'Stunning HD print mounted on 5mm thick crystal clear acrylic. Modern and sleek frameless look.' },
-  { id:16, name:'Transparent Business Cards (100 pcs)', slug:'transparent-business-cards-100', price:799, category:'Business Cards', categorySlug:'business-card-printing', image:'/uploads/products/Transparent Business Cards (100 pcs).png', rating:4.7, reviews:67, bestseller:false, description:'Stand out with clear, waterproof PVC business cards. Custom printed with high durability.' },
-  { id:17, name:'Custom Die-Cut Vinyl Stickers', slug:'custom-die-cut-vinyl-stickers', price:99, category:'Stickers', categorySlug:'custom-sticker-printing', image:'/uploads/products/Custom Die-Cut Vinyl Stickers.png', rating:4.9, reviews:230, bestseller:true, description:'Durable, waterproof, and weatherproof die-cut stickers. Cut to the exact shape of your design.' },
-  { id:18, name:'Personalized Mouse Pad', slug:'personalized-mouse-pad', price:199, category:'Custom Gifts', categorySlug:'custom-gifts-printing', image:'/uploads/products/Personalized Mouse Pad.png', rating:4.8, reviews:154, bestseller:false, description:'Custom printed mouse pad with anti-slip rubber base and smooth fabric surface.' },
-  { id:19, name:'Custom Printed Keychain', slug:'custom-printed-keychain', price:149, category:'Custom Gifts', categorySlug:'custom-gifts-printing', image:'/uploads/products/Custom Printed Keychain.png', rating:4.6, reviews:88, bestseller:false, description:'High-quality MDF wood or acrylic keychains printed with your photos, logos, or text.' },
-];
+
 
 const CATEGORIES = [
   { slug:'custom-tshirt-printing', name:'T-Shirts', icon: Shirt, image: '/uploads/products/tshirt.jpg' },
@@ -60,80 +41,6 @@ const PRICE_RANGES = [
   { label:'₹500–₹1000', min:500, max:1000 },
   { label:'Above ₹1000', min:1000, max:999999 },
 ];
-
-export function ProductCard({ product, onSelect }: { product: any, onSelect?: (product: any) => void }) {
-  const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => setIsMounted(true), []);
-  const toggleWishlist = useWishlistStore((s) => s.toggleItem);
-  const isWishlisted = useWishlistStore((s) => s.hasItem(product.id));
-
-  const handleAdd = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onSelect) {
-      onSelect(product);
-    } else {
-      router.push(`/products/${product.slug}`);
-    }
-  };
-
-  const handleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleWishlist(product.id);
-  };
-
-  const handleClick = (e: React.MouseEvent) => {
-    if (onSelect) {
-      e.preventDefault();
-      onSelect(product);
-    } else {
-      router.push(`/products/${product.slug}`);
-    }
-  };
-
-  return (
-    <div onClick={handleClick} className="card overflow-hidden flex flex-col group relative cursor-pointer" aria-label={product.name}>
-      <div className="relative overflow-hidden bg-[#f8f9fa] aspect-square">
-        <Image src={product.image} alt={product.name} fill sizes="(max-width:640px) 50vw,33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" unoptimized />
-        {product.bestseller && (
-          <span className="absolute top-2 left-2 badge badge-magenta text-[12px] px-2 py-0.5 flex items-center gap-1">
-            <Zap size={9} /> Bestseller
-          </span>
-        )}
-        <button
-          onClick={handleWishlist}
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors"
-        >
-          <Heart size={14} className={isMounted && isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
-        </button>
-      </div>
-      <div className="p-3 flex flex-col flex-1">
-        <p className="text-[12px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
-        <h3 className="text-sm font-semibold text-[#111] leading-snug line-clamp-2 flex-1">{product.name}</h3>
-        <div className="flex items-center gap-1 mt-1.5">
-          <Star size={11} className="fill-[#FFD700] text-[#FFD700]" />
-          <span className="text-xs font-semibold text-[#444]">{product.rating}</span>
-          <span className="text-[12px] text-[#888]">({product.reviews})</span>
-        </div>
-        <div className="flex items-center justify-between mt-2.5 gap-1 sm:gap-2">
-          <div className="leading-none flex flex-col sm:flex-row sm:items-baseline">
-            <span className="text-[15px] sm:text-base font-black text-[#111]">{formatPrice(product.price)}</span>
-            <span className="text-[11px] sm:text-[12px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
-          </div>
-          <div className="flex flex-col items-end flex-shrink-0">
-            <button onClick={handleAdd}
-              className="flex items-center justify-center px-4 py-1.5 rounded-md border border-[#0f8a3c] bg-green-50/50 text-[#0f8a3c] text-xs font-black transition-all duration-200 shadow-sm uppercase tracking-wide"
-              aria-label="Add to cart">
-              ADD
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function ProductsContent() {
   const searchParams = useSearchParams();

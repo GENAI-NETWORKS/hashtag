@@ -1,7 +1,7 @@
 'use client';
 
 import { useWishlistStore } from '@/store/wishlistStore';
-import { ALL_PRODUCTS } from '@/app/products/page';
+import { ALL_PRODUCTS } from '@/lib/products';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, ShoppingCart, ArrowLeft, Zap } from 'lucide-react';

@@ -11,7 +11,8 @@ import {
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { formatPrice, getProductOptions } from '@/lib/utils';
-import { ALL_PRODUCTS } from '../page';
+import { ProductCard } from '@/components/ui/ProductCard';
+import { ALL_PRODUCTS } from '@/lib/products';
 import toast from 'react-hot-toast';
 
 export default function ProductDetailPage() {
