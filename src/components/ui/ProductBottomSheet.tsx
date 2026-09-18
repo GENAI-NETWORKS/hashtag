@@ -596,6 +596,10 @@ function ProductBottomSheetContent({ product, onClose, onSelectProduct }: Omit<P
                   onExpand={() => {}}
                   layoutId={`product-card-${expandedProductId}`}
                   onSelectProduct={(p) => {
+                    if (emblaApi) {
+                      const index = (ALL_PRODUCTS || []).findIndex(prod => prod.id === p.id);
+                      if (index >= 0) emblaApi.scrollTo(index, true);
+                    }
                     if (onSelectProduct) onSelectProduct(p);
                     setExpandedProductId(p.id);
                   }}
