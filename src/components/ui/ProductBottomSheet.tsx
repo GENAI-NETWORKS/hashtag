@@ -452,8 +452,8 @@ function ProductBottomSheetContent({ product, onClose, onSelectProduct }: Omit<P
     align: 'center',
     skipSnaps: false,
     dragFree: false,
-    duration: 40,
-    dragThreshold: 5,
+    duration: 20, // Faster snapping
+    dragThreshold: 3, // More responsive to touch
     startIndex
   });
 
