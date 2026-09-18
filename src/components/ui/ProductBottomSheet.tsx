@@ -360,7 +360,7 @@ function ProductDetailCard({
         <div className={`bg-white border-t border-gray-100 px-4 pt-5 pb-8 ${isExpanded ? 'block' : 'hidden'}`} onClick={e => e.stopPropagation()}>
           <h3 className="text-[17px] font-black text-[#111] mb-4">Relevant Products</h3>
           <div className="grid grid-cols-2 gap-3 pb-8">
-            {ALL_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
+            {(ALL_PRODUCTS || []).filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(p => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
@@ -435,7 +435,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
   // This is the ONLY reliable way to avoid the jump/shake on non-first cards.
   const [emblaKey, setEmblaKey] = useState(() => `embla-${product?.id ?? 0}`);
 
-  const startIndex = product ? Math.max(0, ALL_PRODUCTS.findIndex(p => p.id === product.id)) : 0;
+  const startIndex = product ? Math.max(0, (ALL_PRODUCTS || []).findIndex(p => p.id === product.id)) : 0;
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     align: 'center',
@@ -459,8 +459,8 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     if (!emblaApi || !onSelectProduct) return;
     const onSelect = () => {
       const index = emblaApi.selectedScrollSnap();
-      if (ALL_PRODUCTS[index]) {
-        onSelectProduct(ALL_PRODUCTS[index]);
+      if ((ALL_PRODUCTS || [])[index]) {
+        onSelectProduct((ALL_PRODUCTS || [])[index]);
       }
     };
     emblaApi.on('select', onSelect);
@@ -551,7 +551,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
           >
             <div key={emblaKey} className="overflow-hidden h-full" ref={emblaRef}>
               <div className="flex h-full touch-pan-y pl-4">
-                {ALL_PRODUCTS.map((p) => {
+                {(ALL_PRODUCTS || []).map((p) => {
                   // We only render the layoutId if this card is NOT currently expanded.
                   // If it IS expanded, the layoutId is rendered in the full-screen overlay below.
                   const isThisExpanded = expandedProductId === p.id;
@@ -586,7 +586,7 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             {expandedProductId && (
               <div className="fixed inset-0 z-[70] pointer-events-auto">
                 <ProductDetailCard 
-                  product={ALL_PRODUCTS.find(p => p.id === expandedProductId)!} 
+                  product={(ALL_PRODUCTS || []).find(p => p.id === expandedProductId)!} 
                   onClose={handleClose}
                   onCollapse={() => setExpandedProductId(null)}
                   isExpanded={true}
