@@ -431,6 +431,21 @@ function ProductDetailCard({
 
 // ─── Main Modal Component ─────────────────────────────────────────────────────
 export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }: ProductBottomSheetProps) {
+  return (
+    <AnimatePresence>
+      {isOpen && product && (
+        <ProductBottomSheetContent 
+          key="bottom-sheet"
+          product={product} 
+          onClose={onClose} 
+          onSelectProduct={onSelectProduct} 
+        />
+      )}
+    </AnimatePresence>
+  );
+}
+
+function ProductBottomSheetContent({ product, onClose, onSelectProduct }: Omit<ProductBottomSheetProps, 'isOpen'>) {
   const [expandedProductId, setExpandedProductId] = useState<number | null>(null);
 
   const startIndex = product ? Math.max(0, (ALL_PRODUCTS || []).findIndex(p => p.id === product.id)) : 0;
@@ -444,21 +459,10 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
     startIndex
   });
 
-  // Reset expanded state when opening
+  // Reset expanded state when mounted
   useEffect(() => {
-    if (isOpen) {
-      setExpandedProductId(null);
-    }
-  }, [isOpen]);
-
-  // Sync Embla to the product prop (if it was changed from outside or related products)
-  useEffect(() => {
-    if (!emblaApi || !product) return;
-    const index = (ALL_PRODUCTS || []).findIndex(p => p.id === product.id);
-    if (index >= 0 && index !== emblaApi.selectedScrollSnap()) {
-      emblaApi.scrollTo(index, true);
-    }
-  }, [emblaApi, product?.id]);
+    setExpandedProductId(null);
+  }, []);
 
   // Sync selected product when swiping
   useEffect(() => {
@@ -482,39 +486,32 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
 
   // Lock body scroll and emit events for FloatingCartButton
   useEffect(() => {
-    if (isOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.overscrollBehavior = 'none';
+    const scrollY = window.scrollY;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.overscrollBehavior = 'none';
 
-      window.dispatchEvent(new Event('productSheetOpened'));
-      window.dispatchEvent(new Event('productSheetFullScreen'));
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-      document.body.style.overscrollBehavior = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
+    window.dispatchEvent(new Event('productSheetOpened'));
+    window.dispatchEvent(new Event('productSheetFullScreen'));
 
-      window.dispatchEvent(new Event('productSheetClosed'));
-      window.dispatchEvent(new Event('productSheetPartial'));
-    }
     return () => { 
+      const currentTop = document.body.style.top;
       document.body.style.overflow = ''; 
       document.body.style.position = '';
       document.body.style.width = '';
       document.body.style.top = '';
       document.body.style.overscrollBehavior = '';
+      
+      if (currentTop) {
+        window.scrollTo(0, parseInt(currentTop || '0') * -1);
+      }
+      
       window.dispatchEvent(new Event('productSheetClosed'));
+      window.dispatchEvent(new Event('productSheetPartial'));
     };
-  }, [isOpen]);
+  }, []);
 
   const handleClose = () => {
     if (expandedProductId !== null) {
@@ -529,10 +526,9 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
   const isAnyExpanded = expandedProductId !== null;
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-[60] flex flex-col justify-end pointer-events-auto">
-          {/* ── Backdrop ── */}
+    <>
+      <div className="fixed inset-0 z-[60] flex flex-col justify-end pointer-events-auto">
+        {/* ── Backdrop ── */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -608,7 +604,6 @@ export function ProductBottomSheet({ product, isOpen, onClose, onSelectProduct }
             )}
           </AnimatePresence>
         </div>
-      )}
-    </AnimatePresence>
+    </>
   );
 }
