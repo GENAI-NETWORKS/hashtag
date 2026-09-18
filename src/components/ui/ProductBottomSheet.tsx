@@ -42,7 +42,6 @@ function ProductDetailCard({
   onCollapse,
   isExpanded, 
   onExpand,
-  layoutId,
   onSelectProduct
 }: { 
   product: DemoProduct; 
