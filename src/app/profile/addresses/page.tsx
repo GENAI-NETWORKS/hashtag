@@ -27,7 +27,7 @@ export default function AddressesPage() {
       const res = await fetch('/api/addresses');
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
-      return data.data;
+      return data.data || [];
     },
   });
 

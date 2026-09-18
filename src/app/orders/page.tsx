@@ -22,7 +22,7 @@ const STATUS_CONFIG: Record<OrderStatus, { label: string; icon: typeof Package; 
 async function fetchOrders(): Promise<Order[]> {
   const res = await fetch('/api/orders');
   const data = await res.json();
-  return data.data;
+  return data.data || [];
 }
 
 function getFirstImage(imagesData: any): string {
