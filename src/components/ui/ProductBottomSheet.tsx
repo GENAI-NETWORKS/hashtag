@@ -96,7 +96,7 @@ function ProductDetailCard({
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!selectedSize || !selectedColor) {
+    if ((hasSizes && !selectedSize) || (hasColors && !selectedColor)) {
       if (!isExpanded) {
         onExpand();
       }
