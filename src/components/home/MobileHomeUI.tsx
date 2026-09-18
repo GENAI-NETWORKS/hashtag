@@ -552,7 +552,7 @@ export function MobileHomeUI() {
                   <h3 className="text-[#8B1C10] font-black text-[24px] sm:text-[28px] leading-[1.05] mb-1.5">Festive<br/>Essentials</h3>
                   <span className="text-[#8B1C10] text-[12px] font-bold bg-white/50 px-2 py-0.5 rounded text-center block w-max border border-[#8B1C10]/20">Up to 40% OFF</span>
                 </div>
-                <div className="relative flex-1 w-full mt-2">
+                <div className="relative flex-1 w-full mt-2 overflow-hidden rounded-[8px]">
                   <Image src="/uploads/products/Corporate Gifting Set.png" alt="Gifts" fill className="object-contain object-bottom group-hover:scale-105 transition-transform drop-shadow-xl" />
                 </div>
               </Link>
@@ -562,7 +562,7 @@ export function MobileHomeUI() {
                 {/* Card 1 */}
                 <Link href="/products?category=custom-gifts-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
                   <h3 className="text-[#8B1C10] font-black text-[17px] sm:text-[19px] leading-tight text-center relative z-10">Corporate<br/>Gifts</h3>
-                  <div className="relative flex-1 w-full mt-1.5">
+                  <div className="relative flex-1 w-full mt-1.5 overflow-hidden rounded-[8px]">
                     <Image src="/uploads/products/A5 Spiral Custom Notebook.png" alt="Notebooks" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md" />
                   </div>
                 </Link>
@@ -570,24 +570,24 @@ export function MobileHomeUI() {
                 {/* Card 2 */}
                 <Link href="/products?category=custom-tshirt-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
                   <h3 className="text-[#8B1C10] font-black text-[17px] sm:text-[19px] leading-tight text-center relative z-10">Custom<br/>Apparel</h3>
-                  <div className="relative flex-1 w-full mt-1.5">
-                    <Image src="/uploads/products/tshirt.jpg" alt="Apparel" fill className="object-cover object-bottom group-hover:scale-110 transition-transform rounded-md" />
+                  <div className="relative flex-1 w-full mt-1.5 overflow-hidden rounded-[8px]">
+                    <Image src="/uploads/products/tshirt.jpg" alt="Apparel" fill className="object-cover object-bottom group-hover:scale-110 transition-transform" />
                   </div>
                 </Link>
 
                 {/* Card 3 */}
                 <Link href="/products?category=photo-printing-online" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
                   <h3 className="text-[#8B1C10] font-black text-[17px] sm:text-[19px] leading-tight text-center relative z-10">Decor &<br/>Canvas</h3>
-                  <div className="relative flex-1 w-full mt-1.5">
-                    <Image src="/uploads/products/Premium Canvas Photo Print.png" alt="Canvas" fill className="object-cover object-bottom group-hover:scale-110 transition-transform rounded-md" />
+                  <div className="relative flex-1 w-full mt-1.5 overflow-hidden rounded-[8px]">
+                    <Image src="/uploads/products/Premium Canvas Photo Print.png" alt="Canvas" fill className="object-cover object-bottom group-hover:scale-110 transition-transform" />
                   </div>
                 </Link>
 
                 {/* Card 4 */}
                 <Link href="/products?category=custom-gifts-printing" className="bg-[#FFE1A8] rounded-[12px] p-2 flex flex-col relative overflow-hidden group shadow-md border border-[#FFD700]/40 min-h-[105px] sm:min-h-[125px]">
                   <h3 className="text-[#8B1C10] font-black text-[17px] sm:text-[19px] leading-tight text-center relative z-10">Bulk<br/>Orders</h3>
-                  <div className="relative flex-1 w-full mt-1.5">
-                    <Image src="/uploads/products/Standard Business Cards (100 pcs).png" alt="Bulk" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md rounded-md" />
+                  <div className="relative flex-1 w-full mt-1.5 overflow-hidden rounded-[8px]">
+                    <Image src="/uploads/products/Standard Business Cards (100 pcs).png" alt="Bulk" fill className="object-contain object-bottom group-hover:scale-110 transition-transform drop-shadow-md" />
                   </div>
                 </Link>
               </div>
