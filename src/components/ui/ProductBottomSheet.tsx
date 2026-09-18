@@ -159,6 +159,13 @@ function ProductDetailCard({
     });
   };
 
+  // Reset scroll position when the product changes (e.g. clicking a relevant product)
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [product.id]);
+
   return (
     <motion.div
       animate={{
