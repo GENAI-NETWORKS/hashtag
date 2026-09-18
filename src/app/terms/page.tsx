@@ -1,15 +1,19 @@
-import Link from 'next/link';
+"use client";
+
+import { useRouter } from 'next/navigation';
 import { ArrowLeft, FileText } from 'lucide-react';
 
 export default function TermsPage() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-white pb-20">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#f0f0f0]">
         <div className="flex items-center gap-3 px-4 h-14 max-w-md mx-auto">
-          <Link href="/" className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+          <button onClick={() => router.back()} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
             <ArrowLeft size={20} className="text-[#111]" />
-          </Link>
+          </button>
           <h1 className="text-[17px] font-bold text-[#111]">Terms & Conditions</h1>
         </div>
       </header>
