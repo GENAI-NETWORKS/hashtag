@@ -50,7 +50,6 @@ function ProductDetailCard({
   onCollapse: () => void;
   isExpanded: boolean; 
   onExpand: () => void;
-  layoutId?: string;
   onSelectProduct?: (product: any) => void;
 }) {
 
@@ -162,7 +161,6 @@ function ProductDetailCard({
 
   return (
     <motion.div
-      layoutId={layoutId}
       animate={{
         borderRadius: isExpanded ? '0px' : '24px',
       }}
@@ -563,19 +561,15 @@ function ProductBottomSheetContent({ product, onClose, onSelectProduct }: Omit<P
                       key={p.id}
                       className="h-full relative flex-shrink-0 flex-[0_0_92%] pr-3"
                     >
-                      {/* Hide the carousel card when it is expanded, the layoutId component will take over */}
                       <div className="w-full h-full" style={{ opacity: isThisExpanded ? 0 : 1 }}>
-                        {!isThisExpanded && (
-                          <ProductDetailCard 
-                            product={p} 
-                            onClose={handleClose}
-                            onCollapse={() => setExpandedProductId(null)}
-                            isExpanded={false}
-                            onExpand={() => setExpandedProductId(p.id)}
-                            layoutId={`product-card-${p.id}`}
-                            onSelectProduct={onSelectProduct}
-                          />
-                        )}
+                        <ProductDetailCard 
+                          product={p} 
+                          onClose={handleClose}
+                          onCollapse={() => setExpandedProductId(null)}
+                          isExpanded={false}
+                          onExpand={() => setExpandedProductId(p.id)}
+                          onSelectProduct={onSelectProduct}
+                        />
                       </div>
                     </div>
                   );
@@ -587,20 +581,29 @@ function ProductBottomSheetContent({ product, onClose, onSelectProduct }: Omit<P
           {/* ── Full Screen Expanded Overlay ── */}
           <AnimatePresence>
             {expandedProductId && (
-              <div className="fixed inset-0 z-[70] pointer-events-auto">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="fixed inset-0 z-[70] pointer-events-auto"
+              >
                 <ProductDetailCard 
                   product={(ALL_PRODUCTS || []).find(p => p.id === expandedProductId)!} 
                   onClose={handleClose}
                   onCollapse={() => setExpandedProductId(null)}
                   isExpanded={true}
                   onExpand={() => {}}
-                  layoutId={`product-card-${expandedProductId}`}
                   onSelectProduct={(p) => {
+                    if (emblaApi) {
+                      const index = (ALL_PRODUCTS || []).findIndex(prod => prod.id === p.id);
+                      if (index >= 0) emblaApi.scrollTo(index, true);
+                    }
                     if (onSelectProduct) onSelectProduct(p);
                     setExpandedProductId(p.id);
                   }}
                 />
-              </div>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
