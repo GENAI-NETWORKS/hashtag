@@ -18,6 +18,7 @@ import toast from 'react-hot-toast';
 import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
 import { ProductBottomSheet } from '@/components/ui/ProductBottomSheet';
 import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // ─── DEMO DATA (works without DB) ─────────────────────────────
 
@@ -75,6 +76,7 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: {
   const router         = useRouter();
   const toggleWishlist = useWishlistStore(s => s.toggleItem);
   const isWishlisted   = useWishlistStore(s => s.hasItem(product.id));
+  const [isSmashing, setIsSmashing] = useState(false);
 
   // Clicking anywhere on the card → open sheet (if handler provided)
   const handleCardClick = (e: React.MouseEvent) => {
@@ -88,6 +90,11 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: {
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const willBeWishlisted = !isWishlisted;
+    if (willBeWishlisted) {
+      setIsSmashing(true);
+      setTimeout(() => setIsSmashing(false), 1000);
+    }
     toggleWishlist(product.id);
   };
 
@@ -125,7 +132,40 @@ function DemoProductCard({ product, priority = false, onSelectProduct }: {
           className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors"
           aria-label="Wishlist"
         >
-          <Heart size={13} className={isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
+          <AnimatePresence>
+            {isSmashing && (
+               <>
+                  <motion.div
+                    initial={{ scale: 0.5, opacity: 0.8 }}
+                    animate={{ scale: 1.5, opacity: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="absolute inset-0 rounded-full border border-pink-400 pointer-events-none"
+                  />
+                  {[...Array(6)].map((_, i) => (
+                     <motion.div
+                       key={i}
+                       className="absolute w-[3px] h-[3px] bg-pink-500 rounded-full pointer-events-none"
+                       style={{ top: '50%', left: '50%', marginTop: '-1.5px', marginLeft: '-1.5px' }}
+                       initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
+                       animate={{ 
+                         opacity: 0, 
+                         scale: 1,
+                         x: Math.cos(i * (Math.PI / 3)) * 16, 
+                         y: Math.sin(i * (Math.PI / 3)) * 16 
+                       }}
+                       transition={{ duration: 0.4, ease: "easeOut" }}
+                     />
+                  ))}
+               </>
+            )}
+          </AnimatePresence>
+          <motion.div
+            animate={isSmashing ? { scale: [1, 0.8, 1.2, 1] } : { scale: 1 }}
+            transition={{ duration: 0.4, times: [0, 0.2, 0.6, 1], ease: "easeInOut" }}
+          >
+            <Heart size={13} className={isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
+          </motion.div>
         </button>
       </div>
 

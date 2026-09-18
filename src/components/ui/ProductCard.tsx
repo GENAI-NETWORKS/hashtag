@@ -8,10 +8,13 @@ import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function ProductCard({ product, onSelect }: { product: any, onSelect?: (product: any) => void }) {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  const [isSmashing, setIsSmashing] = useState(false);
+
   useEffect(() => setIsMounted(true), []);
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isWishlisted = useWishlistStore((s) => s.hasItem(product.id));
@@ -29,6 +32,11 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const willBeWishlisted = !isWishlisted;
+    if (willBeWishlisted) {
+      setIsSmashing(true);
+      setTimeout(() => setIsSmashing(false), 1000);
+    }
     toggleWishlist(product.id);
   };
 
@@ -52,7 +60,40 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
           </div>
         )}
         <button onClick={handleWishlist} className="absolute top-2 right-2 z-10 w-7 h-7 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-sm hover:scale-110 active:scale-95 transition-all">
-          <Heart size={14} className={isMounted && isWishlisted ? "fill-pink-500 text-pink-500" : "text-gray-400"} />
+          <AnimatePresence>
+            {isSmashing && (
+               <>
+                  <motion.div
+                    initial={{ scale: 0.5, opacity: 0.8 }}
+                    animate={{ scale: 1.5, opacity: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="absolute inset-0 rounded-full border border-pink-400 pointer-events-none"
+                  />
+                  {[...Array(6)].map((_, i) => (
+                     <motion.div
+                       key={i}
+                       className="absolute w-[3px] h-[3px] bg-pink-500 rounded-full pointer-events-none"
+                       style={{ top: '50%', left: '50%', marginTop: '-1.5px', marginLeft: '-1.5px' }}
+                       initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
+                       animate={{ 
+                         opacity: 0, 
+                         scale: 1,
+                         x: Math.cos(i * (Math.PI / 3)) * 16, 
+                         y: Math.sin(i * (Math.PI / 3)) * 16 
+                       }}
+                       transition={{ duration: 0.4, ease: "easeOut" }}
+                     />
+                  ))}
+               </>
+            )}
+          </AnimatePresence>
+          <motion.div
+            animate={isSmashing ? { scale: [1, 0.8, 1.2, 1] } : { scale: 1 }}
+            transition={{ duration: 0.4, times: [0, 0.2, 0.6, 1], ease: "easeInOut" }}
+          >
+            <Heart size={14} className={isMounted && isWishlisted ? "fill-pink-500 text-pink-500" : "text-gray-400"} />
+          </motion.div>
         </button>
       </div>
 
