@@ -121,10 +121,10 @@ function LoginContent() {
         </div>
 
         {/* Mode toggle */}
-        <div className="flex rounded-xl overflow-hidden border border-[#e5e7eb] mb-6">
+        <div className="flex rounded-xl overflow-hidden border border-[#e5e7eb] mb-6 w-fit mx-auto">
           <button
             onClick={() => setMode('login')}
-            className="flex-1 py-2.5 text-sm font-bold transition-all duration-200"
+            className="w-28 py-2 text-sm font-bold transition-all duration-200"
             style={{
               background: mode === 'login' ? '#111' : 'white',
               color: mode === 'login' ? 'white' : '#888',
@@ -134,7 +134,7 @@ function LoginContent() {
           </button>
           <button
             onClick={() => setMode('register')}
-            className="flex-1 py-2.5 text-sm font-bold transition-all duration-200"
+            className="w-28 py-2 text-sm font-bold transition-all duration-200"
             style={{
               background: mode === 'register' ? '#111' : 'white',
               color: mode === 'register' ? 'white' : '#888',
