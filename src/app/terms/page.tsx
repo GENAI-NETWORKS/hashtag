@@ -43,7 +43,7 @@ export default function TermsPage() {
           <p>Due to the customized nature of our products, orders cannot be cancelled once production has started. Refunds are only issued for defective or damaged goods upon delivery.</p>
           
           <h3>6. Contact Us</h3>
-          <p>If you have any questions about these Terms, please contact us at support@hashtagprints.in.</p>
+          <p>If you have any questions about these Terms, please contact us at hashtagprintsindia@gmail.com.</p>
         </div>
       </main>
     </div>

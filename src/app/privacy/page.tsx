@@ -43,7 +43,7 @@ export default function PrivacyPage() {
           <p>You have the right to access, correct, or delete your personal information. To exercise these rights, please contact us.</p>
           
           <h3>6. Contact Us</h3>
-          <p>If you have any questions or concerns about our privacy practices, please contact our Data Protection Officer at privacy@hashtagprints.in.</p>
+          <p>If you have any questions or concerns about our privacy practices, please contact our Data Protection Officer at hashtagprintsindia@gmail.com.</p>
         </div>
       </main>
     </div>
