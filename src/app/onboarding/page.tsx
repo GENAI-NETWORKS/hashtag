@@ -183,21 +183,23 @@ function OnboardingContent() {
             )}
           </div>
 
-          <button
-            type="submit"
-            disabled={loading || !roleType || !gender || !source}
-            className="btn btn-primary btn-lg w-full mt-4 disabled:opacity-50"
-          >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <Loader2 size={18} className="animate-spin" /> Saving...
-              </span>
-            ) : (
-              <span className="flex items-center justify-center gap-2">
-                Continue <ChevronRight size={18} />
-              </span>
-            )}
-          </button>
+          <div className="flex justify-center mt-4">
+            <button
+              type="submit"
+              disabled={loading || !roleType || !gender || !source}
+              className="btn btn-primary btn-lg px-12 disabled:opacity-50"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 size={18} className="animate-spin" /> Saving...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  Continue <ChevronRight size={18} />
+                </span>
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>

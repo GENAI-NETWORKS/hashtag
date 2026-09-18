@@ -87,9 +87,11 @@ export default function ContactPage() {
               </label>
               <textarea id="message" rows={4} className="input w-full text-sm py-2" placeholder="Write your message here..."></textarea>
             </div>
-            <button type="button" className="btn btn-primary w-full flex items-center justify-center gap-2">
-              Send Message <Send size={16} />
-            </button>
+            <div className="flex justify-center mt-6">
+              <button type="button" className="btn btn-primary px-12 flex items-center justify-center gap-2">
+                Send Message <Send size={16} />
+              </button>
+            </div>
           </form>
         </div>
       </div>

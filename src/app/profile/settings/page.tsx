@@ -107,14 +107,16 @@ export default function AccountSettingsPage() {
           </button>
         </div>
 
-        <button
-          type="submit"
-          disabled={saving || !name.trim()}
-          className="btn btn-primary btn-lg w-full"
-          style={{ background: 'linear-gradient(135deg, #111, #1e1e1e)' }}
-        >
-          {saving ? 'Saving...' : <><CheckCircle2 size={18} /> Save Changes</>}
-        </button>
+        <div className="flex justify-center mt-6">
+          <button
+            type="submit"
+            disabled={saving || !name.trim()}
+            className="btn btn-primary btn-lg px-12"
+            style={{ background: 'linear-gradient(135deg, #111, #1e1e1e)' }}
+          >
+            {saving ? 'Saving...' : <><CheckCircle2 size={18} /> Save Changes</>}
+          </button>
+        </div>
       </form>
     </div>
   );
