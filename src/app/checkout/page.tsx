@@ -167,7 +167,7 @@ export default function CheckoutPage() {
     const randomQuote = SUCCESS_QUOTES[placedOrderId % SUCCESS_QUOTES.length]; // Deterministic based on order ID for consistency during re-renders
 
     return (
-      <div className="container-app min-h-[85vh] py-8 flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-700">
+      <div className="container-app py-16 flex flex-col items-center justify-start text-center animate-in fade-in zoom-in duration-700">
         
         {/* Animated Checkmark and Glow */}
         <div className="relative mb-6 w-32 h-32 flex flex-col items-center justify-center">
@@ -216,11 +216,11 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-sm mx-auto">
-          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary px-6 w-full sm:w-fit font-bold shadow-xl shadow-[#00AEEF]/20 group">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-sm mx-auto mt-2">
+          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary px-6 w-fit font-bold shadow-xl shadow-[#00AEEF]/20 group">
             Track My Order <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <Link href="/products" className="btn btn-outline px-6 w-full sm:w-fit font-bold border-2 hover:bg-black hover:text-white transition-colors">
+          <Link href="/products" className="btn btn-outline px-6 w-fit font-bold border-2 hover:bg-black hover:text-white transition-colors">
             Continue Shopping
           </Link>
         </div>
