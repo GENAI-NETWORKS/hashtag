@@ -9,6 +9,8 @@ import {
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { useWishlistStore } from '@/store/wishlistStore';
 import { ALL_PRODUCTS } from '@/lib/products';
 import { ProductCard } from '@/components/ui/ProductCard';
 import { getProductOptions } from '@/lib/utils';
@@ -56,6 +58,11 @@ function ProductDetailCard({
   const [selectedColor, setSelectedColor] = useState('');
   const [qty,           setQty]           = useState(1);
   const [addedToCart,   setAddedToCart]   = useState(false);
+  const [isSmashing,    setIsSmashing]    = useState(false);
+
+  const router = useRouter();
+  const toggleWishlist = useWishlistStore(s => s.toggleItem);
+  const isWishlisted = useWishlistStore(s => s.hasItem(product.id));
 
   const addItem         = useCartStore(s => s.addItem);
   const items           = useCartStore(s => s.items);
@@ -87,6 +94,43 @@ function ProductDetailCard({
     } else if (e.deltaY < -40 && isExpanded && isAtTop) {
       onCollapse();
     }
+  };
+
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const willBeWishlisted = !isWishlisted;
+    if (willBeWishlisted) {
+      setIsSmashing(true);
+      setTimeout(() => setIsSmashing(false), 1000);
+    }
+    toggleWishlist(product.id);
+  };
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `${window.location.origin}/products/${product.slug}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product.name,
+          url: url,
+        });
+      } catch (err) {
+        console.log('Share error:', err);
+      }
+    } else {
+      navigator.clipboard.writeText(url);
+      toast.success('Link copied to clipboard!');
+    }
+  };
+
+  const handleSearch = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose();
+    router.push('/products');
   };
 
   const { hasSizes, hasColors, sizes: SIZES, colors: COLORS } = getProductOptions(product.categorySlug || '');
@@ -188,13 +232,46 @@ function ProductDetailCard({
           <ChevronDown size={22} className="text-[#333]" />
         </button>
         <div className="flex items-center gap-2 pointer-events-auto">
-          <button className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90">
-            <Heart size={18} className="text-[#333]" />
+          <button onClick={handleWishlist} className="relative w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90 transition-transform overflow-visible">
+            <AnimatePresence>
+              {isSmashing && (
+                 <>
+                    <motion.div
+                      initial={{ scale: 0.5, opacity: 0.8 }}
+                      animate={{ scale: 2, opacity: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="absolute inset-0 rounded-full border border-pink-400 pointer-events-none"
+                    />
+                    {[...Array(6)].map((_, i) => (
+                       <motion.div
+                         key={i}
+                         className="absolute w-[5px] h-[5px] bg-pink-500 rounded-full pointer-events-none"
+                         style={{ top: '50%', left: '50%', marginTop: '-2.5px', marginLeft: '-2.5px' }}
+                         initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
+                         animate={{ 
+                           opacity: 0, 
+                           scale: 1,
+                           x: Math.cos(i * (Math.PI / 3)) * 24, 
+                           y: Math.sin(i * (Math.PI / 3)) * 24 
+                         }}
+                         transition={{ duration: 0.4, ease: "easeOut" }}
+                       />
+                    ))}
+                 </>
+              )}
+            </AnimatePresence>
+            <motion.div
+              animate={isSmashing ? { scale: [1, 0.7, 1.4, 1] } : { scale: 1 }}
+              transition={{ duration: 0.4, times: [0, 0.2, 0.6, 1], ease: "easeInOut" }}
+            >
+              <Heart size={18} className={isWishlisted ? "fill-pink-500 text-pink-500" : "text-[#333]"} />
+            </motion.div>
           </button>
-          <button className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90">
+          <button onClick={handleSearch} className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90 transition-transform">
             <Search size={18} className="text-[#333]" />
           </button>
-          <button className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90">
+          <button onClick={handleShare} className="w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full flex items-center justify-center shadow-sm active:scale-90 transition-transform">
             <Share2 size={18} className="text-[#333]" />
           </button>
         </div>

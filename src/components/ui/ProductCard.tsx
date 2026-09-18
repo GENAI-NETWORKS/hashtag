@@ -65,7 +65,7 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
                <>
                   <motion.div
                     initial={{ scale: 0.5, opacity: 0.8 }}
-                    animate={{ scale: 1.5, opacity: 0 }}
+                    animate={{ scale: 2, opacity: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
                     className="absolute inset-0 rounded-full border border-pink-400 pointer-events-none"
@@ -73,14 +73,14 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
                   {[...Array(6)].map((_, i) => (
                      <motion.div
                        key={i}
-                       className="absolute w-[3px] h-[3px] bg-pink-500 rounded-full pointer-events-none"
-                       style={{ top: '50%', left: '50%', marginTop: '-1.5px', marginLeft: '-1.5px' }}
+                       className="absolute w-[5px] h-[5px] bg-pink-500 rounded-full pointer-events-none"
+                       style={{ top: '50%', left: '50%', marginTop: '-2.5px', marginLeft: '-2.5px' }}
                        initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
                        animate={{ 
                          opacity: 0, 
                          scale: 1,
-                         x: Math.cos(i * (Math.PI / 3)) * 16, 
-                         y: Math.sin(i * (Math.PI / 3)) * 16 
+                         x: Math.cos(i * (Math.PI / 3)) * 24, 
+                         y: Math.sin(i * (Math.PI / 3)) * 24 
                        }}
                        transition={{ duration: 0.4, ease: "easeOut" }}
                      />
@@ -89,7 +89,7 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
             )}
           </AnimatePresence>
           <motion.div
-            animate={isSmashing ? { scale: [1, 0.8, 1.2, 1] } : { scale: 1 }}
+            animate={isSmashing ? { scale: [1, 0.7, 1.4, 1] } : { scale: 1 }}
             transition={{ duration: 0.4, times: [0, 0.2, 0.6, 1], ease: "easeInOut" }}
           >
             <Heart size={14} className={isMounted && isWishlisted ? "fill-pink-500 text-pink-500" : "text-gray-400"} />
