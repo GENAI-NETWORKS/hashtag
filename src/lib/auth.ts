@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '365d';
 const COOKIE_NAME = 'hashtag_auth';
 
 export interface JWTPayload {
@@ -32,7 +32,7 @@ export function setCookieOptions() {
     httpOnly: true,
     secure: isProduction,
     sameSite: 'lax' as const,
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 365, // 1 year
     path: '/',
   };
 }

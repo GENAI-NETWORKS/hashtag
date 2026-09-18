@@ -18,7 +18,7 @@ const loginSchema = z.object({
 
 const registerSchema = loginSchema.extend({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  phone: z.string().optional(),
+  phone: z.string().min(10, 'Please enter a valid phone number'),
   confirmPassword: z.string(),
 }).refine((d) => d.password === d.confirmPassword, {
   message: 'Passwords do not match',
@@ -233,7 +233,7 @@ function LoginContent() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#444] mb-1.5">Phone (optional)</label>
+              <label className="block text-xs font-semibold text-[#444] mb-1.5">Phone</label>
               <input
                 {...registerForm.register('phone')}
                 type="tel"
@@ -241,6 +241,9 @@ function LoginContent() {
                 className="input"
                 autoComplete="tel"
               />
+              {registerForm.formState.errors.phone && (
+                <p className="text-xs text-[#EC008C] mt-1">{registerForm.formState.errors.phone.message}</p>
+              )}
             </div>
 
             <div>

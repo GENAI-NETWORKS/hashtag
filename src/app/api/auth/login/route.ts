@@ -1,4 +1,4 @@
-﻿export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
@@ -8,12 +8,12 @@ const COOKIE_NAME = 'hashtag_auth';
 function signJWT(payload: object): string {
   // Dynamic import to handle edge runtime
   const jwt = require('jsonwebtoken');
-  return jwt.sign(payload, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '7d' });
+  return jwt.sign(payload, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '365d' });
 }
 
 function createCookie(token: string): string {
   const isProduction = process.env.NODE_ENV === 'production';
-  return `${COOKIE_NAME}=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax${isProduction ? '; Secure' : ''}`;
+  return `${COOKIE_NAME}=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 365}; SameSite=Lax${isProduction ? '; Secure' : ''}`;
 }
 
 // POST /api/auth/login

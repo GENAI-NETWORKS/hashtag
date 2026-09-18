@@ -1,4 +1,4 @@
-﻿export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
@@ -8,7 +8,7 @@ const COOKIE_NAME = 'hashtag_auth';
 
 function createCookie(token: string): string {
   const isProduction = process.env.NODE_ENV === 'production';
-  return `${COOKIE_NAME}=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax${isProduction ? '; Secure' : ''}`;
+  return `${COOKIE_NAME}=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 365}; SameSite=Lax${isProduction ? '; Secure' : ''}`;
 }
 
 // POST /api/auth/register
@@ -17,8 +17,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { name, email, password, phone } = body;
 
-    if (!name || !email || !password) {
-      return NextResponse.json({ success: false, error: 'Name, email, and password are required' }, { status: 400 });
+    if (!name || !email || !password || !phone) {
+      return NextResponse.json({ success: false, error: 'Name, email, password, and phone are required' }, { status: 400 });
     }
 
     if (password.length < 8) {
