@@ -103,7 +103,7 @@ export function getProductOptions(categorySlug: string) {
         colors: [
           { label: 'White', hex: '#FFFFFF', border: '#ccc' },
           { label: 'Black', hex: '#111111', border: '#111' },
-          { label: 'Magic Mug', hex: '#111111', border: '#FFD700' }
+          { label: 'Magic Mug', hex: '#111111', border: '#fcd502' }
         ],
         sizeTitle: 'Select Capacity',
         colorTitle: 'Select Style'

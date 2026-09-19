@@ -156,7 +156,7 @@ export default function CheckoutPage() {
           particleCount: 150,
           spread: 80,
           origin: { y: 0.4 },
-          colors: ['#00AEEF', '#EC008C', '#FFD700', '#16a34a'],
+          colors: ['#01a2fb', '#fa028e', '#fcd502', '#16a34a'],
           zIndex: 9999
         });
       });
@@ -172,7 +172,7 @@ export default function CheckoutPage() {
         {/* Animated Checkmark and Glow */}
         <div className="relative mb-6 w-32 h-32 flex flex-col items-center justify-center">
           <div className="absolute inset-0 bg-[#16a34a]/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '3s' }} />
-          <div className="absolute inset-0 bg-[#00AEEF]/20 rounded-full blur-2xl animate-pulse delay-75" style={{ animationDuration: '4s' }} />
+          <div className="absolute inset-0 bg-[#01a2fb]/20 rounded-full blur-2xl animate-pulse delay-75" style={{ animationDuration: '4s' }} />
           
           <div className="relative z-10 w-20 h-20 bg-gradient-to-tr from-[#16a34a] to-[#22c55e] rounded-full shadow-2xl shadow-green-500/30 flex items-center justify-center animate-bounce" style={{ animationDuration: '2s' }}>
             <CheckCircle2 size={48} className="text-white drop-shadow-md" />
@@ -186,27 +186,27 @@ export default function CheckoutPage() {
 
         <h1 className="text-3xl md:text-4xl font-black text-[#111] mb-5 tracking-tight leading-tight">
           Woohoo! <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00AEEF] to-[#EC008C]">Order Placed!</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#01a2fb] to-[#fa028e]">Order Placed!</span>
         </h1>
         
         <div className="relative px-6 py-5 rounded-2xl bg-gradient-to-br from-[#f8f9fa] to-white border border-[#e5e7eb] shadow-sm mb-6 w-full max-w-sm mx-auto">
-          <div className="absolute -left-2 -top-3 text-4xl opacity-20 text-[#EC008C]">❝</div>
+          <div className="absolute -left-2 -top-3 text-4xl opacity-20 text-[#fa028e]">❝</div>
           <p className="text-[16px] font-bold text-[#444] z-10 relative leading-snug">
             {randomQuote}
           </p>
-          <div className="absolute -right-1 -bottom-5 text-4xl opacity-20 text-[#00AEEF]">❞</div>
+          <div className="absolute -right-1 -bottom-5 text-4xl opacity-20 text-[#01a2fb]">❞</div>
         </div>
 
         <div className="bg-[#f8f9fa] w-full max-w-sm mx-auto rounded-2xl p-4 mb-6 border border-[#e5e7eb] text-left grid grid-cols-2 gap-4">
           <div className="border-r border-[#e5e7eb]">
             <p className="text-[12px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
-              <CheckCircle2 size={12} className="text-[#00AEEF]" /> Order ID
+              <CheckCircle2 size={12} className="text-[#01a2fb]" /> Order ID
             </p>
             <p className="text-xl sm:text-2xl font-black text-[#111]">#{placedOrderId}</p>
           </div>
           <div className="pl-2">
              <p className="text-[12px] sm:text-xs text-[#888] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
-               <MapPin size={12} className="text-[#EC008C]" /> Delivery By
+               <MapPin size={12} className="text-[#fa028e]" /> Delivery By
              </p>
              <p className="text-lg sm:text-xl font-black text-[#16a34a]">
                {new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {
@@ -217,7 +217,7 @@ export default function CheckoutPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-sm mx-auto mt-2">
-          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary px-6 w-fit font-bold shadow-xl shadow-[#00AEEF]/20 group">
+          <Link href={`/orders/${placedOrderId}`} className="btn btn-primary px-6 w-fit font-bold shadow-xl shadow-[#01a2fb]/20 group">
             Track My Order <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link href="/products" className="btn btn-outline px-6 w-fit font-bold border-2 hover:bg-black hover:text-white transition-colors">
@@ -239,19 +239,19 @@ export default function CheckoutPage() {
               <div
                 className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all"
                 style={{
-                  background: step >= s.id ? '#00AEEF' : '#f0f0f0',
+                  background: step >= s.id ? '#01a2fb' : '#f0f0f0',
                   color: step >= s.id ? 'white' : '#aaa',
                 }}
               >
                 {step > s.id ? <CheckCircle2 size={14} /> : s.id}
               </div>
               <span className="text-xs font-semibold hidden sm:block"
-                style={{ color: step >= s.id ? '#00AEEF' : '#aaa' }}>
+                style={{ color: step >= s.id ? '#01a2fb' : '#aaa' }}>
                 {s.label}
               </span>
             </div>
             {i < STEPS.length - 1 && (
-              <div className="w-8 h-0.5 rounded" style={{ background: step > s.id ? '#00AEEF' : '#e5e7eb' }} />
+              <div className="w-8 h-0.5 rounded" style={{ background: step > s.id ? '#01a2fb' : '#e5e7eb' }} />
             )}
           </div>
         ))}
@@ -261,7 +261,7 @@ export default function CheckoutPage() {
       {step === 1 && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-4">
-            <MapPin size={18} className="text-[#EC008C]" />
+            <MapPin size={18} className="text-[#fa028e]" />
             <h2 className="font-black text-[#111]">Delivery Address</h2>
           </div>
 
@@ -364,7 +364,7 @@ export default function CheckoutPage() {
       {step === 2 && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <CreditCard size={18} className="text-[#00AEEF]" />
+            <CreditCard size={18} className="text-[#01a2fb]" />
             <h2 className="font-black text-[#111]">Review & Payment</h2>
           </div>
 
@@ -372,7 +372,7 @@ export default function CheckoutPage() {
           <div className="card p-4">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-bold text-[#111]">Delivering to</h3>
-              <button onClick={() => setStep(1)} className="text-xs text-[#00AEEF] font-semibold">Change</button>
+              <button onClick={() => setStep(1)} className="text-xs text-[#01a2fb] font-semibold">Change</button>
             </div>
             <p className="text-sm font-semibold text-[#444]">{address.name}</p>
             <p className="text-xs text-[#888]">{address.line1}{address.line2 ? `, ${address.line2}` : ''}</p>
@@ -414,9 +414,9 @@ export default function CheckoutPage() {
           </div>
 
           {/* Mock Payment */}
-          <div className="card p-4 border-2 border-[#00AEEF]/20">
+          <div className="card p-4 border-2 border-[#01a2fb]/20">
             <div className="flex items-center gap-2 mb-2">
-              <CreditCard size={16} className="text-[#00AEEF]" />
+              <CreditCard size={16} className="text-[#01a2fb]" />
               <h3 className="text-sm font-bold text-[#111]">Payment</h3>
               <span className="badge badge-cyan text-[12px]">Mock Mode</span>
             </div>

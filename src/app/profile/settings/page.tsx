@@ -49,7 +49,7 @@ export default function AccountSettingsPage() {
       <form onSubmit={handleSave} className="space-y-4">
         <div className="card p-5 space-y-4">
           <h2 className="text-sm font-bold text-[#111] mb-2 flex items-center gap-2">
-            <User size={16} className="text-[#00AEEF]" /> Personal Details
+            <User size={16} className="text-[#01a2fb]" /> Personal Details
           </h2>
           
           <div>

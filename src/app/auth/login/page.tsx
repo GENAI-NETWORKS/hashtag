@@ -157,7 +157,7 @@ function LoginContent() {
                 autoComplete="email"
               />
               {loginForm.formState.errors.email && (
-                <p className="text-xs text-[#EC008C] mt-1">{loginForm.formState.errors.email.message}</p>
+                <p className="text-xs text-[#fa028e] mt-1">{loginForm.formState.errors.email.message}</p>
               )}
             </div>
 
@@ -180,7 +180,7 @@ function LoginContent() {
                 </button>
               </div>
               {loginForm.formState.errors.password && (
-                <p className="text-xs text-[#EC008C] mt-1">{loginForm.formState.errors.password.message}</p>
+                <p className="text-xs text-[#fa028e] mt-1">{loginForm.formState.errors.password.message}</p>
               )}
             </div>
 
@@ -189,7 +189,7 @@ function LoginContent() {
                 type="submit"
                 disabled={loading}
                 className="btn btn-primary btn-lg px-12"
-                style={{ background: 'linear-gradient(135deg, #00AEEF, #0090c5)' }}
+                style={{ background: 'linear-gradient(135deg, #01a2fb, #0090c5)' }}
               >
                 {loading ? (
                   <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Logging in...</span>
@@ -214,7 +214,7 @@ function LoginContent() {
                 autoComplete="name"
               />
               {registerForm.formState.errors.name && (
-                <p className="text-xs text-[#EC008C] mt-1">{registerForm.formState.errors.name.message}</p>
+                <p className="text-xs text-[#fa028e] mt-1">{registerForm.formState.errors.name.message}</p>
               )}
             </div>
 
@@ -228,7 +228,7 @@ function LoginContent() {
                 autoComplete="email"
               />
               {registerForm.formState.errors.email && (
-                <p className="text-xs text-[#EC008C] mt-1">{registerForm.formState.errors.email.message}</p>
+                <p className="text-xs text-[#fa028e] mt-1">{registerForm.formState.errors.email.message}</p>
               )}
             </div>
 
@@ -242,7 +242,7 @@ function LoginContent() {
                 autoComplete="tel"
               />
               {registerForm.formState.errors.phone && (
-                <p className="text-xs text-[#EC008C] mt-1">{registerForm.formState.errors.phone.message}</p>
+                <p className="text-xs text-[#fa028e] mt-1">{registerForm.formState.errors.phone.message}</p>
               )}
             </div>
 
@@ -265,7 +265,7 @@ function LoginContent() {
                 </button>
               </div>
               {registerForm.formState.errors.password && (
-                <p className="text-xs text-[#EC008C] mt-1">{registerForm.formState.errors.password.message}</p>
+                <p className="text-xs text-[#fa028e] mt-1">{registerForm.formState.errors.password.message}</p>
               )}
             </div>
 
@@ -279,7 +279,7 @@ function LoginContent() {
                 autoComplete="new-password"
               />
               {registerForm.formState.errors.confirmPassword && (
-                <p className="text-xs text-[#EC008C] mt-1">{registerForm.formState.errors.confirmPassword.message}</p>
+                <p className="text-xs text-[#fa028e] mt-1">{registerForm.formState.errors.confirmPassword.message}</p>
               )}
             </div>
 
@@ -288,7 +288,7 @@ function LoginContent() {
                 type="submit"
                 disabled={loading}
                 className="btn btn-primary btn-lg px-12"
-                style={{ background: 'linear-gradient(135deg, #EC008C, #c4006b)' }}
+                style={{ background: 'linear-gradient(135deg, #fa028e, #c4006b)' }}
               >
                 {loading ? (
                   <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Creating account...</span>
@@ -302,9 +302,9 @@ function LoginContent() {
 
         <p className="text-center text-xs text-[#aaa] mt-6">
           By continuing, you agree to Hashtag&apos;s{' '}
-          <Link href="/terms" className="text-[#00AEEF] hover:underline">Terms</Link>
+          <Link href="/terms" className="text-[#01a2fb] hover:underline">Terms</Link>
           {' '}and{' '}
-          <Link href="/privacy" className="text-[#00AEEF] hover:underline">Privacy Policy</Link>
+          <Link href="/privacy" className="text-[#01a2fb] hover:underline">Privacy Policy</Link>
         </p>
       </div>
     </div>

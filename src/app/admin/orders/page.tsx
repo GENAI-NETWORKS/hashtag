@@ -27,7 +27,7 @@ const STATUS_OPTIONS: { label: string; value: string; color: string; icon: any }
   { label: 'Pending', value: 'PENDING', color: '#f59e0b', icon: Clock },
   { label: 'Confirmed', value: 'DESIGN_CONFIRMED', color: '#3b82f6', icon: CheckCircle2 },
   { label: 'Printing', value: 'PRINTING', color: '#8b5cf6', icon: Package },
-  { label: 'Shipped', value: 'SHIPPED', color: '#ec008c', icon: Truck },
+  { label: 'Shipped', value: 'SHIPPED', color: '#fa028e', icon: Truck },
   { label: 'Delivered', value: 'DELIVERED', color: '#10b981', icon: CheckCircle2 },
   { label: 'Cancelled', value: 'CANCELLED', color: '#ef4444', icon: XCircle },
 ];
@@ -113,7 +113,7 @@ function OrderRow({ order, onStatusUpdate }: { order: Order; onStatusUpdate: (id
       <div className="flex gap-2 flex-wrap">
         <Link
           href={`/orders/${order.id}`}
-          className="btn btn-ghost btn-sm text-[#00AEEF] text-xs px-3"
+          className="btn btn-ghost btn-sm text-[#01a2fb] text-xs px-3"
         >
           View Details
         </Link>

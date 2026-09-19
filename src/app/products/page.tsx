@@ -98,7 +98,7 @@ function ProductsContent() {
           return (
             <button key={cat.slug} onClick={() => updateParam('category', cat.slug)}
               className={`w-full flex flex-col items-center py-4 px-1 gap-2 relative transition-colors ${isActive ? 'bg-white' : 'hover:bg-gray-100'}`}>
-              {isActive && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#0f8a3c] rounded-r-md" />}
+              {isActive && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#01a2fb] rounded-r-md" />}
               <div className="w-12 h-12 rounded-full overflow-hidden bg-white border border-gray-200 relative shadow-sm flex-shrink-0 flex items-center justify-center">
                 {cat.image ? (
                   <Image src={cat.image} alt={cat.name} fill className="object-cover" sizes="48px" />
@@ -143,7 +143,7 @@ function ProductsContent() {
               <SlidersHorizontal size={48} className="mx-auto text-[#ccc] mb-4" />
               <h3 className="text-lg font-bold text-[#111] mb-2">No products found</h3>
               <p className="text-sm text-[#888] mb-6">Try adjusting your filters.</p>
-              <button onClick={() => router.push('/products')} className="px-4 py-2 bg-[#0f8a3c] text-white rounded-lg text-sm font-bold">Clear filters</button>
+              <button onClick={() => router.push('/products')} className="px-4 py-2 bg-[#01a2fb] text-white rounded-lg text-sm font-bold">Clear filters</button>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-3 xl:grid-cols-4">
@@ -165,9 +165,9 @@ function ProductsContent() {
                 {SORT_OPTIONS.map((opt) => (
                   <button key={opt.value} onClick={() => { updateParam('sort', opt.value); setShowSort(false); }}
                     className="w-full flex items-center justify-between p-3 rounded-xl text-sm font-medium transition-colors"
-                    style={{ background: sort === opt.value ? '#e6f7eb' : 'transparent', color: sort === opt.value ? '#0f8a3c' : '#444' }}>
+                    style={{ background: sort === opt.value ? '#e6f7eb' : 'transparent', color: sort === opt.value ? '#01a2fb' : '#444' }}>
                     {opt.label}
-                    {sort === opt.value && <span className="w-4 h-4 rounded-full bg-[#0f8a3c] flex items-center justify-center"><span className="w-2 h-2 rounded-full bg-white" /></span>}
+                    {sort === opt.value && <span className="w-4 h-4 rounded-full bg-[#01a2fb] flex items-center justify-center"><span className="w-2 h-2 rounded-full bg-white" /></span>}
                   </button>
                 ))}
               </div>

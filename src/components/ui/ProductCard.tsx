@@ -100,13 +100,13 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
       <div className="p-2 sm:p-3 flex flex-col flex-grow bg-white">
         <div className="flex items-center gap-1 mb-1">
           <div className="flex items-center gap-0.5 bg-[#f5f5f5] px-1.5 py-0.5 rounded text-[10px] font-bold text-[#333]">
-            <Star size={9} className="fill-[#0f8a3c] text-[#0f8a3c]" />
+            <Star size={9} className="fill-[#fcd502] text-[#fcd502]" />
             {product.rating}
           </div>
           <span className="text-[10px] text-gray-400">({product.reviews})</span>
         </div>
         
-        <h3 className="font-bold text-[#111] text-[13px] leading-tight mb-1 line-clamp-2 group-hover:text-[#0f8a3c] transition-colors">{product.name}</h3>
+        <h3 className="font-bold text-[#111] text-[13px] leading-tight mb-1 line-clamp-2 group-hover:text-[#01a2fb] transition-colors">{product.name}</h3>
         
         <p className="text-[11px] text-gray-500 mb-2 truncate uppercase tracking-wide">{product.category}</p>
 
@@ -115,7 +115,7 @@ export function ProductCard({ product, onSelect }: { product: any, onSelect?: (p
             <span className="font-black text-[15px] sm:text-[17px] text-[#111] leading-none">{formatPrice(product.price)}</span>
             <span className="text-[9px] text-gray-400 mt-0.5">onwards</span>
           </div>
-          <button onClick={handleAdd} className="w-8 h-8 rounded-full border border-[#0f8a3c] text-[#0f8a3c] flex items-center justify-center hover:bg-[#0f8a3c] hover:text-white transition-colors active:scale-95 group/btn">
+          <button onClick={handleAdd} className="w-8 h-8 rounded-full border border-[#01a2fb] text-[#01a2fb] flex items-center justify-center hover:bg-[#01a2fb] hover:text-white transition-colors active:scale-95 group/btn">
             <Plus size={16} className="transition-transform group-hover/btn:rotate-90" />
           </button>
         </div>

@@ -62,17 +62,17 @@ export function Footer() {
             {/* Contact */}
             <div className="space-y-3 text-sm text-white/60 mb-6">
               <div className="flex items-start gap-3">
-                <MapPin size={16} className="text-[#EC008C] flex-shrink-0 mt-0.5" />
+                <MapPin size={16} className="text-[#fa028e] flex-shrink-0 mt-0.5" />
                 <span>Salem, Tamil Nadu - 636001</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone size={16} className="text-[#00AEEF] flex-shrink-0" />
+                <Phone size={16} className="text-[#01a2fb] flex-shrink-0" />
                 <a href="tel:+919XXXXXXXXX" className="hover:text-white transition-colors">
                   +91 9XXXXXXXXX
                 </a>
               </div>
               <div className="flex items-center gap-3">
-                <Mail size={16} className="text-[#FFD700] flex-shrink-0" />
+                <Mail size={16} className="text-[#fcd502] flex-shrink-0" />
                 <a href="mailto:hello@hashtagprints.in" className="hover:text-white transition-colors">
                   hello@hashtagprints.in
                 </a>
@@ -82,8 +82,8 @@ export function Footer() {
             {/* Social icons */}
             <div className="flex items-center gap-3">
               {[
-                { icon: Globe, href: 'https://hashtagprints.in', label: 'Website', color: '#00AEEF' },
-                { icon: Share2, href: 'https://instagram.com/hashtagprints', label: 'Instagram', color: '#EC008C' },
+                { icon: Globe, href: 'https://hashtagprints.in', label: 'Website', color: '#01a2fb' },
+                { icon: Share2, href: 'https://instagram.com/hashtagprints', label: 'Instagram', color: '#fa028e' },
                 { icon: Send, href: 'https://wa.me/919XXXXXXXXX', label: 'WhatsApp', color: '#16a34a' },
               ].map(({ icon: Icon, href, label, color }) => (
                 <a
@@ -127,7 +127,7 @@ export function Footer() {
 
           {/* CMYK brand accent */}
           <div className="flex items-center gap-1.5">
-            {['#00AEEF', '#EC008C', '#FFD700', '#ffffff'].map((color) => (
+            {['#01a2fb', '#fa028e', '#fcd502', '#ffffff'].map((color) => (
               <span
                 key={color}
                 className="w-3 h-3 rounded-full"

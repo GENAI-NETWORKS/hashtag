@@ -91,7 +91,7 @@ function OrderCard({ order }: { order: Order }) {
           <p className="text-xs text-[#888]">{itemCount} {itemCount === 1 ? 'item' : 'items'}</p>
           <p className="font-black text-[#111] text-base">{formatPrice(Number(order.total))}</p>
         </div>
-        <div className="flex items-center gap-1 text-xs font-semibold text-[#00AEEF]">
+        <div className="flex items-center gap-1 text-xs font-semibold text-[#01a2fb]">
           View Details <ChevronRight size={14} />
         </div>
       </div>
@@ -134,7 +134,7 @@ export default function OrdersPage() {
         <div className="flex flex-col items-center text-center py-20">
           <div className="w-20 h-20 rounded-3xl flex items-center justify-center mb-5"
             style={{ background: 'linear-gradient(135deg, #e0f7ff, #ffe0f5)' }}>
-            <Package size={36} className="text-[#00AEEF]" />
+            <Package size={36} className="text-[#01a2fb]" />
           </div>
           <h2 className="text-lg font-black text-[#111] mb-2">No orders yet</h2>
           <p className="text-sm text-[#888] mb-6">Your custom printing orders will appear here.</p>

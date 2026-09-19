@@ -49,7 +49,7 @@ function CartItemRow({ item }: { item: LocalCartItem }) {
         {(item.variant?.size || item.variant?.color) && (
           <div className="flex gap-1.5 mt-1 flex-wrap">
             {item.variant.size && (
-              <span className="text-[12px] px-2 py-0.5 rounded-full bg-[#f0f9ff] text-[#00AEEF] font-semibold">
+              <span className="text-[12px] px-2 py-0.5 rounded-full bg-[#f0f9ff] text-[#01a2fb] font-semibold">
                 {item.variant.size}
               </span>
             )}
@@ -63,7 +63,7 @@ function CartItemRow({ item }: { item: LocalCartItem }) {
 
         {/* Customization indicator */}
         {item.customization && (
-          <p className="text-[12px] text-[#EC008C] font-medium mt-1 flex items-center gap-1">
+          <p className="text-[12px] text-[#fa028e] font-medium mt-1 flex items-center gap-1">
             <Tag size={9} /> Custom design applied
           </p>
         )}
@@ -78,7 +78,7 @@ function CartItemRow({ item }: { item: LocalCartItem }) {
             {/* Delete */}
             <button
               onClick={handleRemove}
-              className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ffe0f5] text-[#aaa] hover:text-[#EC008C] transition-colors"
+              className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ffe0f5] text-[#aaa] hover:text-[#fa028e] transition-colors"
               aria-label="Remove item"
             >
               <Trash2 size={13} />
@@ -147,7 +147,7 @@ export default function CartPage() {
       <div className="container-app py-20 flex flex-col items-center text-center">
         <div className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6"
           style={{ background: 'linear-gradient(135deg, #e0f7ff, #ffe0f5)' }}>
-          <ShoppingBag size={40} className="text-[#00AEEF]" />
+          <ShoppingBag size={40} className="text-[#01a2fb]" />
         </div>
         <h1 className="text-2xl font-black text-[#111] mb-2">Your cart is empty</h1>
         <p className="text-[#888] text-sm mb-8 max-w-xs">
@@ -168,7 +168,7 @@ export default function CartPage() {
         </h1>
         <button
           onClick={() => { clearCart(); }}
-          className="text-xs text-[#888] hover:text-[#EC008C] font-medium transition-colors flex items-center gap-1"
+          className="text-xs text-[#888] hover:text-[#fa028e] font-medium transition-colors flex items-center gap-1"
         >
           <Trash2 size={12} /> Clear all
         </button>
@@ -187,7 +187,7 @@ export default function CartPage() {
           {/* Coupon */}
           <div className="card p-4">
             <h3 className="font-bold text-sm text-[#111] mb-3 flex items-center gap-2">
-              <Tag size={14} className="text-[#00AEEF]" /> Coupon Code
+              <Tag size={14} className="text-[#01a2fb]" /> Coupon Code
             </h3>
             {appliedCoupon ? (
               <div className="flex items-center justify-between p-3 rounded-xl bg-[#dcfce7] border border-[#16a34a]/20">

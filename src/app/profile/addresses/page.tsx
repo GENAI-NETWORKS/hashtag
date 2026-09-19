@@ -84,7 +84,7 @@ export default function AddressesPage() {
       </div>
 
       {showForm && (
-        <div className="card p-6 mb-8 border-2 border-[#00AEEF]/20 shadow-xl animate-scaleIn">
+        <div className="card p-6 mb-8 border-2 border-[#01a2fb]/20 shadow-xl animate-scaleIn">
           <h2 className="font-bold text-[#111] mb-4">Add New Address</h2>
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -168,7 +168,7 @@ export default function AddressesPage() {
                 type="checkbox"
                 checked={formData.isDefault}
                 onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-                className="w-4 h-4 rounded border-[#ccc] text-[#00AEEF] focus:ring-[#00AEEF]"
+                className="w-4 h-4 rounded border-[#ccc] text-[#01a2fb] focus:ring-[#01a2fb]"
               />
               <span className="text-sm font-semibold text-[#444]">Set as Default Address</span>
             </label>
@@ -201,7 +201,7 @@ export default function AddressesPage() {
         </div>
       ) : addresses?.length === 0 ? (
         <div className="text-center py-16 bg-[#f8f9fa] rounded-3xl border border-[#e5e7eb] border-dashed">
-          <div className="w-16 h-16 bg-white rounded-full mx-auto mb-4 flex items-center justify-center text-[#EC008C] shadow-sm">
+          <div className="w-16 h-16 bg-white rounded-full mx-auto mb-4 flex items-center justify-center text-[#fa028e] shadow-sm">
             <MapPin size={24} />
           </div>
           <h2 className="text-xl font-bold text-[#111] mb-2">No Saved Addresses</h2>
@@ -211,7 +211,7 @@ export default function AddressesPage() {
           {!showForm && (
             <button
               onClick={() => setShowForm(true)}
-              className="btn btn-primary w-auto mx-auto shadow-lg shadow-[#00AEEF]/20"
+              className="btn btn-primary w-auto mx-auto shadow-lg shadow-[#01a2fb]/20"
             >
               Add Your First Address
             </button>
@@ -221,7 +221,7 @@ export default function AddressesPage() {
         <div className="space-y-4">
           {addresses?.map((address) => (
             <div key={address.id} className="card p-5 border-l-4 transition-all hover:shadow-lg"
-              style={{ borderLeftColor: address.isDefault ? '#00AEEF' : 'transparent' }}>
+              style={{ borderLeftColor: address.isDefault ? '#01a2fb' : 'transparent' }}>
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-[#f8f9fa] rounded-xl flex items-center justify-center text-[#444] flex-shrink-0">
                   <MapPin size={20} />
@@ -230,7 +230,7 @@ export default function AddressesPage() {
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-bold text-[#111] text-lg truncate">{address.name}</h3>
                     {address.isDefault && (
-                      <span className="badge flex items-center gap-1" style={{ background: '#00AEEF15', color: '#00AEEF' }}>
+                      <span className="badge flex items-center gap-1" style={{ background: '#01a2fb15', color: '#01a2fb' }}>
                         <CheckCircle2 size={10} /> Default
                       </span>
                     )}

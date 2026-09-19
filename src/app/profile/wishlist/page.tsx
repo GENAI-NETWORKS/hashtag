@@ -31,9 +31,9 @@ function WishlistCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
         )}
         <button
           onClick={handleRemove}
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors text-[#EC008C]"
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors text-[#fa028e]"
         >
-          <Heart size={14} className="fill-[#EC008C]" />
+          <Heart size={14} className="fill-[#fa028e]" />
         </button>
       </div>
       <div className="p-3 flex flex-col flex-1">
@@ -51,7 +51,7 @@ function WishlistCard({ product }: { product: typeof ALL_PRODUCTS[0] }) {
               // @ts-ignore
               addItem({ id: product.id, name: product.name, basePrice: product.price, images: [product.image], slug: product.slug, categoryId: 1 });
             }}
-            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[12px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
+            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[12px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#01a2fb] text-[#01a2fb]"
           >
             <span className="whitespace-nowrap px-1">{hasOptions ? 'Select' : 'Add'}</span>
           </button>
@@ -78,7 +78,7 @@ export default function WishlistPage() {
       {wishlistedProducts.length === 0 ? (
         <div className="card p-10 flex flex-col items-center text-center">
           <div className="w-16 h-16 rounded-2xl bg-[#fee2e2] flex items-center justify-center mb-4">
-            <Heart size={28} className="text-[#EC008C]" />
+            <Heart size={28} className="text-[#fa028e]" />
           </div>
           <h2 className="text-lg font-bold text-[#111] mb-2">Your wishlist is empty</h2>
           <p className="text-sm text-[#888] mb-6 max-w-xs">

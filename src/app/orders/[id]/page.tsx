@@ -58,8 +58,8 @@ function OrderTimeline({ status, history }: { status: OrderStatus; history: Orde
               <div
                 className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-500"
                 style={{
-                  background: isCompleted || isCurrent ? (isCurrent ? '#00AEEF' : '#16a34a') : '#f0f0f0',
-                  border: isCurrent ? '3px solid #00AEEF44' : 'none',
+                  background: isCompleted || isCurrent ? (isCurrent ? '#01a2fb' : '#16a34a') : '#f0f0f0',
+                  border: isCurrent ? '3px solid #01a2fb44' : 'none',
                 }}
               >
                 {isCompleted ? (
@@ -82,7 +82,7 @@ function OrderTimeline({ status, history }: { status: OrderStatus; history: Orde
             <div className="pb-6 flex-1 pt-1.5">
               <p
                 className="font-bold text-sm"
-                style={{ color: isCurrent ? '#00AEEF' : isCompleted ? '#16a34a' : '#aaa' }}
+                style={{ color: isCurrent ? '#01a2fb' : isCompleted ? '#16a34a' : '#aaa' }}
               >
                 {step.label}
               </p>
@@ -161,7 +161,7 @@ export default function OrderDetailPage() {
         {order.estimatedDelivery && order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && (
           <div className="text-right">
             <p className="text-[12px] text-[#888]">Est. delivery</p>
-            <p className="text-sm font-bold text-[#00AEEF]">
+            <p className="text-sm font-bold text-[#01a2fb]">
               {new Date(order.estimatedDelivery).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
             </p>
           </div>
@@ -209,7 +209,7 @@ export default function OrderDetailPage() {
       {order.address && (
         <div className="card p-4">
           <h2 className="font-bold text-[#111] text-sm mb-3 flex items-center gap-2">
-            <MapPin size={14} className="text-[#EC008C]" /> Delivery Address
+            <MapPin size={14} className="text-[#fa028e]" /> Delivery Address
           </h2>
           <p className="text-sm text-[#444] font-semibold">{order.address.name}</p>
           <p className="text-sm text-[#888]">{order.address.line1}</p>

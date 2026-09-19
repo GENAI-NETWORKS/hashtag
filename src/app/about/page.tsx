@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 };
 
 const FACTS = [
-  { icon: MapPin, label: 'Location', value: 'Salem, Tamil Nadu, India', color: '#EC008C' },
-  { icon: Clock, label: 'Same-day Dispatch', value: 'Orders placed before 12 PM', color: '#00AEEF' },
-  { icon: Star, label: 'Specialties', value: 'T-shirts, Notebooks, Mugs, Photo Prints', color: '#FFD700' },
+  { icon: MapPin, label: 'Location', value: 'Salem, Tamil Nadu, India', color: '#fa028e' },
+  { icon: Clock, label: 'Same-day Dispatch', value: 'Orders placed before 12 PM', color: '#01a2fb' },
+  { icon: Star, label: 'Specialties', value: 'T-shirts, Notebooks, Mugs, Photo Prints', color: '#fcd502' },
   { icon: Award, label: 'Quality Standard', value: 'Premium 180–220 GSM materials', color: '#16a34a' },
   { icon: Users, label: 'Customers Served', value: '5000+ happy customers', color: '#7c3aed' },
 ];
@@ -99,7 +99,7 @@ export default function AboutPage() {
 
           <div className="relative z-10 p-8 sm:p-12 md:p-16 text-center max-w-2xl mx-auto flex flex-col items-center">
             <div className="inline-flex w-16 h-16 rounded-2xl items-center justify-center mb-6"
-              style={{ background: 'linear-gradient(135deg, #00AEEF, #EC008C)' }}>
+              style={{ background: 'linear-gradient(135deg, #01a2fb, #fa028e)' }}>
               <span className="text-white font-black text-3xl leading-none">#</span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">
@@ -135,7 +135,7 @@ export default function AboutPage() {
         </section>
 
         {/* Mission */}
-        <section className="card p-6 border-l-4 border-[#00AEEF]">
+        <section className="card p-6 border-l-4 border-[#01a2fb]">
           <h2 className="font-black text-[#111] text-lg mb-3">Our Mission</h2>
           <p className="text-[#444] leading-relaxed text-sm">
             Hashtag was founded with a simple belief: custom printing should be fast, affordable, and
@@ -165,7 +165,7 @@ export default function AboutPage() {
               'Event Promotional Items',
             ].map((service) => (
               <div key={service} className="flex items-center gap-2 text-sm text-[#444] py-2 border-b border-[#f0f0f0]">
-                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#00AEEF' }} />
+                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#01a2fb' }} />
                 {service}
               </div>
             ))}

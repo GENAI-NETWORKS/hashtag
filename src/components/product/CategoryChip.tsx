@@ -22,8 +22,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 const COLOR_PAIRS: Array<[string, string]> = [
-  ['#00AEEF', '#e0f7ff'],   // Cyan
-  ['#EC008C', '#ffe0f5'],   // Magenta
+  ['#01a2fb', '#e0f7ff'],   // Cyan
+  ['#fa028e', '#ffe0f5'],   // Magenta
   ['#d97706', '#fef3c7'],   // Amber
   ['#16a34a', '#dcfce7'],   // Green
   ['#7c3aed', '#ede9fe'],   // Purple

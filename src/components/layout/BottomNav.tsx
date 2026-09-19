@@ -65,7 +65,7 @@ export function BottomNav() {
               key={href}
               href={href}
               className="flex-1 flex flex-col items-center justify-center gap-0.5 relative transition-colors min-h-[44px]"
-              style={{ color: isActive ? '#00AEEF' : '#888888' }}
+              style={{ color: isActive ? '#01a2fb' : '#888888' }}
               aria-label={label}
               aria-current={isActive ? 'page' : undefined}
             >
@@ -73,7 +73,7 @@ export function BottomNav() {
               {isActive && (
                 <span
                   className="absolute top-0 left-3 right-3 h-0.5 rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #00AEEF, #EC008C)' }}
+                  style={{ background: 'linear-gradient(90deg, #01a2fb, #fa028e)' }}
                 />
               )}
 
@@ -85,7 +85,7 @@ export function BottomNav() {
                   style={{ transform: isActive ? 'scale(1.1)' : 'scale(1)' }}
                 />
                 {isMounted && badge && itemCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#EC008C] text-white text-[11px] font-bold flex items-center justify-center leading-none">
+                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#fa028e] text-white text-[11px] font-bold flex items-center justify-center leading-none">
                     {itemCount > 9 ? '9+' : itemCount}
                   </span>
                 )}
@@ -93,7 +93,7 @@ export function BottomNav() {
 
               <span
                 className="text-[12px] font-semibold leading-none"
-                style={{ color: isActive ? '#00AEEF' : '#888' }}
+                style={{ color: isActive ? '#01a2fb' : '#888' }}
               >
                 {label}
               </span>

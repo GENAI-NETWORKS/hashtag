@@ -127,7 +127,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
             </div>
 
             {/* Phone Input Block */}
-            <div className="flex-1 flex items-center bg-white border border-gray-300 rounded-xl shadow-sm px-4 focus-within:border-[#00AEEF] focus-within:ring-1 focus-within:ring-[#00AEEF] transition-all">
+            <div className="flex-1 flex items-center bg-white border border-gray-300 rounded-xl shadow-sm px-4 focus-within:border-[#01a2fb] focus-within:ring-1 focus-within:ring-[#01a2fb] transition-all">
               <span className="text-[#333] font-bold text-lg mr-2">+91</span>
               <input
                 type="tel"
@@ -145,7 +145,7 @@ export function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
             disabled={phone.length < 10}
             className={`h-14 w-full rounded-xl font-bold text-lg transition-all ${
               phone.length >= 10 
-                ? 'bg-[#00AEEF] text-white shadow-md active:scale-[0.98]' 
+                ? 'bg-[#01a2fb] text-white shadow-md active:scale-[0.98]' 
                 : 'bg-[#9ca3af] text-white cursor-not-allowed'
             }`}
           >

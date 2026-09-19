@@ -33,10 +33,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
             boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
           },
           success: {
-            iconTheme: { primary: '#00AEEF', secondary: '#fff' },
+            iconTheme: { primary: '#01a2fb', secondary: '#fff' },
           },
           error: {
-            iconTheme: { primary: '#EC008C', secondary: '#fff' },
+            iconTheme: { primary: '#fa028e', secondary: '#fff' },
           },
         }}
       />

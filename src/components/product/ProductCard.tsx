@@ -85,7 +85,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         {/* Rating */}
         {product.reviewCount > 0 && (
           <div className="flex items-center gap-1 mt-1.5">
-            <Star size={11} className="fill-[#FFD700] text-[#FFD700]" />
+            <Star size={11} className="fill-[#fcd502] text-[#fcd502]" />
             <span className="text-xs font-semibold text-[#444]">
               {Number(product.avgRating).toFixed(1)}
             </span>
@@ -110,8 +110,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                 ? '#16a34a'
                 : adding
                 ? 'rgba(0,174,239,0.1)'
-                : 'linear-gradient(135deg, #00AEEF, #0090c5)',
-              color: added ? 'white' : adding ? '#00AEEF' : 'white',
+                : 'linear-gradient(135deg, #01a2fb, #0090c5)',
+              color: added ? 'white' : adding ? '#01a2fb' : 'white',
               transform: adding ? 'scale(0.95)' : 'scale(1)',
             }}
             aria-label={added ? 'Added to cart' : 'Add to cart'}

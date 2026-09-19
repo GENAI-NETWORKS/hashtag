@@ -9,14 +9,14 @@ export default function NotFound() {
       <div className="relative mb-8 select-none">
         <span className="text-[122px] sm:text-[162px] font-black leading-none"
           style={{
-            background: 'linear-gradient(135deg,#00AEEF 0%,#EC008C 50%,#FFD700 100%)',
+            background: 'linear-gradient(135deg,#01a2fb 0%,#fa028e 50%,#fcd502 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}>
           404
         </span>
         <div className="absolute inset-0 blur-3xl opacity-20 pointer-events-none"
-          style={{ background: 'linear-gradient(135deg,#00AEEF,#EC008C,#FFD700)' }} />
+          style={{ background: 'linear-gradient(135deg,#01a2fb,#fa028e,#fcd502)' }} />
       </div>
 
       <h1 className="text-2xl sm:text-3xl font-black text-[#111] mb-3">

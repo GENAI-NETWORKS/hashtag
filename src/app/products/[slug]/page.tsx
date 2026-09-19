@@ -40,7 +40,7 @@ export default function ProductDetailPage() {
     return (
       <div className="container-app py-20 text-center">
         <div className="text-6xl font-black mb-4" style={{
-          background: 'linear-gradient(135deg,#00AEEF,#EC008C)',
+          background: 'linear-gradient(135deg,#01a2fb,#fa028e)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
         }}>404</div>
         <h1 className="text-xl font-black text-[#111] mb-3">Product not found</h1>
@@ -105,7 +105,7 @@ export default function ProductDetailPage() {
           particleCount: 120,
           spread: 80,
           origin: { y: 0.8 },
-          colors: ['#00AEEF', '#EC008C', '#FFD700', '#0f8a3c'],
+          colors: ['#01a2fb', '#fa028e', '#fcd502', '#01a2fb'],
           zIndex: 9999
         });
       });
@@ -121,11 +121,11 @@ export default function ProductDetailPage() {
       {/* Breadcrumb */}
       <div className="container-app py-3">
         <nav className="flex items-center gap-1 text-xs text-[#888]" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-[#00AEEF] transition-colors">Home</Link>
+          <Link href="/" className="hover:text-[#01a2fb] transition-colors">Home</Link>
           <ChevronRight size={12} />
-          <Link href="/products" className="hover:text-[#00AEEF] transition-colors">Products</Link>
+          <Link href="/products" className="hover:text-[#01a2fb] transition-colors">Products</Link>
           <ChevronRight size={12} />
-          <Link href={`/products?category=${product.categorySlug}`} className="hover:text-[#00AEEF] transition-colors">
+          <Link href={`/products?category=${product.categorySlug}`} className="hover:text-[#01a2fb] transition-colors">
             {product.category}
           </Link>
           <ChevronRight size={12} />
@@ -154,7 +154,7 @@ export default function ProductDetailPage() {
                 onClick={handleWishlist}
                 className="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-all hover:scale-105"
               >
-                <Heart size={20} className={isMounted && isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
+                <Heart size={20} className={isMounted && isWishlisted ? 'fill-[#fa028e] text-[#fa028e]' : 'text-[#888]'} />
               </button>
             </div>
             {/* Thumbnails - more images would come from DB */}
@@ -162,7 +162,7 @@ export default function ProductDetailPage() {
               {images.map((img, i) => (
                 <button key={i} onClick={() => setActiveImageIndex(i)}
                   className="w-16 h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0"
-                  style={{ borderColor: i === activeImageIndex ? '#00AEEF' : 'transparent' }}>
+                  style={{ borderColor: i === activeImageIndex ? '#01a2fb' : 'transparent' }}>
                   <Image src={img} alt={`View ${i + 1}`} width={64} height={64} className="w-full h-full object-cover" unoptimized />
                 </button>
               ))}
@@ -173,14 +173,14 @@ export default function ProductDetailPage() {
           <div className="space-y-5 relative z-40 lg:col-span-7">
             <div>
               <Link href={`/products?category=${product.categorySlug}`}
-                className="text-xs text-[#888] font-medium uppercase tracking-wide mb-1 hover:text-[#00AEEF] flex items-center gap-1">
+                className="text-xs text-[#888] font-medium uppercase tracking-wide mb-1 hover:text-[#01a2fb] flex items-center gap-1">
                 <ArrowLeft size={11} /> {product.category}
               </Link>
               <h1 className="text-2xl font-black text-[#111] leading-tight mt-1">{product.name}</h1>
               <div className="flex items-center gap-2 mt-2">
                 <div className="flex items-center gap-0.5">
                   {[1,2,3,4,5].map(s => (
-                    <Star key={s} size={14} className={s <= Math.round(product.rating) ? 'fill-[#FFD700] text-[#FFD700]' : 'text-[#e5e7eb]'} />
+                    <Star key={s} size={14} className={s <= Math.round(product.rating) ? 'fill-[#fcd502] text-[#fcd502]' : 'text-[#e5e7eb]'} />
                   ))}
                 </div>
                 <span className="text-sm font-bold text-[#444]">{product.rating}</span>
@@ -199,7 +199,7 @@ export default function ProductDetailPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-semibold text-[#111]">{getProductOptions(product.categorySlug || '').sizeTitle}</span>
-                  <button className="text-sm text-[#00AEEF] hover:underline font-medium">Size Guide</button>
+                  <button className="text-sm text-[#01a2fb] hover:underline font-medium">Size Guide</button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {SIZES.map(s => (
@@ -208,7 +208,7 @@ export default function ProductDetailPage() {
                       onClick={() => setSelectedSize(s)}
                       className={`min-w-[48px] h-10 px-3 rounded-lg border-2 text-sm font-bold transition-all ${
                         selectedSize === s
-                          ? 'border-[#0f8a3c] bg-[#eafbf0] text-[#0f8a3c]'
+                          ? 'border-[#01a2fb] bg-[#e6f6ff] text-[#01a2fb]'
                           : 'border-gray-200 text-gray-700 hover:border-gray-300 bg-white'
                       }`}
                     >
@@ -229,7 +229,7 @@ export default function ProductDetailPage() {
                       key={c.label}
                       onClick={() => setSelectedColor(c.label)}
                       className={`w-10 h-10 rounded-full border-2 transition-all relative ${
-                        selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : 'hover:scale-110'
+                        selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#01a2fb]' : 'hover:scale-110'
                       }`}
                       style={{ backgroundColor: c.hex, borderColor: c.border }}
                       title={c.label}
@@ -258,8 +258,8 @@ export default function ProductDetailPage() {
 
             {/* Desktop Add to Cart */}
             <div className="hidden lg:flex gap-3 pt-2">
-              <button onClick={handleAddToCart} className="btn btn-primary h-10 text-sm px-5 w-fit font-bold shadow-md shadow-[#00AEEF]/20"
-                style={{ background: added ? '#16a34a' : 'linear-gradient(135deg,#00AEEF,#0090c5)', color: 'white' }}>
+              <button onClick={handleAddToCart} className="btn btn-primary h-10 text-sm px-5 w-fit font-bold shadow-md shadow-[#01a2fb]/20"
+                style={{ background: added ? '#16a34a' : 'linear-gradient(135deg,#01a2fb,#0090c5)', color: 'white' }}>
                 {added ? <><Check size={16} /> Added to Cart!</> : <><ShoppingCart size={16} /> Add to Cart</>}
               </button>
               <Link href="/cart" className="btn btn-outline h-10 text-sm px-5 w-fit font-bold">View Cart</Link>
@@ -269,7 +269,7 @@ export default function ProductDetailPage() {
             <div className="flex flex-wrap gap-2 pt-1">
               {['Same-day dispatch before 12 PM', 'Free delivery above ₹999', '100% quality guarantee'].map(info => (
                 <span key={info} className="flex items-center gap-1 text-[12px] text-[#444] bg-[#f8f9fa] border border-[#e5e7eb] px-2.5 py-1 rounded-full">
-                  <Info size={10} className="text-[#00AEEF]" />{info}
+                  <Info size={10} className="text-[#01a2fb]" />{info}
                 </span>
               ))}
             </div>
@@ -282,7 +282,7 @@ export default function ProductDetailPage() {
             {(['description','specs','reviews'] as const).map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)}
                 className="px-4 py-2.5 text-sm font-semibold capitalize border-b-2 transition-all -mb-px"
-                style={{ borderColor: activeTab === tab ? '#00AEEF' : 'transparent', color: activeTab === tab ? '#00AEEF' : '#888' }}>
+                style={{ borderColor: activeTab === tab ? '#01a2fb' : 'transparent', color: activeTab === tab ? '#01a2fb' : '#888' }}>
                 {tab}
               </button>
             ))}
@@ -314,7 +314,7 @@ export default function ProductDetailPage() {
                 <div className="text-center">
                   <p className="text-4xl font-black text-[#111]">{product.rating}</p>
                   <div className="flex gap-0.5 justify-center mt-1">
-                    {[1,2,3,4,5].map(s => <Star key={s} size={12} className="fill-[#FFD700] text-[#FFD700]" />)}
+                    {[1,2,3,4,5].map(s => <Star key={s} size={12} className="fill-[#fcd502] text-[#fcd502]" />)}
                   </div>
                   <p className="text-xs text-[#888] mt-1">{product.reviews} reviews</p>
                 </div>
@@ -323,7 +323,7 @@ export default function ProductDetailPage() {
                     <div key={s} className="flex items-center gap-2 text-xs">
                       <span className="w-3 text-right text-[#888]">{s}</span>
                       <div className="flex-1 h-1.5 bg-[#e5e7eb] rounded-full overflow-hidden">
-                        <div className="h-full bg-[#FFD700] rounded-full" style={{ width: s === 5 ? '70%' : s === 4 ? '20%' : s === 3 ? '7%' : '3%' }} />
+                        <div className="h-full bg-[#fcd502] rounded-full" style={{ width: s === 5 ? '70%' : s === 4 ? '20%' : s === 3 ? '7%' : '3%' }} />
                       </div>
                     </div>
                   ))}
@@ -364,11 +364,11 @@ export default function ProductDetailPage() {
           <button
             id="mobile-add-btn"
             onClickCapture={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(); }}
-            className="btn px-5 w-max font-bold text-sm shadow-md shadow-[#00AEEF]/20"
+            className="btn px-5 w-max font-bold text-sm shadow-md shadow-[#01a2fb]/20"
             style={{
               pointerEvents: 'auto',
               touchAction: 'manipulation',
-              background: added ? '#16a34a' : 'linear-gradient(135deg,#00AEEF,#0090c5)',
+              background: added ? '#16a34a' : 'linear-gradient(135deg,#01a2fb,#0090c5)',
               color: 'white'
             }}>
             {added ? <><Check size={16} />Added!</> : <><ShoppingCart size={16} />Add to Cart</>}

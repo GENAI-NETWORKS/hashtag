@@ -8,13 +8,13 @@
 
 @theme inline {
   /* Brand Colors */
-  --color-cyan: #00AEEF;
+  --color-cyan: #01a2fb;
   --color-cyan-dark: #0090c5;
   --color-cyan-light: #e0f7ff;
-  --color-magenta: #EC008C;
+  --color-magenta: #fa028e;
   --color-magenta-dark: #c4006b;
   --color-magenta-light: #ffe0f5;
-  --color-yellow: #FFD700;
+  --color-yellow: #fcd502;
   --color-yellow-dark: #e6c200;
   --color-yellow-light: #fff9d6;
   --color-ink: #111111;
@@ -27,11 +27,11 @@
   --color-border-strong: #d1d5db;
 
   /* Semantic Colors */
-  --color-primary: #00AEEF;
+  --color-primary: #01a2fb;
   --color-primary-dark: #0090c5;
   --color-primary-light: #e0f7ff;
-  --color-accent: #EC008C;
-  --color-highlight: #FFD700;
+  --color-accent: #fa028e;
+  --color-highlight: #fcd502;
 
   /* Text */
   --color-text-primary: #111111;

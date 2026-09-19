@@ -196,7 +196,7 @@ function ProductDetailCard({
         particleCount: 120,
         spread: 80,
         origin: { y: 0.8 },
-        colors: ['#00AEEF', '#EC008C', '#FFD700', '#0f8a3c'],
+        colors: ['#01a2fb', '#fa028e', '#fcd502', '#01a2fb'],
         zIndex: 9999
       });
     });
@@ -301,7 +301,7 @@ function ProductDetailCard({
         <div className="bg-white px-4 pt-3 pb-2 flex-none flex flex-col justify-end">
           {/* Category, Time & Rating Row */}
           <div className="flex items-center gap-2 mb-2 w-full">
-            <div className="flex items-center gap-1 bg-[#eafbf0] text-[#0f8a3c] px-2 py-1 rounded-md whitespace-nowrap flex-shrink-0">
+            <div className="flex items-center gap-1 bg-[#e6f6ff] text-[#01a2fb] px-2 py-1 rounded-md whitespace-nowrap flex-shrink-0">
               <Clock size={12} className="stroke-[2.5] flex-shrink-0" />
               <span className="text-[12px] font-bold">22 mins</span>
             </div>
@@ -326,7 +326,7 @@ function ProductDetailCard({
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-[25px] font-black text-[#111] leading-none">₹{product.price}</span>
             <span className="text-[14px] text-[#888] line-through font-medium">₹{mrp}</span>
-            <span className="text-[12px] font-black text-[#0f8a3c] bg-[#eafbf0] px-1.5 py-0.5 rounded ml-1">{discount}% off</span>
+            <span className="text-[12px] font-black text-[#fa028e] bg-[#ffebf6] px-1.5 py-0.5 rounded ml-1">{discount}% off</span>
           </div>
           <p className="text-[11px] text-[#888] font-medium mb-3 mt-1">₹{product.price}/piece  •  Inclusive of all taxes</p>
 
@@ -334,10 +334,10 @@ function ProductDetailCard({
           <div className="border-t border-gray-100 pt-3 flex flex-col gap-2 w-full">
             <div className="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 active:bg-gray-100 transition-colors">
               <div className="flex items-center gap-2.5">
-                <ShoppingBag size={14} className="text-[#0f8a3c]" />
+                <ShoppingBag size={14} className="text-[#01a2fb]" />
                 <p className="text-[13px] font-black text-[#111]">Hashtag Prints, Salem</p>
               </div>
-              <p className="text-[12px] text-[#0f8a3c] font-bold flex items-center gap-0.5">Explore <ChevronRight size={12}/></p>
+              <p className="text-[12px] text-[#01a2fb] font-bold flex items-center gap-0.5">Explore <ChevronRight size={12}/></p>
             </div>
           </div>
 
@@ -358,7 +358,7 @@ function ProductDetailCard({
                         onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
                         className={`px-4 py-2.5 rounded-xl text-[15px] font-bold border-2 transition-all duration-150 active:scale-95 ${
                           selectedSize === size
-                            ? 'bg-[#0f8a3c] text-white border-[#0f8a3c] shadow-sm'
+                            ? 'bg-[#01a2fb] text-white border-[#01a2fb] shadow-sm'
                             : 'bg-white text-[#444] border-gray-200 hover:border-gray-400'
                         }`}
                       >
@@ -383,7 +383,7 @@ function ProductDetailCard({
                         onClick={(e) => { e.stopPropagation(); setSelectedColor(c.label); }}
                         title={c.label}
                         className={`relative w-10 h-10 rounded-full transition-all duration-150 active:scale-90 ${
-                          selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#0f8a3c]' : ''
+                          selectedColor === c.label ? 'ring-2 ring-offset-2 ring-[#01a2fb]' : ''
                         }`}
                         style={{ backgroundColor: c.hex, border: `2px solid ${c.border}` }}
                       >
@@ -404,7 +404,7 @@ function ProductDetailCard({
               <div>
                 <h3 className="text-[16px] font-black text-[#111]">Quantity</h3>
                 {qty >= 10 && (
-                  <p className="text-[13px] font-bold text-[#0f8a3c] mt-0.5">Bulk discount applied!</p>
+                  <p className="text-[13px] font-bold text-[#01a2fb] mt-0.5">Bulk discount applied!</p>
                 )}
               </div>
               <div className="flex items-center gap-0 border-2 border-gray-200 rounded-xl overflow-hidden" onClick={e => e.stopPropagation()}>
@@ -463,22 +463,22 @@ function ProductDetailCard({
                 </p>
               </div>
             </div>
-            <div className="flex items-center border-2 border-[#0f8a3c] rounded-xl overflow-hidden bg-white shadow-sm">
+            <div className="flex items-center border-2 border-[#01a2fb] rounded-xl overflow-hidden bg-white shadow-sm">
               <button onClick={() => {
                 const newQty = Math.max(1, qty - 1);
                 setQty(newQty);
                 const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
                 if (cartItem) updateQuantity(cartItem.id, newQty);
-              }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
+              }} className="w-10 h-10 flex items-center justify-center text-[#01a2fb] hover:bg-[#e6f6ff]">
                 <Minus size={16} />
               </button>
-              <span className="w-9 text-center text-[17px] font-black text-[#0f8a3c] leading-[40px]">{qty}</span>
+              <span className="w-9 text-center text-[17px] font-black text-[#01a2fb] leading-[40px]">{qty}</span>
               <button onClick={() => {
                 const newQty = qty + 1;
                 setQty(newQty);
                 const cartItem = items.find(i => i.productId === product.id && i.variantId === (product.id * 100 + SIZES.indexOf(selectedSize)));
                 if (cartItem) updateQuantity(cartItem.id, newQty);
-              }} className="w-10 h-10 flex items-center justify-center text-[#0f8a3c] hover:bg-[#eafbf0]">
+              }} className="w-10 h-10 flex items-center justify-center text-[#01a2fb] hover:bg-[#e6f6ff]">
                 <Plus size={16} />
               </button>
             </div>
@@ -493,7 +493,7 @@ function ProductDetailCard({
             </div>
             <button
               onClick={handleAddToCart}
-              className="bg-[#0f8a3c] hover:bg-[#0c7031] text-white px-6 h-11 rounded-xl text-[16px] font-black flex items-center justify-center gap-2 transition-colors shadow-md active:scale-[0.98]"
+              className="bg-[#01a2fb] hover:bg-[#0088d4] text-white px-6 h-11 rounded-xl text-[16px] font-black flex items-center justify-center gap-2 transition-colors shadow-md active:scale-[0.98]"
             >
               Add to cart
             </button>

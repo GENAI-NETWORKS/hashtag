@@ -90,7 +90,7 @@ function OnboardingContent() {
     <div className="container-app py-12 md:py-20 flex justify-center items-center min-h-[80vh]">
       <div className="card p-6 sm:p-10 w-full max-w-lg border border-[#e5e7eb] shadow-xl">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-[#f0f9ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-[#00AEEF]">
+          <div className="w-16 h-16 bg-[#f0f9ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-[#01a2fb]">
             <CheckCircle2 size={32} />
           </div>
           <h1 className="text-2xl font-black text-[#111] mb-2">Welcome to Hashtag!</h1>
@@ -111,8 +111,8 @@ function OnboardingContent() {
                   onClick={() => setRoleType(opt)}
                   className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border-2 ${
                     roleType === opt
-                      ? 'border-[#00AEEF] bg-[#00AEEF]/10 text-[#00AEEF]'
-                      : 'border-[#f0f0f0] bg-white text-[#666] hover:border-[#00AEEF]/50'
+                      ? 'border-[#01a2fb] bg-[#01a2fb]/10 text-[#01a2fb]'
+                      : 'border-[#f0f0f0] bg-white text-[#666] hover:border-[#01a2fb]/50'
                   }`}
                 >
                   {opt}
@@ -142,8 +142,8 @@ function OnboardingContent() {
                   onClick={() => setGender(opt)}
                   className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border-2 ${
                     gender === opt
-                      ? 'border-[#EC008C] bg-[#EC008C]/10 text-[#EC008C]'
-                      : 'border-[#f0f0f0] bg-white text-[#666] hover:border-[#EC008C]/50'
+                      ? 'border-[#fa028e] bg-[#fa028e]/10 text-[#fa028e]'
+                      : 'border-[#f0f0f0] bg-white text-[#666] hover:border-[#fa028e]/50'
                   }`}
                 >
                   {opt}
@@ -163,8 +163,8 @@ function OnboardingContent() {
                   onClick={() => setSource(opt === 'Others' ? 'Other' : opt)}
                   className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border-2 ${
                     (source === opt || (source === 'Other' && opt === 'Others'))
-                      ? 'border-[#FFD700] bg-[#FFD700]/10 text-[#a16207]'
-                      : 'border-[#f0f0f0] bg-white text-[#666] hover:border-[#FFD700]/50'
+                      ? 'border-[#fcd502] bg-[#fcd502]/10 text-[#a16207]'
+                      : 'border-[#f0f0f0] bg-white text-[#666] hover:border-[#fcd502]/50'
                   }`}
                 >
                   {opt}

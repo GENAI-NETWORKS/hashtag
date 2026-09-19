@@ -16,7 +16,6 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
-import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
 
 // Splash Screen Video Removed as per request
 
@@ -25,12 +24,12 @@ import { OnboardingScreen } from '@/components/layout/OnboardingScreen';
 // ─── DEMO DATA (works without DB) ──────────────────────────────────────────
 
 const CATEGORIES = [
-  { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', icon: Shirt, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/products/tshirt.jpg' },
-  { id: 2, name: 'Notebooks', slug: 'custom-notebook-printing', icon: BookOpen, color: '#FFD700', bg: '#fffdf0', image: '/uploads/products/A5 Spiral Custom Notebook.png' },
-  { id: 3, name: 'Photo Mugs', slug: 'custom-mug-printing', icon: Coffee, color: '#00AEEF', bg: '#e0f7ff', image: '/uploads/products/Custom Photo Magic Mug.png' },
+  { id: 1, name: 'T-Shirts', slug: 'custom-tshirt-printing', icon: Shirt, color: '#fa028e', bg: '#ffe0f5', image: '/uploads/products/tshirt.jpg' },
+  { id: 2, name: 'Notebooks', slug: 'custom-notebook-printing', icon: BookOpen, color: '#fcd502', bg: '#fffdf0', image: '/uploads/products/A5 Spiral Custom Notebook.png' },
+  { id: 3, name: 'Photo Mugs', slug: 'custom-mug-printing', icon: Coffee, color: '#01a2fb', bg: '#e0f7ff', image: '/uploads/products/Custom Photo Magic Mug.png' },
   { id: 4, name: 'Canvas Prints', slug: 'photo-printing-online', icon: ImageIcon, color: '#7c3aed', bg: '#f5f3ff', image: '/uploads/products/Premium Canvas Photo Print.png' },
-  { id: 5, name: 'Business Cards', slug: 'business-card-printing', icon: CreditCard, color: '#16a34a', bg: '#f0fff4', image: '/uploads/products/Standard Business Cards (100 pcs).png' },
-  { id: 6, name: 'Stickers', slug: 'custom-sticker-printing', icon: Tag, color: '#EC008C', bg: '#ffe0f5', image: '/uploads/products/Custom Die-Cut Vinyl Stickers.png' },
+  { id: 5, name: 'Business Cards', slug: 'business-card-printing', icon: CreditCard, color: '#01a2fb', bg: '#f0fff4', image: '/uploads/products/Standard Business Cards (100 pcs).png' },
+  { id: 6, name: 'Stickers', slug: 'custom-sticker-printing', icon: Tag, color: '#fa028e', bg: '#ffe0f5', image: '/uploads/products/Custom Die-Cut Vinyl Stickers.png' },
   { id: 7, name: 'Bulk Orders', slug: 'bulk-printing', icon: Package, color: '#0090c5', bg: '#e0f7ff', image: '/uploads/products/Bulk T-Shirt Printing (50 pcs).png' },
   { id: 8, name: 'Custom Gifts', slug: 'custom-gifts-printing', icon: Gift, color: '#d97706', bg: '#fffbeb', image: '/uploads/products/Corporate Gifting Set.png' },
 ];
@@ -96,14 +95,14 @@ function DemoProductCard({ product, priority = false }: { product: typeof PRODUC
           onClick={handleWishlist}
           className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white hover:scale-110 transition-all z-10"
         >
-          <Heart size={16} className={isMounted && isWishlisted ? 'fill-[#EC008C] text-[#EC008C]' : 'text-[#888]'} />
+          <Heart size={16} className={isMounted && isWishlisted ? 'fill-[#fa028e] text-[#fa028e]' : 'text-[#888]'} />
         </button>
       </div>
       <div className="p-3 flex flex-col flex-1">
         <p className="text-[12px] text-[#888] font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
         <h3 className="text-sm font-semibold text-[#111] leading-snug line-clamp-2 flex-1">{product.name}</h3>
         <div className="flex items-center gap-1 mt-1.5">
-          <Star size={11} className="fill-[#FFD700] text-[#FFD700]" />
+          <Star size={11} className="fill-[#fcd502] text-[#fcd502]" />
           <span className="text-xs font-semibold text-[#444]">{product.rating}</span>
           <span className="text-[12px] text-[#888]">({product.reviews})</span>
         </div>
@@ -113,7 +112,7 @@ function DemoProductCard({ product, priority = false }: { product: typeof PRODUC
             <span className="text-[11px] sm:text-[12px] text-[#888] sm:ml-1 mt-0.5 sm:mt-0">onwards</span>
           </div>
           <span
-            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[12px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#00AEEF] text-[#00AEEF]"
+            className="flex-shrink-0 flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-[12px] sm:text-xs font-bold transition-all duration-200 min-h-[28px] sm:min-h-[32px] bg-white border border-[#01a2fb] text-[#01a2fb]"
             aria-label="View details"
           >
             <span className="whitespace-nowrap px-1">View</span>
@@ -130,10 +129,10 @@ function BlinkitHero() {
     <div className="hidden md:flex flex-col gap-4">
       {/* Main Wide Banner */}
       <Link href="/products" className="relative w-full rounded-2xl overflow-hidden min-h-[220px] lg:min-h-[280px] group flex items-center"
-        style={{ background: 'linear-gradient(135deg, #16a34a, #14532d)' }}>
+        style={{ background: 'linear-gradient(135deg, #01a2fb, #0088d4)' }}>
         <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden opacity-90 mix-blend-luminosity group-hover:scale-105 transition-transform duration-700">
-           <Image src="/uploads/products/realistic_canvas.jpg" alt="Banner" fill className="object-cover object-center" unoptimized />
-           <div className="absolute inset-0 bg-gradient-to-r from-[#16a34a] to-transparent" />
+           <Image src="/uploads/products/realistic_canvas.jpg" alt="Banner" fill sizes='(max-width: 1200px) 50vw, 33vw' className="object-cover object-center" unoptimized />
+           <div className="absolute inset-0 bg-gradient-to-r from-[#01a2fb] to-transparent" />
         </div>
         <div className="relative z-10 p-8 lg:p-12 w-full lg:w-2/3">
           <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight mb-3">
@@ -142,7 +141,7 @@ function BlinkitHero() {
           <p className="text-white/90 text-lg mb-6 max-w-md">
             Get gallery-quality canvas, custom tees, and business essentials delivered fast.
           </p>
-          <div className="inline-flex items-center px-5 py-2.5 bg-white text-[#14532d] font-bold rounded-xl shadow-sm hover:scale-105 transition-transform">
+          <div className="inline-flex items-center px-5 py-2.5 bg-white text-[#0088d4] font-bold rounded-xl shadow-sm hover:scale-105 transition-transform">
             Shop Now
           </div>
         </div>
@@ -152,9 +151,9 @@ function BlinkitHero() {
       <div className="grid grid-cols-3 gap-4">
         {/* Banner 1 */}
         <Link href="/products?category=custom-tshirt-printing" className="relative rounded-2xl overflow-hidden min-h-[160px] group"
-          style={{ background: 'linear-gradient(135deg, #00AEEF, #006b99)' }}>
+          style={{ background: 'linear-gradient(135deg, #01a2fb, #006b99)' }}>
           <div className="absolute -right-4 -bottom-4 w-32 h-32 opacity-80 group-hover:scale-110 transition-transform">
-            <Image src="/uploads/products/tshirt.jpg" alt="T-Shirts" fill className="object-cover rounded-full mix-blend-luminosity" unoptimized />
+            <Image src="/uploads/products/tshirt.jpg" alt="T-Shirts" fill sizes='(max-width: 1200px) 50vw, 33vw' className="object-cover rounded-full mix-blend-luminosity" unoptimized />
           </div>
           <div className="relative z-10 p-5 w-3/4">
             <h3 className="text-xl font-black text-white mb-1 leading-tight">Custom<br />T-Shirts</h3>
@@ -167,9 +166,9 @@ function BlinkitHero() {
 
         {/* Banner 2 */}
         <Link href="/products?category=custom-gifts-printing" className="relative rounded-2xl overflow-hidden min-h-[160px] group"
-          style={{ background: 'linear-gradient(135deg, #FFD700, #b29600)' }}>
+          style={{ background: 'linear-gradient(135deg, #fcd502, #b29600)' }}>
           <div className="absolute -right-4 -bottom-4 w-32 h-32 opacity-90 group-hover:scale-110 transition-transform">
-            <Image src="/uploads/products/realistic_gifting.jpg" alt="Gifts" fill className="object-cover rounded-full mix-blend-luminosity" unoptimized />
+            <Image src="/uploads/products/realistic_gifting.jpg" alt="Gifts" fill sizes='(max-width: 1200px) 50vw, 33vw' className="object-cover rounded-full mix-blend-luminosity" unoptimized />
           </div>
           <div className="relative z-10 p-5 w-3/4">
             <h3 className="text-xl font-black text-[#111] mb-1 leading-tight">Corporate<br />Gifting</h3>
@@ -182,9 +181,9 @@ function BlinkitHero() {
 
         {/* Banner 3 */}
         <Link href="/products?category=business-card-printing" className="relative rounded-2xl overflow-hidden min-h-[160px] group"
-          style={{ background: 'linear-gradient(135deg, #EC008C, #99005a)' }}>
+          style={{ background: 'linear-gradient(135deg, #fa028e, #99005a)' }}>
           <div className="absolute right-0 bottom-0 w-28 h-28 opacity-80 group-hover:scale-110 transition-transform">
-            <Image src="/uploads/products/realistic_bizcards.jpg" alt="Cards" fill className="object-cover mix-blend-luminosity" unoptimized />
+            <Image src="/uploads/products/realistic_bizcards.jpg" alt="Cards" fill sizes='(max-width: 1200px) 50vw, 33vw' className="object-cover mix-blend-luminosity" unoptimized />
           </div>
           <div className="relative z-10 p-5 w-3/4">
             <h3 className="text-xl font-black text-white mb-1 leading-tight">Business<br />Cards</h3>
@@ -201,10 +200,10 @@ function BlinkitHero() {
 
 // ─── Value Props ───────────────────────────────────────────────────────────
 const VALUE_PROPS = [
-  { icon: Clock, label: 'Same-day dispatch', sub: 'Order before 12 PM', color: '#00AEEF' },
-  { icon: Star, label: 'Premium quality', sub: '5-star rated prints', color: '#FFD700' },
-  { icon: BadgeCheck, label: 'Bulk discounts', sub: 'Up to 40% off', color: '#EC008C' },
-  { icon: Phone, label: 'WhatsApp support', sub: 'Salem-based team', color: '#16a34a' },
+  { icon: Clock, label: 'Same-day dispatch', sub: 'Order before 12 PM', color: '#01a2fb' },
+  { icon: Star, label: 'Premium quality', sub: '5-star rated prints', color: '#fcd502' },
+  { icon: BadgeCheck, label: 'Bulk discounts', sub: 'Up to 40% off', color: '#fa028e' },
+  { icon: Phone, label: 'WhatsApp support', sub: 'Salem-based team', color: '#01a2fb' },
 ];
 
 // ─── FAQ ───────────────────────────────────────────────────────────────────
@@ -243,22 +242,11 @@ function FAQSection() {
 export function DesktopHomeUI() {
   const bestsellers = PRODUCTS.filter(p => p.bestseller);
   const featured = PRODUCTS.filter(p => !p.bestseller);
-  
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-    if (!hasSeenOnboarding) {
-      setShowOnboarding(true);
-    }
     setIsChecking(false);
   }, []);
-
-  const handleOnboardingComplete = () => {
-    localStorage.setItem('hasSeenOnboarding', 'true');
-    setShowOnboarding(false);
-  };
 
   // Prevent hydration mismatch or flashing by waiting for check
   if (isChecking) return null;
@@ -272,8 +260,6 @@ export function DesktopHomeUI() {
         address: { '@type': 'PostalAddress', addressLocality: 'Salem', addressRegion: 'Tamil Nadu', postalCode: '636001', addressCountry: 'IN' },
         priceRange: '₹₹', openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '09:00', closes: '20:00' },
       }) }} />
-
-      {showOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}
 
       <div className="container-app py-4 space-y-8">
 
@@ -308,7 +294,7 @@ export function DesktopHomeUI() {
               <h2 id="bestseller-heading" className="text-lg font-black text-[#111]">Bestsellers</h2>
               <p className="text-xs text-[#888]">Most ordered in Salem</p>
             </div>
-            <Link href="/products?bestseller=true" className="text-xs font-semibold text-[#EC008C] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
+            <Link href="/products?bestseller=true" className="text-xs font-semibold text-[#fa028e] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
           </div>
           <div className="product-grid">
             {bestsellers.map((p, i) => <DemoProductCard key={p.id} product={p} priority={i < 2} />)}
@@ -320,19 +306,19 @@ export function DesktopHomeUI() {
           <div className="relative rounded-2xl overflow-hidden p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6"
             style={{ background: 'linear-gradient(135deg,#111 0%,#1e1e1e 100%)', border: '1px solid rgba(255,255,255,0.06)' }}>
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#00AEEF,transparent)' }} />
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#EC008C,transparent)' }} />
+              <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#01a2fb,transparent)' }} />
+              <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#fa028e,transparent)' }} />
             </div>
             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center rounded-2xl"
               style={{ background: 'rgba(0,174,239,0.12)', border: '1px solid rgba(0,174,239,0.2)' }}>
-              <Upload size={36} className="text-[#00AEEF]" />
+              <Upload size={36} className="text-[#01a2fb]" />
             </div>
             <div className="flex-1 text-center sm:text-left">
               <h3 className="text-xl sm:text-2xl font-black text-white mb-1">Design Your Own</h3>
               <p className="text-white/60 text-sm leading-relaxed">Upload your artwork, add text, choose your size - get an instant preview before ordering.</p>
             </div>
             <Link href="/products/classic-round-neck-custom-tshirt" className="flex-shrink-0 btn btn-lg font-bold"
-              style={{ background: 'linear-gradient(135deg,#00AEEF,#EC008C)', color: 'white' }}>
+              style={{ background: 'linear-gradient(135deg,#01a2fb,#fa028e)', color: 'white' }}>
               Start Designing <ArrowRight size={18} />
             </Link>
           </div>
@@ -345,7 +331,7 @@ export function DesktopHomeUI() {
               <h2 id="more-heading" className="text-lg font-black text-[#111]">More Products</h2>
               <p className="text-xs text-[#888]">Hand-picked for you</p>
             </div>
-            <Link href="/products" className="text-xs font-semibold text-[#00AEEF] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
+            <Link href="/products" className="text-xs font-semibold text-[#01a2fb] flex items-center gap-1">View all <ArrowRight size={12} /></Link>
           </div>
           <div className="product-grid">
             {featured.map((p) => <DemoProductCard key={p.id} product={p} />)}
@@ -379,12 +365,12 @@ export function DesktopHomeUI() {
         <section className="relative rounded-2xl overflow-hidden mt-8" style={{ background: '#f8f9fa' }}>
           <div className="flex flex-col lg:flex-row items-center">
             <div className="relative w-full lg:w-1/2 aspect-video lg:aspect-square min-h-[300px]">
-              <Image src="/uploads/products/realistic_polo.jpg" alt="About Hashtag Custom Printing" fill className="object-cover" unoptimized />
+              <Image src="/uploads/products/realistic_polo.jpg" alt="About Hashtag Custom Printing" fill sizes='(max-width: 1200px) 50vw, 33vw' className="object-cover" unoptimized />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, transparent, #f8f9fa)' }} />
             </div>
             <div className="w-full lg:w-1/2 p-8 lg:p-12 relative z-10 -mt-12 lg:mt-0 bg-[#f8f9fa] lg:bg-transparent" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 10%, black)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black)' }}>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-4"
-                style={{ background: '#00AEEF15', color: '#00AEEF' }}>
+                style={{ background: '#01a2fb15', color: '#01a2fb' }}>
                 <Check size={12} /> Trusted by 500+ Businesses
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#111] leading-tight mb-4">

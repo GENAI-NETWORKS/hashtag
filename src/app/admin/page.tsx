@@ -81,7 +81,7 @@ export default function AdminDashboard() {
       <div className="bg-[#111] text-white px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #00AEEF, #EC008C)' }}>
+            style={{ background: 'linear-gradient(135deg, #01a2fb, #fa028e)' }}>
             <span className="text-white font-black text-base leading-none">#</span>
           </div>
           <div>
@@ -115,9 +115,9 @@ export default function AdminDashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard label="Orders Today" value={analytics?.ordersToday || 0} sub="Active orders" icon={ShoppingBag} color="#00AEEF" />
-            <StatCard label="Revenue Today" value={formatPrice(analytics?.revenueToday || 0)} sub="Excl. cancelled" icon={TrendingUp} color="#EC008C" />
-            <StatCard label="This Week" value={analytics?.ordersThisWeek || 0} sub="Total orders" icon={BarChart3} color="#FFD700" />
+            <StatCard label="Orders Today" value={analytics?.ordersToday || 0} sub="Active orders" icon={ShoppingBag} color="#01a2fb" />
+            <StatCard label="Revenue Today" value={formatPrice(analytics?.revenueToday || 0)} sub="Excl. cancelled" icon={TrendingUp} color="#fa028e" />
+            <StatCard label="This Week" value={analytics?.ordersThisWeek || 0} sub="Total orders" icon={BarChart3} color="#fcd502" />
             <StatCard label="Total Revenue" value={formatPrice(analytics?.totalRevenue || 0)} sub="All time" icon={Package} color="#16a34a" />
           </div>
         )}
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
           <div className="card p-5 lg:col-span-1">
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-black text-[#111] text-sm">Orders by Status</h2>
-              <Link href="/admin/orders" className="text-xs text-[#00AEEF] font-semibold flex items-center gap-1">
+              <Link href="/admin/orders" className="text-xs text-[#01a2fb] font-semibold flex items-center gap-1">
                 View all <ChevronRight size={12} />
               </Link>
             </div>
@@ -187,9 +187,9 @@ export default function AdminDashboard() {
         {/* Quick Actions */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {[
-            { href: '/admin/orders', label: 'Manage Orders', icon: ShoppingBag, color: '#00AEEF' },
-            { href: '/admin/products', label: 'Manage Products', icon: Package, color: '#EC008C' },
-            { href: '/admin/customers', label: 'Customers', icon: Users, color: '#FFD700' },
+            { href: '/admin/orders', label: 'Manage Orders', icon: ShoppingBag, color: '#01a2fb' },
+            { href: '/admin/products', label: 'Manage Products', icon: Package, color: '#fa028e' },
+            { href: '/admin/customers', label: 'Customers', icon: Users, color: '#fcd502' },
           ].map(({ href, label, icon: Icon, color }) => (
             <Link
               key={href}

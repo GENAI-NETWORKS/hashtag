@@ -22,7 +22,7 @@ export default function PrivacyPage() {
       <main className="px-4 py-6 max-w-md mx-auto">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-12 h-12 rounded-2xl bg-[#f8f9fa] flex items-center justify-center border border-[#e5e7eb] shadow-sm">
-            <ShieldCheck size={24} className="text-[#00AEEF]" />
+            <ShieldCheck size={24} className="text-[#01a2fb]" />
           </div>
           <div>
             <h2 className="text-xl font-black text-[#111]">Privacy Policy</h2>

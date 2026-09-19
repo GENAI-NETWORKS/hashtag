@@ -55,8 +55,8 @@ export default function ProfilePage() {
   };
 
   const MENU_ITEMS = [
-    { icon: Package, label: 'My Orders', sub: 'Track your print orders', href: '/orders', color: '#00AEEF' },
-    { icon: Heart, label: 'Wishlist', sub: 'Products you love', href: '/profile/wishlist', color: '#FFD700' },
+    { icon: Package, label: 'My Orders', sub: 'Track your print orders', href: '/orders', color: '#01a2fb' },
+    { icon: Heart, label: 'Wishlist', sub: 'Products you love', href: '/profile/wishlist', color: '#fcd502' },
     { icon: Settings, label: 'Account Settings', sub: 'Update profile & password', href: '/profile/settings', color: '#7c3aed' },
   ];
 
@@ -70,7 +70,7 @@ export default function ProfilePage() {
       {/* Profile card */}
       <div className="card p-6 mb-5 text-center">
         <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-black"
-          style={{ background: 'linear-gradient(135deg,#00AEEF,#EC008C)' }}>
+          style={{ background: 'linear-gradient(135deg,#01a2fb,#fa028e)' }}>
           {user.name[0].toUpperCase()}
         </div>
         <h1 className="text-xl font-black text-[#111]">{user.name}</h1>
@@ -87,8 +87,8 @@ export default function ProfilePage() {
       {/* Quick stats */}
       <div className="grid grid-cols-2 gap-3 mb-5">
         {[
-          { label: 'Orders', value: orders?.length?.toString() || '0', icon: ShoppingBag, color: '#00AEEF' },
-          { label: 'Wishlist', value: mounted ? wishlistItems.length.toString() : '-', icon: Heart, color: '#EC008C' },
+          { label: 'Orders', value: orders?.length?.toString() || '0', icon: ShoppingBag, color: '#01a2fb' },
+          { label: 'Wishlist', value: mounted ? wishlistItems.length.toString() : '-', icon: Heart, color: '#fa028e' },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="card p-4 text-center">
             <Icon size={20} className="mx-auto mb-1.5" style={{ color }} />

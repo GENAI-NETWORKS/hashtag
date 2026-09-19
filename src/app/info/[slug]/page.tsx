@@ -9,7 +9,7 @@ const PAGES: Record<string, { title: string; icon: any; content: React.ReactNode
   partner: {
     title: 'Partner with Hashtag',
     icon: Handshake,
-    color: '#00AEEF',
+    color: '#01a2fb',
     content: (
       <>
         <p className="lead">Join Salem&apos;s fastest-growing custom printing network. We partner with local businesses, corporate event organizers, and graphic designers to provide premium print fulfillment.</p>
@@ -27,7 +27,7 @@ const PAGES: Record<string, { title: string; icon: any; content: React.ReactNode
   franchise: {
     title: 'Hashtag Franchise Opportunities',
     icon: Handshake,
-    color: '#EC008C',
+    color: '#fa028e',
     content: (
       <>
         <p className="lead">Bring the Hashtag Custom Prints experience to your city. We are expanding across Tamil Nadu and looking for passionate franchise partners.</p>
@@ -48,7 +48,7 @@ const PAGES: Record<string, { title: string; icon: any; content: React.ReactNode
   seller: {
     title: 'Become a Hashtag Seller',
     icon: Handshake,
-    color: '#FFD700',
+    color: '#fcd502',
     content: (
       <>
         <p className="lead">Are you an artist, illustrator, or creator? Monetize your designs with Hashtag&apos;s Print-on-Demand seller program.</p>
@@ -66,7 +66,7 @@ const PAGES: Record<string, { title: string; icon: any; content: React.ReactNode
   warehouse: {
     title: 'Warehouse & Fulfillment',
     icon: Truck,
-    color: '#00AEEF',
+    color: '#01a2fb',
     content: (
       <>
         <p className="lead">Our state-of-the-art production facility in Salem is equipped to handle thousands of custom prints daily with strict quality control.</p>
@@ -107,9 +107,9 @@ const PAGES: Record<string, { title: string; icon: any; content: React.ReactNode
         <p className="lead">Download our free templates and guides to ensure your artwork is print-ready and looks perfect.</p>
         <h3>Downloads</h3>
         <ul>
-          <li><a href="#" className="text-[#00AEEF] hover:underline">T-Shirt Design Template (PSD/AI)</a></li>
-          <li><a href="#" className="text-[#00AEEF] hover:underline">Business Card Bleed Guide (PDF)</a></li>
-          <li><a href="#" className="text-[#00AEEF] hover:underline">Mug Wrap Template (PNG)</a></li>
+          <li><a href="#" className="text-[#01a2fb] hover:underline">T-Shirt Design Template (PSD/AI)</a></li>
+          <li><a href="#" className="text-[#01a2fb] hover:underline">Business Card Bleed Guide (PDF)</a></li>
+          <li><a href="#" className="text-[#01a2fb] hover:underline">Mug Wrap Template (PNG)</a></li>
         </ul>
         <h3>Print Guidelines</h3>
         <p>For the best results, please ensure your uploaded files meet these criteria:</p>
@@ -124,7 +124,7 @@ const PAGES: Record<string, { title: string; icon: any; content: React.ReactNode
   shipping: {
     title: 'Shipping Policy',
     icon: Truck,
-    color: '#EC008C',
+    color: '#fa028e',
     content: (
       <>
         <p className="lead">Everything you need to know about how we pack, ship, and deliver your custom printed products.</p>
@@ -232,7 +232,7 @@ export default function InfoPage({ params }: { params: { slug: string } }) {
       </div>
 
       {/* Content */}
-      <div className="space-y-6 text-sm sm:text-base text-[#444] leading-relaxed pb-20 [&_h3]:text-xl [&_h3]:font-black [&_h3]:text-[#111] [&_h3]:mt-8 [&_h3]:mb-4 [&_h4]:font-bold [&_h4]:text-[#111] [&_strong]:font-bold [&_strong]:text-[#111] [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 [&_li]:pl-1 [&_a]:text-[#00AEEF] [&_a:hover]:underline [&_.lead]:text-lg [&_.lead]:font-medium [&_.lead]:text-[#111] [&_.lead]:leading-snug">
+      <div className="space-y-6 text-sm sm:text-base text-[#444] leading-relaxed pb-20 [&_h3]:text-xl [&_h3]:font-black [&_h3]:text-[#111] [&_h3]:mt-8 [&_h3]:mb-4 [&_h4]:font-bold [&_h4]:text-[#111] [&_strong]:font-bold [&_strong]:text-[#111] [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 [&_li]:pl-1 [&_a]:text-[#01a2fb] [&_a:hover]:underline [&_.lead]:text-lg [&_.lead]:font-medium [&_.lead]:text-[#111] [&_.lead]:leading-snug">
         {page.content}
       </div>
 

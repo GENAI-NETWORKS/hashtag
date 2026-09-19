@@ -11,7 +11,7 @@ export default function ContactPage() {
     <div className="container-app py-8 max-w-4xl mx-auto space-y-8">
       {/* Hero */}
       <div className="text-center max-w-2xl mx-auto mb-10">
-        <div className="inline-flex w-16 h-16 rounded-2xl items-center justify-center mb-6 bg-gradient-to-br from-[#00AEEF] to-[#EC008C]">
+        <div className="inline-flex w-16 h-16 rounded-2xl items-center justify-center mb-6 bg-gradient-to-br from-[#01a2fb] to-[#fa028e]">
           <Mail className="text-white" size={32} />
         </div>
         <h1 className="text-3xl md:text-4xl font-black text-[#111] mb-4">Contact Us</h1>
@@ -24,11 +24,11 @@ export default function ContactPage() {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Contact Info */}
         <div className="space-y-6">
-          <div className="card p-6 border-t-4 border-[#00AEEF]">
+          <div className="card p-6 border-t-4 border-[#01a2fb]">
             <h2 className="font-bold text-[#111] text-lg mb-4">Get in Touch</h2>
             <div className="space-y-4">
               <div className="flex items-start gap-3 text-sm">
-                <MapPin className="text-[#00AEEF] mt-0.5 shrink-0" size={18} />
+                <MapPin className="text-[#01a2fb] mt-0.5 shrink-0" size={18} />
                 <div className="text-[#444]">
                   <strong className="text-[#111]">Hashtag Custom Prints</strong><br />
                   Salem, Tamil Nadu<br />
@@ -36,14 +36,14 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3 text-sm text-[#444]">
-                <Phone className="text-[#EC008C] shrink-0" size={18} />
-                <a href="tel:+919XXXXXXXXX" className="hover:text-[#EC008C] font-medium transition-colors">
+                <Phone className="text-[#fa028e] shrink-0" size={18} />
+                <a href="tel:+919XXXXXXXXX" className="hover:text-[#fa028e] font-medium transition-colors">
                   +91 9XXXXXXXXX
                 </a>
               </div>
               <div className="flex items-center gap-3 text-sm text-[#444]">
-                <Mail className="text-[#FFD700] shrink-0" size={18} />
-                <a href="mailto:hello@hashtagprints.in" className="hover:text-[#FFD700] font-medium transition-colors">
+                <Mail className="text-[#fcd502] shrink-0" size={18} />
+                <a href="mailto:hello@hashtagprints.in" className="hover:text-[#fcd502] font-medium transition-colors">
                   hello@hashtagprints.in
                 </a>
               </div>
